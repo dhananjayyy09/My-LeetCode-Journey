@@ -1,0 +1,21 @@
+class Solution {
+public:
+    ListNode* removeElements(ListNode* head, int val) {
+        while (head && head->val == val) {
+            ListNode* temp = head;
+            head = head->next;
+            delete(temp);
+        }
+        ListNode* temp = head;
+        while (temp && temp->next) {
+            if (temp->next->val == val) {
+                ListNode* rem = temp->next;
+                temp->next = rem->next;
+                delete(rem);
+            } else {
+                temp = temp->next;
+            }
+        }
+        return head;
+    }
+};
