@@ -1,0 +1,13 @@
+class Solution {
+public:
+    void deleteNode(struct ListNode* node) {
+        if (node == NULL || node->next == NULL) {
+            return; 
+        }
+
+        struct ListNode* nextNode = node->next;
+        node->val = nextNode->val;
+        node->next = nextNode->next;
+        delete(nextNode); 
+    }
+};
