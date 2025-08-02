@@ -28,3 +28,31 @@ This is my personal coding journey to improve problem-solving skills, strengthen
 Each folder contains solutions for a specific topic (e.g., Linked List, Arrays, Dynamic Programming).
 
 Example:
+
+---
+
+## 🛠️ Languages Used
+- **C++** (primary)
+- **Other languages** may be added in the future
+
+---
+
+## 🎯 Goals
+- Solve at least **X problems per week**  
+- Cover all major **DSA topics**  
+- Track improvement over time
+
+---
+
+## 📌 Topics Covered
+✅ Linked List  
+✅ Arrays  
+⬜ Dynamic Programming *(coming soon)*  
+⬜ Graphs *(coming soon)*  
+
+---
+
+## 🌟 How to Use
+1. Clone the repo:
+   ```bash
+   git clone https://github.com/dhananjayy09/My-LeetCode-Journey.git
