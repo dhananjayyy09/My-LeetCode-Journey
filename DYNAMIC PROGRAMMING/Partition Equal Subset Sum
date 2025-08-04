@@ -1,0 +1,63 @@
+class Solution {
+public:
+    //memoization
+     bool solve(int i, int target, vector<int>& arr, vector<vector<int>>& dp)
+     {
+         if (target == 0)
+             return true;
+         if (i == 0)
+             return arr[0] == target;
+        if (dp[i][target] != -1)
+            return dp[i][target];
+
+        bool notake = solve(i-1, target, arr, dp);
+        bool take = false;
+        if(target >= arr[i]){
+            take = solve(i-1, target-arr[i],arr,dp);
+        }
+        return dp[i][target] = take || notake;
+    }
+
+    bool canPartition(vector<int>& nums) {
+        int sum = 0;
+        int n = nums.size();
+        for (int i = 0; i < n; i++) {
+            sum += nums[i];
+        }
+        if (sum % 2 != 0)
+            return false;
+        int k = sum / 2;
+        vector<vector<int>> dp(n, vector<int>(k + 1, -1));
+        return solve(n - 1, k, nums, dp);
+    }
+
+    // tabulation
+    bool canPpartition(vector<int>& nums) {
+        int sum = 0;
+        int n = nums.size();
+        for (int i = 0; i < n; i++) {
+            sum += nums[i];
+        }
+        if (sum % 2 != 0)
+            return false;
+        int k = sum / 2;
+        vector<vector<bool>> dp(n, vector<bool>(k + 1, false));
+        for (int i = 0; i < n; i++) {
+            dp[i][0] = true;
+        }
+        if (nums[0] <= k)
+            dp[0][nums[0]] = true;
+
+        for (int i = 1; i < n; i++) {
+            for (int target = 1; target <= k; target++) {
+                bool notTake = dp[i - 1][target];
+                bool take = false;
+                if (target >= nums[i]) {
+                    take = dp[i - 1][target - nums[i]];
+                }
+                dp[i][target] = take || notTake;
+            }
+        }
+        return dp[n - 1][k];
+    }
+};
