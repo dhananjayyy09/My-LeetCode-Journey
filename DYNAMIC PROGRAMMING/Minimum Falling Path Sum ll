@@ -1,0 +1,62 @@
+class Solution {
+public:
+    // memoization
+    int solve(int i, int j, int m, int n, vector<vector<int>>& arr,
+              vector<vector<int>>& dp) {
+        if (j < 0 || j >= n)
+            return 1e9;
+        if (i == n - 1)
+            return arr[i][j];
+        if (dp[i][j] != -1)
+            return dp[i][j];
+        int minpath = INT_MAX;
+        for (int k = 0; k < n; k++) {
+            if (k != j) {
+                minpath = min(minpath, solve(i + 1, k, m, n, arr, dp));
+            }
+        }
+        dp[i][j] = arr[i][j] + minpath;
+        return dp[i][j];
+    }
+
+    int minFallingPathSsum(vector<vector<int>>& arr) {
+        int m = arr.size();
+        int n = arr[0].size();
+
+        vector<vector<int>> dp(m, vector<int>(n, -1));
+        int mini = 1e9;
+        for (int j = 0; j < n; j++) {
+            mini = min(mini, solve(0, j, m, n, arr, dp));
+        }
+        return mini;
+    }
+
+    // tabulation
+    int minFallingPathSum(vector<vector<int>>& arr) {
+        int m = arr.size();
+        int n = arr[0].size();
+
+        vector<vector<int>> dp(m, vector<int>(n, 0));
+        for (int j = 0; j < n; j++) {
+            dp[0][j] = arr[0][j];
+        }
+
+        for (int i = 1; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                int minpath = INT_MAX;
+                for (int k = 0; k < n; k++) {
+                    if (k != j) {
+                        minpath = min(minpath, dp[i - 1][k]);
+                    }
+                }
+                dp[i][j] = arr[i][j] + minpath;
+            }
+        }
+
+        int mini = INT_MAX;
+        for (int j = 0; j < n; j++) {
+            mini = min(mini, dp[m - 1][j]);
+        }
+        return mini;
+    }
+};
