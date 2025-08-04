@@ -1,0 +1,40 @@
+class Solution {
+public:
+    vector<vector<string>> ans;
+
+    bool isPall(string& s) {
+        int i = 0, j = s.size() - 1;
+        while (i < j) {
+            if (s[i] != s[j]) {
+                return false;
+            }
+            i++;
+            j--;
+        }
+        return true;
+    }
+
+    void solve(int i, int n, string s, vector<string>& str) {
+        if (i == n) {
+            ans.push_back(str);
+            return;
+        }
+        string temp = "";
+
+        for (int j = i; j < n; j++) {
+            temp += s[j];
+            if (isPall(temp)) {
+                str.push_back(s.substr(i, j - i + 1));
+                solve(j + 1, n, s, str);
+                str.pop_back();
+            }
+        }
+    }
+
+    vector<vector<string>> partition(string s) {
+        int n = s.size();
+        vector<string> str;
+        solve(0, n, s, str);
+        return ans;
+    }
+};
