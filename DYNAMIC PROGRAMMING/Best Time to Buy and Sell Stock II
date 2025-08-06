@@ -1,0 +1,57 @@
+class Solution {
+public:
+    // memoization
+    long solve(int i, bool buy, vector<int>& prices, int n,
+               vector<vector<long>>& dp) {
+        if (i == n)
+            return 0;
+        if (dp[i][buy] != -1)
+            return dp[i][buy];
+
+        long profit = 0;
+        if (buy) {
+            long take = -prices[i] + solve(i + 1, false, prices, n, dp);
+            long notake = solve(i + 1, true, prices, n, dp);
+            profit = max(take, notake);
+        } else {
+            long take = prices[i] + solve(i + 1, true, prices, n, dp);
+            long notake = solve(i + 1, false, prices, n, dp);
+            profit = max(take, notake);
+        }
+        return dp[i][buy] = profit;
+    }
+
+    // tabulation
+    int maxpProfit(vector<int>& prices) {
+        int n = prices.size();
+        vector<vector<long>> dp(n + 1, vector<long>(2, 0));
+        dp[n][0] = dp[n][1] = 0;
+        for (int i = n - 1; i >= 0; i--) {
+            for (int buy = 0; buy <= 1; buy++) {
+                long profit = 0;
+                if (buy) {
+                    long take = -prices[i] + dp[i + 1][false];
+                    long notake = dp[i + 1][true];
+                    profit = max(take, notake);
+                } else {
+                    long take = prices[i] + dp[i + 1][true];
+                    long notake = dp[i + 1][false];
+                    profit = max(take, notake);
+                }
+                dp[i][buy] = profit;
+            }
+        }
+        return dp[0][1];
+    }
+
+//more easy 
+    int maxProfit(vector<int>& prices) {
+        int p = 0;
+        for (int i = 1; i < prices.size(); i++) {
+            if (prices[i] > prices[i - 1]) {
+                p += prices[i] - prices[i - 1];
+            }
+        }
+        return p;
+    }
+};
