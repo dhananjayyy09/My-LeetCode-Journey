@@ -48,8 +48,7 @@ Example:
 ✅ Linked List  
 ✅ Arrays  
 ✅ Dynamic Programming   
-✅ Geedy
-
+✅ Greedy
 ⬜ Graphs *(coming soon)*  
 
 ---
