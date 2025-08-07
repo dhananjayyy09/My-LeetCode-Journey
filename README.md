@@ -44,10 +44,11 @@ Example:
 
 ---
 
-## 📌 Topics Covered
+## 📌 Topics 
 ✅ Linked List  
 ✅ Arrays  
-⬜ Dynamic Programming *(coming soon)*  
+✅ Dynamic Programming   
+✅ Geedy
 ⬜ Graphs *(coming soon)*  
 
 ---
