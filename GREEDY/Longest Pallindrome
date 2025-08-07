@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int longestPalindrome(string s) {
+        unordered_map<char, int> count;
+        for (char c : s) {
+            count[c]++;
+        }
+        int length = 0;
+        bool odd = false;
+
+        for (auto freq : count) {
+            if (freq.second % 2 == 0) {
+                length += freq.second;
+            } else {
+                length += freq.second - 1;
+                odd = true;
+            }
+        }
+        if (odd)
+            length += 1;
+        return length;
+    }
+};
