@@ -49,6 +49,7 @@ Example:
 ✅ Arrays  
 ✅ Dynamic Programming   
 ✅ Greedy
+✅ Stack
 ⬜ Graphs *(coming soon)*  
 
 ---
