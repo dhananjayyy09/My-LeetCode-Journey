@@ -1,0 +1,19 @@
+class Solution {
+public:
+    void dfs(TreeNode* left, TreeNode* right, int depth) {
+        if (!left || !right)
+            return;
+        if (depth % 2 != 0) {
+            swap(left->val, right->val);
+        }
+        dfs(left->left, right->right, depth + 1);
+        dfs(left->right, right->left, depth + 1);
+    }
+
+    TreeNode* reverseOddLevels(TreeNode* root) {
+        if (!root)
+            return NULL;
+        dfs(root->left, root->right, 1);
+        return root;
+    }
+};
