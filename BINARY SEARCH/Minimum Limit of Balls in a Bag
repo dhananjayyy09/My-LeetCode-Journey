@@ -1,0 +1,26 @@
+class Solution {
+public:
+    bool canDivide(vector<int>& nums, int maxOperations, long pen) {
+        long split = 0;
+        for (auto it : nums) {
+            split += (it - 1) / pen;
+        }
+        return split <= maxOperations;
+    }
+
+    int minimumSize(vector<int>& nums, int maxOperations) {
+        long low = 1, high= *max_element(nums.begin(), nums.end());
+        long ans = high;
+
+        while (low <= high) {
+            long mid = low + (high - low) / 2;
+            if (canDivide(nums, maxOperations, mid)) {
+                ans = mid;
+                high = mid - 1;
+            } else {
+                low = mid + 1;
+            }
+        }
+        return ans;
+    }
+};
