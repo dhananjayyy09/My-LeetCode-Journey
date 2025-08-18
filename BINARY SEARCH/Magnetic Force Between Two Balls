@@ -1,0 +1,33 @@
+class Solution {
+public:
+    int maxDistance(vector<int>& pos, int m) {
+        sort(pos.begin(), pos.end());
+        int min = 1;
+        int max = pos.back() - pos.front();
+        int ans = 0;
+        while (min <= max) {
+            int mid = min + (max - min) / 2;
+            if (isplace(pos, m, mid)) {
+                ans = mid;
+                min = mid + 1;
+            } else {
+                max = mid - 1;
+            }
+        }
+        return ans;
+    }
+
+   bool isplace(vector<int>& pos, int m, int dmax) {
+    int count = 1;  
+    int last = pos[0];  
+    for (int i = 1; i < pos.size(); i++) {
+        if (pos[i] - last >= dmax) {
+            last = pos[i]; 
+            count++;
+            if (count >= m)
+            return true;
+        }
+    }
+    return false;
+}
+};
