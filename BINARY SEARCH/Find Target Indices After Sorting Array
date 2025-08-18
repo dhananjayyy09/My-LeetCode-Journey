@@ -1,0 +1,28 @@
+class Solution {
+public:
+    vector<int> targetIndices(vector<int>& nums, int target) {
+        sort(nums.begin(), nums.end()); // Sort the array
+        vector<int> res;
+        int min = 0;
+        int max = nums.size() - 1;
+        while (min <= max) {
+            int mid = min + (max - min) / 2;
+            if (nums[mid] == target) {
+                int i = mid, j = mid;
+                while (i >= 0 && nums[i] == target)
+                    i--;
+                while (j < nums.size() && nums[j] == target)
+                    j++;
+                for (int k = i + 1; k < j; k++) {
+                    res.push_back(k);
+                }
+                break;
+            } else if (nums[mid] < target) {
+                min = mid + 1;
+            } else {
+                max = mid - 1;
+            }
+        }
+        return res;
+    }
+};
