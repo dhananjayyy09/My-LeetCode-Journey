@@ -1,0 +1,29 @@
+class Solution {
+public:
+    void dfs(TreeNode* node, int depth, vector<long long>& sum, vector<int>& count) {
+        if (!node) return;
+
+        if(depth == sum.size()){
+            sum.push_back(0);
+            count.push_back(0);
+        }
+
+        sum[depth] += node->val;
+        count[depth]++;
+
+        dfs(node->left, depth + 1, sum, count);
+        dfs(node->right, depth + 1, sum, count);
+    }
+
+    vector<double> averageOfLevels(TreeNode* root) {
+        vector<long long>sum;
+        vector<int> count;
+        dfs(root,0,sum,count);
+
+        vector<double> ans;
+        for(int i = 0;i<count.size();i++){
+            ans.push_back((double)sum[i]/count[i]);
+        }
+        return ans;
+    }
+};
