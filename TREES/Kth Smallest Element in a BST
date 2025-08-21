@@ -1,0 +1,16 @@
+class Solution {
+public:
+    void collect(TreeNode* root, vector<int> &val){
+        if(!root) return;
+        val.push_back(root->val);
+        collect(root->left, val);
+        collect(root->right, val);
+    }
+
+    int kthSmallest(TreeNode* root, int k) {
+        vector<int> val;
+        collect(root,val);
+        sort(val.begin(),val.end());
+        return val[k-1];
+    }
+};
