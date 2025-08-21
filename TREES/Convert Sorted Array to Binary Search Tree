@@ -1,0 +1,17 @@
+class Solution {
+public:
+    TreeNode* bst(int left, int right,vector<int>& nums){
+        if(left > right) return NULL;
+        int mid = left + (right - left)/2;
+        TreeNode* root = new TreeNode(nums[mid]);
+
+        root->left = bst(left, mid-1, nums);
+        root->right = bst(mid+1, right, nums);
+
+        return root;
+    } 
+
+    TreeNode* sortedArrayToBST(vector<int>& nums) {
+        return bst(0, nums.size()-1, nums);
+    }
+};
