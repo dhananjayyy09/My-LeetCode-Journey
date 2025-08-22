@@ -1,0 +1,22 @@
+class Solution {
+public:
+    TreeNode* res;
+    TreeNode* targetNode;
+
+    void inorder(TreeNode* original, TreeNode* cloned) {
+        if (!original) return; 
+
+        inorder(original->left, cloned->left);
+        if (original == targetNode) {
+            res = cloned;
+            return; 
+        }
+        inorder(original->right, cloned->right);
+    }
+
+    TreeNode* getTargetCopy(TreeNode* original, TreeNode* cloned, TreeNode* target) {
+        targetNode = target;
+        inorder(original, cloned);
+        return res;
+    }
+};
