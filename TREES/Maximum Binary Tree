@@ -1,0 +1,21 @@
+class Solution {
+public:
+    TreeNode* solve(vector<int>& nums, int s, int e){
+        if(s > e) return NULL;
+        int imax = s;
+        for(int i=s+1;i<=e;i++){
+            if(nums[i] > nums[imax])
+            imax = i;
+        }
+        TreeNode* root = new TreeNode(nums[imax]);
+        
+        root->left = solve(nums,s, imax-1);
+        root->right = solve(nums, imax+1, e);
+        return root;
+    }
+
+    TreeNode* constructMaximumBinaryTree(vector<int>& nums) {
+        if(nums.size()==0) return NULL;
+        return solve(nums, 0, nums.size()-1);
+    }
+};
