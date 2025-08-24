@@ -1,0 +1,53 @@
+class Solution {
+public:
+    // dfs
+    void solve(TreeNode* root, int lvl, vector<vector<int>>& ans) {
+        if (!root) return;
+
+        if (ans.size() <= lvl) {
+            ans.push_back({});
+        }
+        if (lvl % 2 == 0) {
+            ans[lvl].push_back(root->val);
+        } else {
+            ans[lvl].insert(ans[lvl].begin(), root->val);
+        }
+        solve(root->left, lvl + 1, ans);
+        solve(root->right, lvl + 1, ans);
+    }
+
+    vector<vector<int>> zigzagLevelOrderr(TreeNode* root) {
+        vector<vector<int>> ans;
+        solve(root, 0, ans);
+        return ans;
+    }
+
+    // bfs
+    vector<vector<int>> zigzagLevelOrder(TreeNode* root) {
+        vector<vector<int>> result;
+        if (!root) return result;
+        queue<TreeNode*> q;
+        q.push(root);
+        bool ltr = true;
+
+        while (!q.empty()) {
+            int n = q.size();
+            vector<int> lvl(n);
+            for (int i = 0; i < n; i++) {
+                TreeNode* curr = q.front();
+                q.pop();
+
+                int idx = ltr ? i : n - 1 - i;
+                lvl[idx] = curr->val;
+
+                if (curr->left)
+                    q.push(curr->left);
+                if (curr->right)
+                    q.push(curr->right);
+            }
+            result.push_back(lvl);
+            ltr = !ltr;
+        }
+        return result;
+    }
+};
