@@ -1,0 +1,20 @@
+class Solution {
+public:
+    pair<TreeNode*, int> solve(TreeNode* root, int depth){
+        if(!root) return {NULL, depth};
+        auto left = solve(root->left, depth+1);
+        auto right = solve(root->right, depth+1);
+
+        if(left.second == right.second)
+            return {root, left.second};
+        if(left.second > right.second)
+            return left;
+        else
+            return right;
+    }
+
+    TreeNode* subtreeWithAllDeepest(TreeNode* root) {
+        if(!root) return NULL;
+        return solve(root, 0).first;
+    }
+};
