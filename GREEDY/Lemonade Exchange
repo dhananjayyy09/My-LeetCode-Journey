@@ -1,0 +1,41 @@
+class Solution {
+public:
+    // mine
+     bool lemonadeChannge(vector<int>& bills) {
+         int amt = 0;
+         for(int i=0;i<bills.size();i++){
+             if(bills[i] == 5){
+                 amt += bills[i];
+             }
+             else if(bills[i] == 10 || bills[i] == 20){
+                 int change = abs(bills[i] - amt);
+                 if(change == 5) return true;
+             }
+         }
+         return false;
+     }
+
+    //gpt
+    bool lemonadeChange(vector<int>& bills) {
+        int five = 0, ten = 0;
+        for (auto bill : bills) {
+            if (bill == 5) {
+                five++;
+            } else if (bill == 10) {
+                if (five == 0)
+                    return false;
+                five--;
+                ten++;
+            } else {
+                if (ten > 0 && five > 0) {
+                    five--;
+                    ten--;
+                } else if (five >= 3)
+                    five -= 3;
+                else
+                    return false;
+            }
+        }
+        return true;
+    }
+};
