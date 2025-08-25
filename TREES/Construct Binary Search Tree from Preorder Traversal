@@ -1,0 +1,36 @@
+class Solution {
+public:
+    //O(nlogn)
+      void insert(TreeNode* root, int val) {
+        if (val < root->val) {
+            if (!root->left) root->left = new TreeNode(val);
+            else insert(root->left, val);
+        } else {
+            if (!root->right) root->right = new TreeNode(val);
+            else insert(root->right, val);
+        }
+    }
+
+    TreeNode* bstFromPreorderr(vector<int>& preorder) {
+        if(preorder.empty()) return NULL;
+        TreeNode* root = new TreeNode(preorder[0]);
+        for(int i=1; i<preorder.size(); i++){
+            insert(root, preorder[i]);
+        }
+        return root;
+    }
+
+    //better approach
+    TreeNode* build(vector<int>& pre, int &i, int bound){
+        if(i==pre.size() || pre[i]>bound) return NULL;
+        TreeNode* root = new TreeNode(pre[i++]);
+        root->left = build(pre, i, root->val);
+        root->right = build(pre, i, bound);
+        return root;
+    }
+
+    TreeNode* bstFromPreorder(vector<int>& pre){
+        int i=0;
+        return build(pre, i, 1e9);
+    }
+};
