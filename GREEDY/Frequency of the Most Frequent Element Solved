@@ -1,0 +1,42 @@
+class Solution {
+public:
+    // mine
+     int maxxFrequency(vector<int>& nums, int k) {
+         sort(nums.begin(), nums.end());
+         int freq = 1;
+         int i = nums.size() - 1;
+         int j = i - 1;
+         int kfreq = 0;
+         while (j >= 0) {
+             int diff = nums[i] - nums[j];
+             if (kfreq + diff <= k) {
+                 freq++;
+                 kfreq += diff;
+                 j--;
+             } else {
+                 i--;
+                 j--;
+                 kfreq = 0;
+             freq = max(1,freq);
+             }
+         }
+         return freq;
+     }
+
+    // gpt
+    int maxFrequency(vector<int>& nums, int k) {
+        sort(nums.begin(), nums.end());
+        long long total = 0;
+        int l = 0, maxFreq = 0;
+
+        for (int r = 0; r < nums.size(); r++) {
+            total += nums[r];
+            while ((long long)nums[r] * (r - l + 1) - total > k) {
+                total -= nums[l];
+                l++;
+            }
+            maxFreq = max(maxFreq, r - l + 1);
+        }
+        return maxFreq;
+    }
+};
