@@ -1,0 +1,71 @@
+class Solution {
+public:
+    // brute-force
+    int maxProfitt(vector<int>& inventory, int k) {
+        long long profit = 0;
+        while (k--) {
+            int maxi = -1e9;
+            int idx = -1;
+            for (int i = 0; i < inventory.size(); i++) {
+                if (inventory[i] > maxi) {
+                    maxi = inventory[i];
+                    idx = i;
+                }
+            }
+            profit += maxi;
+            inventory[idx]--;
+        }
+        return profit;
+    }
+
+    // optimal
+    int maxxProfit(vector<int>& inventory, int k) {
+        const int mod = 1e9 + 7;
+        long long profit = 0;
+        priority_queue<int> pq(inventory.begin(), inventory.end());
+        while (k-- && !pq.empty()) {
+            int maxi = pq.top();
+            pq.pop();
+            if (maxi == 0)
+                break;
+            profit = (profit + maxi) % mod;
+            pq.push(maxi - 1);
+        }
+        return profit;
+    }
+
+    //gpt
+    int maxProfit(vector<int>& inventory, int orders) {
+        const int mod = 1e9 + 7;
+        sort(inventory.rbegin(), inventory.rend());
+        inventory.push_back(0);
+
+        long long res = 0;
+        int n = inventory.size();
+        int i = 0;
+
+        while (orders > 0) {
+            long long curr = inventory[i];
+            long long next = inventory[i + 1];
+            long long count = i + 1;
+            long long diff = curr - next;
+            long long canSell = count * diff;
+
+            if (orders >= canSell) {
+                long long sum = ((curr + next + 1) * diff / 2) % mod;
+                res = (res + (sum * count) % mod) % mod;
+                orders -= canSell;
+            } else {
+                long long fullLevels = orders / count;
+                long long remainder = orders % count;
+                long long newLow = curr - fullLevels;
+                long long sum = ((curr + newLow + 1) * fullLevels / 2) % mod;
+                res = (res + (sum * count) % mod) % mod;
+                res = (res + remainder * newLow % mod) % mod;
+                orders = 0;
+            }
+            i++;
+        }
+        return res % mod;
+    }
+};
