@@ -1,0 +1,29 @@
+class Solution {
+public:
+    void insertRow(TreeNode* root, int val, int curDepth, int depth){
+        if(!root) return;
+
+        if(curDepth == depth-1){
+            TreeNode* newLeft = new TreeNode(val);
+            TreeNode* newRight = new TreeNode(val);
+
+            newLeft->left = root->left;
+            newRight->right = root->right;
+
+            root->left = newLeft; 
+            root->right = newRight; 
+        }
+        insertRow(root->left, val, curDepth+1, depth);
+        insertRow(root->right, val, curDepth+1, depth);
+    }
+
+    TreeNode* addOneRow(TreeNode* root, int val, int depth) {
+        if (depth == 1) {
+            TreeNode* newRoot = new TreeNode(val);
+            newRoot->left = root;
+            return newRoot;
+        }
+        insertRow(root, val, 1, depth);
+        return root;
+    }
+};
