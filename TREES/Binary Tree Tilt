@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int subtreeSum(TreeNode* node, int &totalTilt) {
+        if (!node) return 0;
+        int leftSum = subtreeSum(node->left, totalTilt);
+        int rightSum = subtreeSum(node->right, totalTilt);
+        totalTilt += abs(leftSum - rightSum);
+        
+        return leftSum + rightSum + node->val;
+    }
+
+    int findTilt(TreeNode* root) {
+        int totalTilt = 0;
+        subtreeSum(root, totalTilt);
+        return totalTilt;
+    }
+};
