@@ -1,0 +1,42 @@
+class Solution {
+public:
+    //brute force
+    void collect(TreeNode* root, vector<int> &val){
+        if(!root) return;
+        val.push_back(root->val);
+        collect(root->left, val);
+        collect(root->right, val);
+    }
+
+    int minDiffInBSTt(TreeNode* root) {
+        vector<int> val;
+        collect(root, val);
+        sort(val.begin(), val.end());
+        int mini = 1e9;
+
+        for(int i=0; i<val.size()-1; i++){
+            for(int j=i+1; j<val.size(); j++){
+                mini = min(mini, val[j]-val[i]);
+            }
+        }
+        return mini;
+    }
+
+    //optimal
+    void inorder(TreeNode* root, int &pre, int &mini){
+        if(!root) return;
+        inorder(root->left, pre, mini);
+        if(pre != -1){
+            mini = min(mini, root->val - pre);
+        }
+        pre = root->val;
+        inorder(root->right, pre, mini);
+    }
+
+    int minDiffInBST(TreeNode* root){
+        int mini = INT_MAX;
+        int pre = -1;
+        inorder(root, pre, mini);
+        return mini;
+    }
+};
