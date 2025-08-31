@@ -1,0 +1,43 @@
+class Solution {
+public:
+    bool dfs(int node, vector < vector < int >> &adj, vector<bool>& visited,
+         vector<bool>& stac, vector<int>& ans) {
+            visited[node] = true;
+            stac[node] = true;
+
+            for(auto it : adj[node]){
+                if(!visited[it]){
+                    if(dfs(it,adj,visited,stac,ans)){
+                        return true;
+                    }
+                }
+                else if(stac[it]){
+                    return true;
+                }
+            }
+            stac[node] = false;
+            ans.push_back(node);
+            return false;
+         }
+
+    vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {
+        int n = numCourses;
+        vector<vector<int>>adj(n);
+        for (auto &pre : prerequisites) {
+            adj[pre[1]].push_back(pre[0]); // pre[0] depends on pre[1]: so pre[1] → pre[0]
+        }
+
+        vector<bool> visited(n, false);
+        vector<bool> stac(n, false);
+        vector<int> ans;
+
+        for (int i = 0; i < n; i++) {
+            if (!visited[i]) {
+                if (dfs(i, adj, visited, stac, ans))
+                    return {};
+            }
+        }
+        reverse(ans.begin(), ans.end());
+        return ans;
+    }
+};
