@@ -1,0 +1,27 @@
+class Solution {
+public:
+    bool dfs(int node, vector<int>& color, vector<vector<int>>& adj) {
+        for (auto it : adj[node]) {
+            if (color[it] == -1) {
+                color[it] = 1 - color[node];
+                if (dfs(it, color, adj))
+                    return true;
+            } else if (color[it] == color[node])
+                return true;
+        }
+        return false;
+    }
+
+    bool isBipartite(vector<vector<int>>& adj) {
+        int n = adj.size();
+        vector<int> color(n, -1);
+        for (int i = 0; i < n; i++) {
+            if (color[i] == -1) {
+                color[i] = 0;
+                if (dfs(i, color, adj))
+                    return false;
+            }
+        }
+        return true;
+    }
+};
