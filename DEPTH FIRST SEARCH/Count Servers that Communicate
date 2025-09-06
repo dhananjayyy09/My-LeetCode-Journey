@@ -1,0 +1,70 @@
+class Solution {
+public:
+    //dfs
+    void dfs(vector<vector<int>> &pos, int idx, vector<bool> &visited, int &comp){
+        visited[idx] = true;
+        comp++;
+
+        for(int i=0; i<pos.size(); i++){
+            int r = pos[idx][0];
+            int c = pos[idx][1];
+            if((!visited[i]) && (pos[i][0] == r || pos[i][1] == c)){
+                dfs(pos, i, visited, comp);
+            }
+        }
+    }
+
+    int counttServers(vector<vector<int>>& grid) {
+        int m = grid.size();
+        int n = grid[0].size();
+        vector<vector<int>> pos;
+
+        for(int i=0; i<m; i++){
+            for(int j=0; j<n; j++){
+                if(grid[i][j] == 1){
+                    pos.push_back({i,j});
+                }
+            }
+        }
+
+        int s = pos.size();
+        vector<bool> visited(s, false);
+        int server = 0;
+        for(int i=0; i<s; i++){
+            int comp = 0;
+            if(!visited[i]){
+                dfs(pos, i, visited, comp);
+                if(comp > 1){
+                    server += comp;
+                }
+            }
+        }
+        return server;
+    }
+
+    //optimal
+    int countServers(vector<vector<int>>& grid) {
+        int m = grid.size();
+        int n = grid[0].size();
+        vector<int>row(m,0), col(n,0);
+        int server = 0;
+
+        for(int i=0; i<m; i++){
+            for(int j=0; j<n; j++){
+                if(grid[i][j] == 1){
+                    row[i]++;
+                    col[j]++;
+                }
+            }
+        }
+        
+        for(int i=0; i<m; i++){
+            for(int j=0; j<n; j++){
+                if((grid[i][j] == 1) && (row[i] > 1 || col[j] > 1)){
+                    server++;
+                }
+            }
+        }
+        return server;
+    }
+};
