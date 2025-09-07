@@ -1,0 +1,25 @@
+class Solution {
+public:
+    void inorder(TreeNode* root, vector<int> &val){
+        if(!root) return;
+        inorder(root->left, val);
+        val.push_back(root->val);
+        inorder(root->right, val);
+    }
+
+    TreeNode* build(vector<int> &val, int s, int e){
+        if(s>e) return NULL;
+        int mid = s + (e-s)/2;
+        TreeNode* root = new TreeNode(val[mid]);
+        root->left = build(val, s, mid-1);
+        root->right = build(val, mid+1, e);
+
+        return root;
+    }
+
+    TreeNode* balanceBST(TreeNode* root) {
+        vector<int> val;
+        inorder(root, val);
+        return build(val, 0, val.size()-1);
+    }
+};
