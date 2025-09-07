@@ -1,0 +1,30 @@
+class Solution {
+public:
+    int dfs(int node, vector<bool> &visited, unordered_map<int, vector<pair<int, int>>> &adj){
+        visited[node] = true;
+        int count = 0;
+        for(auto &p : adj[node]){
+            int v = p.first;
+            int check = p.second;
+            if(!visited[v]){
+                if(check==1){
+                    count++;
+                }
+                count += dfs(v, visited, adj);
+            }
+        }
+        return count;
+    }
+
+    int minReorder(int n, vector<vector<int>>& connections) {
+        unordered_map<int, vector<pair<int, int>>> adj;
+        for(auto &a : connections){
+            int u = a[0];
+            int v = a[1];
+            adj[u].push_back({v,1}); //fake
+            adj[v].push_back({u,0}); //real
+        }
+        vector<bool> visited(n, false);
+        return dfs(0, visited, adj);
+    }
+};
