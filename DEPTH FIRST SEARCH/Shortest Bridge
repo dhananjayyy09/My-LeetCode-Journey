@@ -1,0 +1,63 @@
+class Solution {
+public:
+    void dfs(vector<vector<int>> &grid, int i, int j, set<pair<int, int>> &visited) {
+        int n = grid.size();
+        if (i < 0 || i >= n || j < 0 || j >= n || grid[i][j] == 0 || visited.count({i, j}))
+            return;
+
+        visited.insert({i, j});        
+        dfs(grid, i + 1, j, visited);
+        dfs(grid, i - 1, j, visited);
+        dfs(grid, i, j + 1, visited);
+        dfs(grid, i, j - 1, visited);
+    }
+
+    int bfs(vector<vector<int>> &grid, set<pair<int, int>> &visited) {
+        int n = grid.size();
+        queue<pair<int, int>> q;
+        for (auto &it : visited) {
+            q.push(it);
+        }
+
+        int count = 0;
+        vector<int> dir = {0, 1, 0, -1, 0};
+
+        while (!q.empty()) {
+            int size = q.size();
+            while (size--) {
+                auto cur = q.front();
+                q.pop();
+                int x = cur.first;
+                int y = cur.second;
+
+                for (int k = 0; k < 4; k++) {
+                    int nx = x + dir[k];
+                    int ny = y + dir[k + 1];
+                    if (nx >= 0 && nx < n && ny >= 0 && ny < n && !visited.count({nx, ny})) {
+                        if (grid[nx][ny] == 1) {
+                            return count;
+                        }
+                        visited.insert({nx, ny});
+                        q.push({nx, ny});
+                    }
+                }
+            }
+            count++;
+        }
+        return -1; 
+    }
+
+    int shortestBridge(vector<vector<int>>& grid) {
+        int n = grid.size();
+        set<pair<int, int>> visited;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (grid[i][j] == 1) {
+                    dfs(grid, i, j, visited);
+                    return bfs(grid, visited);
+                }
+            }
+        }
+        return -1;
+    }
+};
