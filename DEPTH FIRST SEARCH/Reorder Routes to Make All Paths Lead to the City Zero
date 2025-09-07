@@ -1,8 +1,7 @@
 class Solution {
 public:
-    int dfs(int node, vector<bool> &visited, unordered_map<int, vector<pair<int, int>>> &adj){
+    void dfs(int node, vector<bool> &visited, unordered_map<int, vector<pair<int, int>>> &adj, int &count){
         visited[node] = true;
-        int count = 0;
         for(auto &p : adj[node]){
             int v = p.first;
             int check = p.second;
@@ -10,10 +9,9 @@ public:
                 if(check==1){
                     count++;
                 }
-                count += dfs(v, visited, adj);
+                dfs(v, visited, adj, count);
             }
         }
-        return count;
     }
 
     int minReorder(int n, vector<vector<int>>& connections) {
@@ -24,7 +22,9 @@ public:
             adj[u].push_back({v,1}); //fake
             adj[v].push_back({u,0}); //real
         }
+        int ans = 0;
         vector<bool> visited(n, false);
-        return dfs(0, visited, adj);
+        dfs(0, visited, adj, ans);
+        return ans;
     }
 };
