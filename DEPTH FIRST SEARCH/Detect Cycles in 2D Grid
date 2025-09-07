@@ -1,0 +1,43 @@
+class Solution {
+public:
+    int n, m;
+    bool dfs(vector<vector<char>>& grid, int x, int y, int px, int py, char tar,
+             vector<vector<bool>>& visited) {
+        visited[x][y] = true;
+        vector<int> dx = {0, 1, 0, -1};
+        vector<int> dy = {1, 0, -1, 0};
+
+        for (int k = 0; k < 4; k++) {
+            int nx = x + dx[k];
+            int ny = y + dy[k];
+
+            if (nx < 0 || nx >= m || ny < 0 || ny >= n)
+                continue;
+            if (grid[nx][ny] != tar)
+                continue;
+            if (visited[nx][ny] and !(nx == px || ny == py))
+                return true;
+            if (!visited[nx][ny]) {
+                if (dfs(grid, nx, ny, x, y, tar, visited))
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    bool containsCycle(vector<vector<char>>& grid) {
+        m = grid.size();
+        n = grid[0].size();
+        vector<vector<bool>> visited(m, vector<bool>(n, false));
+
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (!visited[i][j]) {
+                    if (dfs(grid, i, j, -1, -1, grid[i][j], visited))
+                        return true;
+                }
+            }
+        }
+        return false;
+    }
+};
