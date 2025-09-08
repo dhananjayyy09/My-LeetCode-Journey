@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int maxTime = 0;
+    void dfs(unordered_map<int, vector<int>> &adj,int emp, vector<int>& inform, int time){
+        maxTime = max(maxTime, time);
+        for(auto &e : adj[emp]){
+            dfs(adj, e, inform, time + inform[emp]);
+        }
+    }
+
+    int numOfMinutes(int n, int headID, vector<int>& manager, vector<int>& inform) {
+        unordered_map<int, vector<int>> adj;
+        for(int i=0; i<n; i++){
+            int u = i;
+            int v = manager[i];
+            if(v != -1){
+                adj[v].push_back(u);
+            }
+        }
+        dfs(adj, headID, inform, 0);
+        return maxTime;
+    }
+};
