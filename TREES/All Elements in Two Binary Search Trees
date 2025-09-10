@@ -1,0 +1,30 @@
+class Solution {
+public:
+    void inorderTraversal(TreeNode* root, vector<int>& result) {
+        if (!root)
+            return;
+        inorderTraversal(root->left, result);
+        result.push_back(root->val);
+        inorderTraversal(root->right, result);
+    }
+
+    vector<int> getAllElements(TreeNode* root1, TreeNode* root2) {
+        vector<int> list1, list2, result;
+        inorderTraversal(root1, list1);
+        inorderTraversal(root2, list2);
+        int i = 0, j = 0;
+        while (i < list1.size() && j < list2.size()) {
+            if (list1[i] < list2[j]) {
+                result.push_back(list1[i++]);
+            } else {
+                result.push_back(list2[j++]);
+            }
+        }
+        while (i < list1.size())
+            result.push_back(list1[i++]);
+        while (j < list2.size())
+            result.push_back(list2[j++]);
+            
+        return result;
+    }
+};
