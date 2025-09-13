@@ -1,0 +1,27 @@
+class Solution {
+public:
+    int maxFreeTime(int eventTime, int k, vector<int>& st, vector<int>& end) {
+        int n = st.size();
+        vector<int> free;
+        free.push_back(st[0]);
+        for(int i=0; i<n-1; i++){
+            free.push_back(st[i+1] - end[i]);
+        }
+        free.push_back(eventTime - end[n-1]);
+        
+        int maxFree = 0;
+        int sum = 0;
+        int i=0, j=0;
+        int m = free.size();
+        while(j<m){
+            sum += free[j];
+            while(i<m && j-i+1 > k+1){
+                sum -= free[i];
+                i++;
+            }
+            maxFree = max(maxFree, sum);
+            j++;
+        }
+        return maxFree;
+    }
+};
