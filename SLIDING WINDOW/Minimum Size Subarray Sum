@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int minSubArrayLen(int target, vector<int>& nums) {
+        int n = nums.size();
+        int i=0, sum = 0;
+        int len = 1e9;
+        for(int j=0; j<n; j++){
+            sum += nums[j];
+            while(sum >= target){
+                len = min(len, j-i+1);
+                sum -= nums[i]; //shrink window  
+                i++;
+            }
+        }
+        return (len == 1e9) ? 0 : len;
+    }
+};
