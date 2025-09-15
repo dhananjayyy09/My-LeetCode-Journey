@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int shipWithinDays(vector<int>& weights, int days) {
+        int n = weights.size();
+        int min = *max_element(weights.begin(),weights.end()); 
+        int max = accumulate(weights.begin(), weights.end(), 0);
+
+        while (min < max) {
+            int mid = min + (max - min) / 2;
+            int currload = 0, reqdays = 1;
+            for (int wt : weights) {
+                if (currload + wt > mid) {     // If adding current weight exceeds capacity
+                    reqdays++; // Start a new day
+                    currload = 0;
+                }
+                currload += wt;
+            }
+            if (reqdays <= days) {
+                max = mid; 
+            } else {
+                min = mid + 1; 
+            }
+        }
+        return min;
+    }
+};
