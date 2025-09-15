@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int countPairs(vector<int>& arr, int key) {
+        sort(arr.begin(), arr.end()); 
+        int left = 0, right = arr.size() - 1;
+        int count = 0;
+        while(left<right){
+            if(arr[left]+arr[right]<key){
+                count = count + (right-left);
+                left++;
+            }else{
+                right--;
+            }
+        }
+        return count;
+    }
+};
