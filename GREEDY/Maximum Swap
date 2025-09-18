@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int maximumSwap(int num) {
+        string nums = to_string(num);
+        int n = nums.size();
+        vector<int> maxRight(n);
+        maxRight[n-1] = n-1;
+        for(int i=n-2; i>=0; i--){
+            int rmi = maxRight[i+1];
+            int rme = maxRight[rmi];
+
+            maxRight[i] = (nums[i] > nums[rmi]) ? i : rmi;
+        }
+        
+        for(int i=0; i<n; i++){
+            int mri = maxRight[i];
+            int mre = nums[mri];
+            if(nums[i] < mre){
+                swap(nums[i], nums[mri]);
+                return stoi(nums);
+            }
+        }
+        return num;
+    }
+};
