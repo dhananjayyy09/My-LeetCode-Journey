@@ -1,0 +1,72 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+class Router {
+public:
+    int MAX_SIZE;
+    unordered_map<string, vector<int>> packetStore;
+    unordered_map<int, vector<int>> timeMap;
+    queue<string> que;
+
+    Router(int memoryLimit) { MAX_SIZE = memoryLimit; }
+
+    string makeKey(int s, int d, int t) {
+        return to_string(s) + "_" + to_string(d) + "_" + to_string(t);
+    }
+
+    bool addPacket(int src, int dst, int time) {
+        string key = makeKey(src, dst, time);
+        if (packetStore.find(key) != packetStore.end()) {
+            return false;
+        }
+
+        if (que.size() >= MAX_SIZE) {
+            forwardPacket();
+        }
+
+        packetStore[key] = {src, dst, time};
+        que.push(key);
+
+        auto& times = timeMap[dst];
+        auto it = lower_bound(times.begin(), times.end(), time);
+        times.insert(it, time);
+
+        return true;
+    }
+
+    vector<int> forwardPacket() {
+        if (packetStore.empty()) {
+            return {};
+        }
+
+        string key = que.front();
+        que.pop();
+
+        vector<int> pkt = packetStore[key];
+        packetStore.erase(key);
+
+        int dst = pkt[1];
+        int timestamp = pkt[2];
+
+        auto& times = timeMap[dst];
+        auto it = lower_bound(times.begin(), times.end(), timestamp);
+        if (it != times.end() && *it == timestamp) {
+            times.erase(it);
+        }
+
+        return pkt;
+    }
+
+    int getCount(int dst, int start, int end) {
+        auto it = timeMap.find(dst);
+        if (it == timeMap.end() || it->second.empty()) {
+            return 0;
+        }
+
+        const vector<int>& times = it->second;
+        int i = lower_bound(times.begin(), times.end(), start) - times.begin();
+        int j = upper_bound(times.begin(), times.end(), end) - times.begin();
+
+        return j - i;
+    }
+};
