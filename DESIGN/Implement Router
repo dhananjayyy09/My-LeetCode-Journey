@@ -1,6 +1,3 @@
-#include <bits/stdc++.h>
-using namespace std;
-
 class Router {
 public:
     int MAX_SIZE;
@@ -26,10 +23,7 @@ public:
 
         packetStore[key] = {src, dst, time};
         que.push(key);
-
-        auto& times = timeMap[dst];
-        auto it = lower_bound(times.begin(), times.end(), time);
-        times.insert(it, time);
+        timeMap[dst].push_back(time);
 
         return true;
     }
@@ -41,19 +35,11 @@ public:
 
         string key = que.front();
         que.pop();
-
         vector<int> pkt = packetStore[key];
         packetStore.erase(key);
 
-        int dst = pkt[1];
-        int timestamp = pkt[2];
-
-        auto& times = timeMap[dst];
-        auto it = lower_bound(times.begin(), times.end(), timestamp);
-        if (it != times.end() && *it == timestamp) {
-            times.erase(it);
-        }
-
+        int d = pkt[1];
+        timeMap[d].erase(timeMap[d].begin());
         return pkt;
     }
 
@@ -63,9 +49,11 @@ public:
             return 0;
         }
 
-        const vector<int>& times = it->second;
-        int i = lower_bound(times.begin(), times.end(), start) - times.begin();
-        int j = upper_bound(times.begin(), times.end(), end) - times.begin();
+        vector<int> &timeStamp = it->second;
+        int i = lower_bound(it->second.begin(), it->second.end(), start) -
+                timeStamp.begin();
+        int j = upper_bound(it->second.begin(), it->second.end(), end) -
+                timeStamp.begin();
 
         return j - i;
     }
