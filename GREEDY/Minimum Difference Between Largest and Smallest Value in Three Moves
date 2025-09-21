@@ -1,0 +1,95 @@
+class Solution {
+public:
+    int minDifference(vector<int>& nums) {
+        int n = nums.size();
+        sort(nums.begin(), nums.end());
+        if(n<=4) return 0;
+
+        int diff1 = nums[n-4] - nums[0];
+        int diff2 = nums[n-1] - nums[3];
+        int diff3 = nums[n-3] - nums[1];
+        int diff4 = nums[n-2] - nums[2];
+
+        return min({diff1, diff2, diff3, diff4});
+    }
+};
+
+
+
+//this was also right but gave Runntime Error
+class Solution {
+public:
+    int sc1(vector<int> & nums){
+        vector<int> v1 = nums;
+        sort(v1.begin(), v1.end());
+        int smallest = v1[0];
+        int count = 0;
+        int n = v1.size();
+
+        for(int j = n-1; j>=0; j--){
+            if(count <= 2){
+                v1[j] = smallest;
+                count++;
+            }
+        }
+        sort(v1.begin(), v1.end());
+        return v1[n-1] - v1[0];
+    }
+
+    int sc2(vector<int> & nums){
+        vector<int> v1 = nums;
+        int n = v1.size();
+        sort(v1.begin(), v1.end());
+        int largest = v1[n-1];
+        int count = 0;
+
+        for(int j = 0; j<n; j++){
+            if(count <= 2){
+                v1[j] = largest;
+                count++;
+            }
+        }
+        sort(v1.begin(), v1.end());
+        return v1[n-1] - v1[0];
+    }
+
+    int sc3(vector<int> & nums){
+        vector<int> v1 = nums;
+        int n = v1.size();
+        sort(v1.begin(), v1.end());
+        int smallest = v1[0];
+        int largest = v1[n-1];
+        v1[n-1] = smallest; 
+        v1[n-2] = smallest; 
+        v1[0] = largest; 
+        sort(v1.begin(), v1.end());
+        return v1[n-1] - v1[0];
+    }
+
+    int sc4(vector<int> & nums){
+        vector<int> v1 = nums;
+        int n = v1.size();
+        sort(v1.begin(), v1.end());
+        int smallest = v1[0];
+        int largest = v1[n-1];
+        v1[n-1] = smallest; 
+        v1[0] = largest; 
+        v1[1] = largest; 
+        sort(v1.begin(), v1.end());
+        return v1[n-1] - v1[0];
+    }
+
+    int minDifference(vector<int>& nums) {
+        int diff1 = sc1(nums);
+        int diff2 = sc2(nums);
+        int diff3 = sc3(nums);
+        int diff4 = sc4(nums);
+
+        vector<int> ans = {diff1, diff2, diff3, diff4};
+        int min_diff = INT_MAX;
+        for(int i=0; i<4; i++){
+            min_diff = min(min_diff, ans[i]);
+        }
+        return min_diff;
+    }
+};
