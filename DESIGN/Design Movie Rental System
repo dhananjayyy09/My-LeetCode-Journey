@@ -1,0 +1,58 @@
+class MovieRentingSystem {
+public:
+    typedef pair<int, int> p;
+    unordered_map<int, set<p>> abl;  
+    unordered_map<int, set<p>> movieToShop;  
+    set<tuple<int, int, int>> rented;
+
+    MovieRentingSystem(int n, vector<vector<int>>& entries) {
+        for(auto &e : entries){
+            int shop = e[0];
+            int movie = e[1];
+            int price = e[2];
+            abl[movie].insert({price, shop});
+            movieToShop[movie].insert({shop, price});
+        }
+    }
+    
+    vector<int> search(int movie) {
+        vector<int> res;
+        int count = 0;
+        if(abl.count(movie)){
+            for(auto &[price, shop] : abl[movie]){
+                res.push_back(shop);
+                count++;
+                if(count >= 5)
+                    break;
+            }
+        }
+        return res;
+    }
+    
+    void rent(int shop, int movie) {
+        auto it = movieToShop[movie].lower_bound({shop, INT_MIN});
+        int price = it->second;
+        abl[movie].erase({price, shop});
+        rented.insert({price, shop, movie});
+    }
+    
+    void drop(int shop, int movie) {
+        auto it = movieToShop[movie].lower_bound({shop, INT_MIN});
+        int price = it->second;
+        abl[movie].insert({price, shop});
+        rented.erase({price, shop, movie});
+    }
+    
+    vector<vector<int>> report() {
+        vector<vector<int>> res;
+        int count = 0;
+
+        for(auto &[price, shop, movie] : rented){
+            res.push_back({shop, movie});
+            count++;
+            if(count >= 5)
+                break;
+        }
+        return res;
+    }
+};
