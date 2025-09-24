@@ -6,12 +6,17 @@ public:
         });
 
         int units = 0;
-        for(auto i : boxTypes){
-            int boxes = min(i[0], truckSize);
-            units += (boxes * i[1]);
-            truckSize -= boxes;
-
+        for(int i=0; i<boxTypes.size(); i++){
             if(truckSize == 0) break;
+            int nbox = boxTypes[i][0], ubox = boxTypes[i][1];
+            if(truckSize >= nbox){
+                units += (nbox * ubox);
+                truckSize -= nbox;
+            }
+            else{
+                units += (ubox * truckSize);
+                truckSize = 0;
+            }
         }
         return units;
     }
