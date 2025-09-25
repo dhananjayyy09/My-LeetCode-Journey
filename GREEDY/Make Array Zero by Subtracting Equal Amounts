@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int minimumOperations(vector<int>& arr){
+     int count = 0;
+    while (true) {
+        int minVal = INT_MAX;
+        for (int num : arr) {
+            if (num > 0) {
+                minVal = min(minVal, num);
+            }
+        }
+        if (minVal == INT_MAX)
+            break;
+        for (int& num : arr) {
+            if (num > 0) {
+                num -= minVal;
+            }
+        }
+        count++;
+    }
+    return count;
+    }
+};
