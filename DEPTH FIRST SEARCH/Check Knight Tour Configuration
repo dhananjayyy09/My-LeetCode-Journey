@@ -6,8 +6,8 @@ public:
             return false;
 
         if(grid[i][j] != step) return false;
-        visited[i][j] = true;
         if(step == n*n-1) return true;
+        visited[i][j] = true;
 
         return dfs(i+2, j-1, step+1, grid, visited) ||
                dfs(i+2, j+1, step+1, grid, visited) ||
