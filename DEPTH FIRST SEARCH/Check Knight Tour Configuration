@@ -1,0 +1,29 @@
+class Solution {
+public:
+    bool dfs(int i, int j, int step, vector<vector<int>> &grid, vector<vector<bool>> &visited) {
+        int n = grid.size();
+        if (i<0 || i>= n || j<0 || j>=n || visited[i][j])
+            return false;
+
+        if(grid[i][j] != step) return false;
+        visited[i][j] = true;
+        if(step == n*n-1) return true;
+
+        return dfs(i+2, j-1, step+1, grid, visited) ||
+               dfs(i+2, j+1, step+1, grid, visited) ||
+               dfs(i-2, j-1, step+1, grid, visited) ||
+               dfs(i-2, j+1, step+1, grid, visited) ||
+               dfs(i+1, j+2, step+1, grid, visited) ||
+               dfs(i-1, j+2, step+1, grid, visited) ||
+               dfs(i+1, j-2, step+1, grid, visited) ||
+               dfs(i-1, j-2, step+1, grid, visited);
+    }
+
+    bool checkValidGrid(vector<vector<int>>& grid) {
+        int n = grid.size();
+        vector<vector<bool>> visited(n, vector<bool>(n, false));
+        if (grid[0][0] != 0) return false;
+
+        return dfs(0, 0, 0, grid, visited);
+    }
+};
