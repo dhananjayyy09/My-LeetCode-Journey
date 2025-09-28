@@ -1,0 +1,51 @@
+class Solution {
+public:
+    // mine
+    bool isValid(vector<int> &nums){
+        int n = nums.size();
+        if (n < 3) return false;
+        sort(nums.begin(), nums.end());
+        for (int k=n-1; k>=2; k--) {
+            int i=0, j=k-1;
+            while (i < j) {
+                if (nums[i] + nums[j] > nums[k]) {
+                    return true;
+                } else {
+                    i++;
+                }
+            }
+        }
+        return false;
+    }
+
+    int largestPerimeterr(vector<int>& nums) {
+        int n = nums.size();
+        sort(nums.begin(), nums.end());
+        int maxPer = 0;
+        for(int i=0; i<n-2; i++){
+            int a = nums[i] , b = nums[i+1], c = nums[i+2];
+            vector<int> solve = {a, b, c};
+            if(isValid(solve)){
+                int per = a + b + c;
+                maxPer = max(per, maxPer);
+            }
+            else{
+                continue;
+            }
+        }
+        return maxPer;
+    }
+
+    // optimal
+    int largestPerimeter(vector<int>& nums){
+        int n = nums.size();
+        sort(nums.rbegin(), nums.rend());
+        for(int i=0; i<n-2; i++){
+            int a = nums[i] , b = nums[i+1], c = nums[i+2];
+            if(b + c > a){
+                return a + b + c;
+            }
+        }
+        return 0;
+    }
+};
