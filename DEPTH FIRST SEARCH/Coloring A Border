@@ -1,0 +1,37 @@
+class Solution {
+public:
+    void dfs(vector<vector<int>>& grid, int i, int j, int color){
+        int m = grid.size();
+        int n = grid[0].size();
+        if(i<0 || i>=m || j<0 || j>=n || grid[i][j] != color)
+            return; 
+        
+        grid[i][j] = INT_MAX;
+        dfs(grid, i+1, j, color);
+        dfs(grid, i-1, j, color);
+        dfs(grid, i, j+1, color);
+        dfs(grid, i, j-1, color);
+    }
+
+    vector<vector<int>> colorBorder(vector<vector<int>>& grid, int row, int col, int color) {
+        int m = grid.size();
+        int n = grid[0].size();
+        vector<vector<int>> temp(grid);
+        dfs(temp, row, col, grid[row][col]);
+        for(int i=0; i<m; i++){
+            for(int j=0; j<n; j++){
+                if(i == 0 || j == 0|| i == m-1 || j == n-1){
+                    if(temp[i][j] == INT_MAX){
+                        grid[i][j] = color;
+                    }
+                }
+                else{
+                    if(temp[i][j] == INT_MAX && (temp[i-1][j] != INT_MAX || temp[i+1][j] != INT_MAX || temp[i][j-1] != INT_MAX || temp[i][j+1] != INT_MAX)){
+                        grid[i][j] = color;
+                    }
+                }
+            }
+        }
+        return grid;
+    }
+};
