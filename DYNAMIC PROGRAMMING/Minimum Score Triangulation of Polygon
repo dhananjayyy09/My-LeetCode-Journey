@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int solve(vector<int> &val, int i, int j, vector<vector<int>> &dp){
+        int res = INT_MAX;
+        if(j-i+1 < 3) {
+            return 0;
+        }
+        if(dp[i][j] != -1) return dp[i][j];
+
+        for(int k=i+1; k<j; k++){
+            int score = (val[i] * val[k] * val[j]) + solve(val, i, k, dp) + solve(val, k, j, dp);
+            res = min(res, score);
+        }
+        dp[i][j] = res;
+        return dp[i][j];
+    }
+
+    int minScoreTriangulation(vector<int>& values) {
+        int n = values.size();
+        vector<vector<int>> dp(n+1, vector<int>(n+1, -1));
+        return solve(values, 0, n-1, dp);
+    }
+};
