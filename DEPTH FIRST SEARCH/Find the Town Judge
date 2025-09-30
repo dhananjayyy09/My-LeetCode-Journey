@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int findJudge(int n, vector<vector<int>>& trust) {
+        if (n == 1 && trust.empty()) {
+            return 1;
+        }
+        vector<int> degree(n+1, 0);
+        for(auto t : trust){
+            int people = t[0];
+            int judge = t[1];
+            degree[people]--;
+            degree[judge]++;
+        }
+        
+        for(int i=1; i<=n; i++){
+            if(degree[i] == n-1)
+                return i;
+        }
+        return -1;
+    }
+};
