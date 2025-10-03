@@ -1,0 +1,46 @@
+class Solution {
+public:
+    typedef pair<int, pair<int, int>> h;
+    int trapRainWater(vector<vector<int>>& height) {
+        int m = height.size();
+        int n = height[0].size();
+        if(m <= 2 && n <= 2) return 0;
+        
+        priority_queue<h, vector<h>, greater<>> boundCells; // {height, {i, j}};
+        vector<vector<bool>> visited(m, vector<bool>(n, false));
+        vector<vector<int>> dir = {{0, -1}, {1, 0}, {0, 1}, {-1, 0}};
+        for(int i=0; i<m; i++){
+            for(int j : {0, n-1}){
+                boundCells.push({height[i][j],{i, j}});
+                visited[i][j] = true;
+            }
+        }
+        for(int j=0; j<n; j++){
+            for(int i : {0, m-1}){
+                boundCells.push({height[i][j],{i, j}});
+                visited[i][j] = true;
+            }
+        }
+
+        int water = 0;
+        while(!boundCells.empty()){
+            auto nbr = boundCells.top();
+            boundCells.pop();
+            int ht = nbr.first;
+            int i = nbr.second.first;
+            int j = nbr.second.second;
+
+            for(auto &d: dir){
+                int nr = i + d[0];
+                int nc = j + d[1];
+                if(nr >= 0 && nr <m && nc >= 0 && nc < n && !visited[nr][nc]){
+                    water += max((ht - height[nr][nc]), 0);
+                    boundCells.push({max(ht,(height[nr][nc])), {nr, nc}});
+                    visited[nr][nc] = true;
+                } 
+            }
+        }
+
+        return water;
+    }
+};
