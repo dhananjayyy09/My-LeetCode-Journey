@@ -50,7 +50,9 @@ Example:
 ✅ Dynamic Programming   
 ✅ Greedy
 ✅ Stack
-⬜ Graphs *(coming soon)*  
+✅ Graph (DFS, BFS, Dijkstra, Floyd Warshell, Bellman Ford)
+✅ Trees
+✅ Sliding Window
 
 ---
 
