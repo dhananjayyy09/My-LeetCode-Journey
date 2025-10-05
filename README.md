@@ -47,6 +47,7 @@ Example:
 ## 📌 Topics 
 ✅ Linked List  
 ✅ Arrays  
+✅ Strings
 ✅ Dynamic Programming   
 ✅ Greedy
 ✅ Stack
@@ -54,6 +55,8 @@ Example:
 ✅ Graph (DFS, BFS, Dijkstra, Floyd Warshell, Bellman Ford)
 ✅ Trees
 ✅ Sliding Window
+✅ Stack
+✅ Queue
 
 ---
 
