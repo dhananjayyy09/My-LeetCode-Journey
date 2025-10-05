@@ -1,0 +1,44 @@
+class Solution {
+public:
+    void dfs(string src, string dst,unordered_map<string, vector<pair<string, double>>>& adj,unordered_map<string, bool>& visited, double product, double& ans) {
+        visited[src] = true;
+        if (src == dst) {
+            ans = product;
+            return;
+        }
+        for (auto& it : adj[src]) {
+            string v = it.first;
+            double val = it.second;
+            if (!visited[v]) {
+                dfs(v, dst, adj, visited, product * val, ans);
+            }
+        }
+    }
+
+    vector<double> calcEquation(vector<vector<string>>& equations,vector<double>& values, vector<vector<string>>& queries) {
+        int n = equations.size();
+        unordered_map<string, vector<pair<string, double>>> adj;
+        for (int i = 0; i < n; i++) {
+            string u = equations[i][0];
+            string v = equations[i][1];
+            double val = values[i];
+            adj[u].push_back({v, val});
+            adj[v].push_back({u, 1.0/val});
+        }
+
+        vector<double> res;
+        for (auto& q : queries) {
+            string src = q[0];
+            string dst = q[1];
+            double ans = -1.0;
+            double product = 1.0;
+            unordered_map<string,bool> visited;
+
+            if (adj.find(src) != adj.end()) {
+                dfs(src, dst, adj, visited, 1.0, ans);
+            }
+            res.push_back(ans);
+        }
+        return res;
+    }
+};
