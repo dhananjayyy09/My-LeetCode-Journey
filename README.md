@@ -52,7 +52,7 @@ Example:
 ✅ Greedy
 ✅ Stack
 ✅ SQL
-✅ Graph (DFS, BFS, Dijkstra, Floyd Warshell, Bellman Ford)
+✅ Graph (DFS, BFS, Dijkstra, Floyd Warshell, Bellman Ford, DSU)
 ✅ Trees
 ✅ Sliding Window
 ✅ Stack
