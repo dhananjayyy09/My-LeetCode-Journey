@@ -1,0 +1,42 @@
+class Solution {
+public:
+    // brute force
+    int maxDistinctEllements(vector<int>& nums, int k) {
+        unordered_map<int, int> freq;
+        for (int num : nums){
+            freq[num]++;
+        } 
+        unordered_set<int> unique;
+        vector<int> allNums = nums;
+
+        sort(allNums.begin(), allNums.end());
+        for (int num : allNums) {
+            for (int delta = -k; delta <= k; delta++) {
+                int val = num + delta;
+                if (!unique.count(val)) {
+                    unique.insert(val);   
+                    break;
+                }
+            }
+        }
+        return unique.size();
+    }
+
+    // optimal
+    int maxDistinctElements(vector<int>& nums, int k) {
+        sort(nums.begin(), nums.end());
+        int distinctCount = 0;
+        long long last = LLONG_MIN; 
+
+        for (int num : nums) {
+            long long low = num - k;
+            long long high = num + k;
+            long long newNum = max(last + 1, low);
+            if (newNum <= high) {
+                distinctCount++;
+                last = newNum;
+            }
+        }
+        return distinctCount;
+    }             
+};
