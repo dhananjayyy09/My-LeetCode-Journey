@@ -1,0 +1,21 @@
+class Solution {
+public:
+    string greatestLetter(string s) {
+        unordered_set<char> low;
+        unordered_set<char> up;
+        for(char c : s){
+            if (islower(c)) {
+                low.insert(c); 
+            }
+            else if(isupper(c)){
+                up.insert(c);
+            } 
+        }
+        for(char c = 'Z'; c >='A'; c--){
+           if(up.count(c) && low.count(tolower(c))){
+                return string(1, c);
+           }
+        }
+        return "";
+    }
+};
