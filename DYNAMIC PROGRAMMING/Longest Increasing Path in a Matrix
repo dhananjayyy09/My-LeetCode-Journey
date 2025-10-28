@@ -1,0 +1,29 @@
+class Solution {
+public:
+    int solve(int i, int j, vector<vector<int>>& matrix, vector<vector<int>>& dp){
+        if(dp[i][j] != -1) return dp[i][j];
+
+        int m = matrix.size(), n = matrix[0].size();
+        vector<pair<int ,int>> dir = {{0,1}, {0,-1}, {1,0}, {-1,0}};
+        int longPath = 1;
+        for(auto[dx, dy] : dir){
+            int nr = i + dx, nc = j + dy;
+            if(nr >= 0 && nr < m && nc >= 0 && nc < n && matrix[nr][nc] > matrix[i][j]){
+                longPath = max(longPath, 1 + solve(nr, nc, matrix, dp));
+            }
+        }
+        return dp[i][j] = longPath;
+    }
+
+    int longestIncreasingPath(vector<vector<int>>& matrix) {
+        int m = matrix.size(), n = matrix[0].size();
+        vector<vector<int>> dp(m, vector<int>(n, -1));
+        int maxi = 0;
+        for(int i=0; i<m; i++){
+            for(int j=0; j<n; j++){
+                maxi = max(maxi, solve(i, j, matrix, dp));
+            }
+        }
+        return maxi;
+    }
+};
