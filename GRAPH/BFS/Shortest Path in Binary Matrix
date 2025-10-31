@@ -2,20 +2,21 @@ class Solution {
 public:
     int shortestPathBinaryMatrix(vector<vector<int>>& grid) {
         int n = grid.size();
-        queue<tuple<int, int, int>> q;
         vector<pair<int,int>> dir = {{1,0},{-1,0},{0,1},{0,-1},{1,1},{1,-1},{-1,1},{-1,-1}};
         vector<vector<bool>> vis(n, vector<bool>(n, false));
-        
-        if(grid[0][0] == 1 || grid[n-1][n-1] == 1) return -1;
-        q.push({0, 0, 1});
 
+        queue<tuple<int, int, int>> q;
+        q.push({0, 0, 1});
+        vis[0][0] = true;
+        if(grid[0][0] == 1 || grid[n-1][n-1] == 1) return -1;
+        
         while(!q.empty()){
             auto[row, col, dis] = q.front();
             q.pop();
-            
+
             if(row == n-1 && col == n-1) return dis;
-            for(auto[dx, dy] : dir){
-                int nr = row + dx, nc = col + dy;
+            for(auto [dx, dy] : dir){
+                int nr = dx + row, nc = dy + col;
                 if(nr >= 0 && nr < n && nc >= 0 && nc < n && !vis[nr][nc] && grid[nr][nc] != 1){
                     vis[nr][nc] = true;
                     q.push({nr, nc, dis+1});
