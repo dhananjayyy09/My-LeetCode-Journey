@@ -1,0 +1,30 @@
+class Solution {
+public:
+    int shortestPath(vector<vector<int>>& grid, int k) {
+        int m = grid.size(), n = grid[0].size();
+        vector<pair<int, int>> dir = {{0,1}, {0,-1}, {1,0}, {-1,0}};
+        vector<vector<vector<bool>>> vis(m, vector<vector<bool>>(n, vector<bool>(k+1,false)));
+
+        queue<tuple<int, int, int, int>> q;
+        q.push({0, 0, k, 0});
+        vis[0][0][k] = true;
+
+        while(!q.empty()){
+            auto[row, col, rem, dis] = q.front();
+            q.pop();
+
+            if(row == m-1 && col == n-1) return dis;
+            for(auto[dx, dy] : dir){
+                int nr = dx + row, nc = dy + col;
+                if(nr >= 0 && nr < m && nc >= 0 && nc < n && !vis[nr][nc][rem]){
+                    int nextRem = rem - grid[nr][nc];
+                    if(nextRem >= 0 && !vis[nr][nc][nextRem]){
+                        vis[nr][nc][nextRem] = true;
+                        q.push({nr, nc, nextRem, dis+1});
+                    }
+                }
+            }
+        }
+        return -1;
+    }
+};
