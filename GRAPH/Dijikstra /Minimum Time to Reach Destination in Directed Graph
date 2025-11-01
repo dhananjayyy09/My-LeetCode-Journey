@@ -1,0 +1,30 @@
+class Solution {
+public:
+    int minTime(int n, vector<vector<int>>& edges) {
+        vector<vector<array<int,3>>> adj(n);
+        priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> pq;
+        for(auto &it : edges){
+            int u = it[0], v = it[1], s = it[2], e = it[3];
+            adj[u].push_back({v, s, e});
+        }
+        vector<int>time(n, 1e9);
+        time[0] = 0;
+        pq.push({0, 0});
+
+        while(!pq.empty()){
+            auto[currTime, node] = pq.top();
+            pq.pop();
+
+            if(node == n-1) return currTime;
+            for(auto[v, start, end] : adj[node]){
+                if(currTime > end) continue;
+                int newTime = max(currTime, start) + 1;
+                if(newTime < time[v]){
+                    time[v] = newTime;
+                    pq.push({newTime, v});
+                }
+            }
+        }
+        return -1;
+    }
+};
