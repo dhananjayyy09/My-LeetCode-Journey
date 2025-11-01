@@ -15,7 +15,7 @@ public:
             if(row == m-1 && col == n-1) return dis;
             for(auto[dx, dy] : dir){
                 int nr = dx + row, nc = dy + col;
-                if(nr >= 0 && nr < m && nc >= 0 && nc < n && !vis[nr][nc][rem]){
+                if(nr >= 0 && nr < m && nc >= 0 && nc < n){
                     int nextRem = rem - grid[nr][nc];
                     if(nextRem >= 0 && !vis[nr][nc][nextRem]){
                         vis[nr][nc][nextRem] = true;
