@@ -1,0 +1,62 @@
+class Solution {
+public:
+    int BFS(int node, vector<vector<int>> &adj, vector<bool> &v){
+        queue<pair<int, int>> q;
+        q.push({node, 0});
+        int maxDistance = 0;
+
+        while(!q.empty()){
+            auto [curNode, dis] = q.front();
+            q.pop();
+            
+            for(auto &nbr : adj[curNode]){
+                if(!v[nbr]){
+                    v[nbr] = true;
+                    q.push({nbr, dis + 1});
+                    maxDistance = max(maxDistance, dis + 1);
+                }
+            }
+        }
+        return maxDistance;
+    }
+
+    int maximumInvitations(vector<int>& favorite) {
+        int n = favorite.size();
+        vector<vector<int>> adj(n);
+        for(int i=0; i<n; i++){
+            int u = i, v = favorite[i]; 
+            adj[v].push_back(u); // reversed graph
+        }
+
+        int longestCycle = 0;
+        int happyCouple = 0;
+        vector<bool> vis(n, false);
+        for(int i=0; i<n; i++){
+            if(!vis[i]){
+                unordered_map<int, int> mp;
+                int curNode = i;
+                int currNodeCount = 0;
+
+                while(!vis[curNode]){
+                    vis[curNode] = true;
+                    mp[curNode] = currNodeCount;
+                    int nextNode = favorite[curNode];
+                    currNodeCount++;
+                    if(mp.count(nextNode)){
+                        int cycleLength = currNodeCount - mp[nextNode];
+                        longestCycle = max(longestCycle, cycleLength);
+                        if(cycleLength == 2){
+                            vector<bool> v(n, false);
+                            v[curNode] = true;
+                            v[nextNode] = true;
+                            happyCouple += 2 + BFS(curNode, adj, v) + BFS(nextNode, adj, v); 
+                        }
+                        break;
+                    }
+                    curNode = nextNode;
+                }
+            }
+        }
+        return max(happyCouple, longestCycle);
+    }
+};
