@@ -4,7 +4,6 @@ public:
         int m = grid.size(), n = grid[0].size();
         vector<pair<int, int>> dir = {{0,1}, {0,-1}, {1,0}, {-1,0}};
         vector<vector<vector<bool>>> vis(m, vector<vector<bool>>(n, vector<bool>(k+1,false)));
-
         queue<tuple<int, int, int, int>> q;
         q.push({0, 0, k, 0});
         vis[0][0][k] = true;
