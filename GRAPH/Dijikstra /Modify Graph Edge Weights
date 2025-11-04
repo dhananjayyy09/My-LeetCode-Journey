@@ -1,0 +1,63 @@
+class Solution {
+public:
+    int djikstra(vector<vector<pair<int, int>>> &adj, int src, int dst, int n){
+        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+        vector<int>dist(n, 1e9);
+        dist[src] = 0;
+        pq.push({0, src});
+
+        while(!pq.empty()){
+            auto[currDis, node] = pq.top();
+            pq.pop();
+            
+            for(auto[adjNode, adjDis] : adj[node]){
+                if(adjDis + currDis < dist[adjNode]){
+                    dist[adjNode] = adjDis + currDis;
+                    pq.push({dist[adjNode], adjNode});
+                }
+            }
+        }
+        return dist[dst];
+    }
+
+    vector<vector<int>> modifiedGraphEdges(int n, vector<vector<int>>& edges, int src, int dst, int target){
+        vector<vector<pair<int, int>>> adj(n);
+        for(auto &it : edges){
+            int u = it[0], v = it[1], w = it[2];
+            if(w != -1){
+                adj[u].push_back({v, w});
+                adj[v].push_back({u, w});
+            }
+        }
+
+        int posDis = djikstra(adj, src, dst, n);
+        if(posDis < target) return {};
+        if(posDis == target){
+            for(auto &it : edges){
+                if(it[2] == -1) it[2] = 1e9;
+            }
+            return edges;
+        }
+
+        vector<vector<int>> ans = edges;
+        bool found = false;
+        for(auto &it : ans){
+            if(it[2] == -1 && !found){
+                it[2] = 1;
+                adj[it[0]].push_back({it[1], 1});
+                adj[it[1]].push_back({it[0], 1});
+
+                int newDis = djikstra(adj, src, dst, n);
+                if(newDis <= target){
+                    it[2] += target - newDis;
+                    found = true;
+                }
+            }
+            else if(it[2] == -1 && found){
+                it[2] = 1e9;
+            }
+        }
+        if(!found) return {};
+        return ans;        
+    }
+};              
