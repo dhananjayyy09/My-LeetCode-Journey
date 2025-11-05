@@ -1,0 +1,35 @@
+class Solution {
+public:
+    int reachableNodes(int n, vector<vector<int>>& edges, vector<int>& restricted) {
+        vector<vector<int>> adj(n);
+        unordered_set<int> rest(restricted.begin(), restricted.end());
+        for(auto &it : edges){
+            int u = it[0], v = it[1];
+            adj[u].push_back(v);
+            adj[v].push_back(u);
+        } 
+
+        vector<bool> vis(n,false);
+        queue<int> q;
+        q.push(0);
+        vis[0] = true;
+
+        while(!q.empty()){
+            auto node = q.front();
+            q.pop();
+
+            for(auto adjNode : adj[node]){
+                if(!rest.count(adjNode) && !vis[adjNode]){
+                    vis[adjNode] = true;
+                    q.push(adjNode);
+                }
+            }
+        }
+
+        int ans = 0;
+        for(bool i : vis){
+            if(i) ans++;
+        }
+        return ans;
+    }
+};
