@@ -1,0 +1,57 @@
+class Solution {
+public:
+    void bfs(int start, int compId, vector<int> &comp, vector<vector<int>> &adj){
+        queue<int> q;
+        q.push(start);
+        comp[start] = compId;
+        while(!q.empty()){
+            int u = q.front();
+            q.pop();
+            for(auto v : adj[u]){
+                if(comp[v] == -1){
+                    q.push(v);
+                    comp[v] = compId;
+                }
+            }
+        }
+    }
+
+    vector<int> processQueries(int c, vector<vector<int>>& connections, vector<vector<int>>& queries) {
+        vector<vector<int>> adj(c+1);
+        for(auto &it : connections){
+            adj[it[0]].push_back(it[1]);
+            adj[it[1]].push_back(it[0]);
+        }
+
+        vector<int> comp(c+1, -1);
+        int compId = 0;
+        for(int i=1; i<=c; i++){
+            if(comp[i] == -1){
+                bfs(i, compId, comp, adj);
+                compId++;
+            }
+        }
+
+        vector<int> ans;
+        vector<set<int>> online(compId);
+        for(int i=1; i<=c; i++){
+            online[comp[i]].insert(i);
+        }
+        for(auto &q: queries){
+            int state = q[0], station = q[1];
+            int id = comp[station];
+
+            if(state == 1){
+                if(online[id].count(station)) ans.push_back(station);
+                else{
+                    if(online[id].empty()) ans.push_back(-1);
+                    else ans.push_back(*online[id].begin());
+                }
+            }
+            else{
+                online[id].erase(station);
+            }
+        }
+        return ans;
+    }
+};
