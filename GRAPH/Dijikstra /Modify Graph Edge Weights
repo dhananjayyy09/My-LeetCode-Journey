@@ -44,8 +44,8 @@ public:
         for(auto &it : ans){
             if(it[2] == -1 && !found){
                 it[2] = 1;
-                adj[it[0]].push_back({it[1], 1});
-                adj[it[1]].push_back({it[0], 1});
+                adj[it[1]].push_back({it[0], it[2]});
+                adj[it[0]].push_back({it[1], it[2]});
 
                 int newDis = djikstra(adj, src, dst, n);
                 if(newDis <= target){
