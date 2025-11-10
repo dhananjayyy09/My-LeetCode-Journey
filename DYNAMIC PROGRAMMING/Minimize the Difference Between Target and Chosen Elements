@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int solve(int row, int sum, int target, vector<vector<int>>& mat, vector<vector<int>>& dp){
+        int n = mat.size();
+        if(row == n){
+            return abs(target - sum);
+        }
+        if(dp[row][sum] != -1) return dp[row][sum];
+
+        int ans = 1e9;
+        for(auto val : mat[row]){
+            ans = min(ans, solve(row + 1, sum + val, target, mat, dp));
+            if(ans == 0) break;
+        }
+        return dp[row][sum] = ans;
+    }
+
+    int minimizeTheDifference(vector<vector<int>>& mat, int target) {
+        int n = mat.size();
+        const int MAX_SUM = 4900;
+        vector<vector<int>> dp(n, vector<int>(MAX_SUM + 1, -1));
+        return solve(0, 0, target, mat, dp);
+    }
+};
