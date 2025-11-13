@@ -1,0 +1,37 @@
+class Solution {
+public:
+    vector<int> shortestAlternatingPaths(int n, vector<vector<int>>& red, vector<vector<int>>& blue) {
+        vector<vector<pair<int, int>>> adj(n);
+        for (auto &it : red) {
+            adj[it[0]].push_back({it[1], 1});
+        }
+        for (auto &it : blue) {
+            adj[it[0]].push_back({it[1], 0});
+        }
+
+        queue<pair<int, int>> q;
+        vector<int> ans(n, -1);
+        ans[0] = 0;
+        q.push({0, -1});
+        int lvl = 0;
+        set<pair<int, int>> vis;
+
+        while(!q.empty()){
+            lvl++;
+            int size = q.size();
+            
+            while(size--){
+                auto[node, curColor] = q.front();
+                q.pop();
+                for(auto[adjNode, adjColor] : adj[node]){
+                    if(adjColor != curColor && !vis.count({adjNode, adjColor})){
+                        q.push({adjNode, adjColor});
+                        if(ans[adjNode] == -1) ans[adjNode] = lvl;
+                        vis.insert({adjNode, adjColor});
+                    }
+                }
+            }
+        }
+        return ans;
+    }
+};
