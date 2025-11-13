@@ -1,0 +1,29 @@
+class Solution {
+public:
+    vector<int> gardenNoAdj(int n, vector<vector<int>>& paths) {
+        vector<vector<int>> adj(n);
+        for(auto it : paths){
+            int u = it[0], v = it[1];
+            adj[u-1].push_back(v-1);
+            adj[v-1].push_back(u-1);
+        }
+
+        vector<int> garden(n, 0);
+        for(int i=0; i<n; i++){
+            for(int type=1; type<=4; type++){
+                bool canUse = true;
+                for(int nbr : adj[i]){
+                    if(garden[nbr] == type){
+                        canUse = false;
+                        break;
+                    }
+                }
+                if(canUse){
+                    garden[i] = type;
+                    break;
+                }
+            }
+        }
+        return garden;
+    }
+};
