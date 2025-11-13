@@ -10,17 +10,17 @@ public:
 
         vector<int> garden(n, 0);
         for(int i=0; i<n; i++){
-            for(int type=1; type<=4; type++){
+            for(int type = 1; type <= 4; type++){
                 bool canUse = true;
-                for(int nbr : adj[i]){
+                for(auto &nbr : adj[i]){
                     if(garden[nbr] == type){
                         canUse = false;
                         break;
                     }
                 }
+
                 if(canUse){
                     garden[i] = type;
-                    break;
                 }
             }
         }
