@@ -13,9 +13,8 @@ public:
         int k = pat.size();
         
         vector<int> freq(26, 0);
-        for(int i=0 ;i<k; i++){
-            char ch = pat[i];
-            freq[ch - 'a']++;
+        for(int i=0; i<k; i++){
+            freq[p[i] - 'a']++;
         }
         
         int i=0, j=0;
