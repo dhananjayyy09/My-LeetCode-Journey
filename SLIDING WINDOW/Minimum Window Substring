@@ -1,0 +1,36 @@
+class Solution {
+public:
+    bool allZeros(vector<int> &freq){
+        for(auto it : freq){
+            if(it > 0) return false;
+        }
+        return true;
+    }
+
+    string minWindow(string s, string t) {
+        int m = s.size(), n = t.size();
+        if(m == 0 || n == 0) return "";
+
+        vector<int> freq(128, 0);
+        for(auto i : t){
+            freq[(unsigned char)i]++;
+        }
+
+        int left = -1, minLen = 1e9;
+        int i = 0, j = 0;
+        while(j < m){
+            freq[(unsigned char)s[j]]--;
+            while(i <= j && allZeros(freq)){
+                int winLen = j-i+1;
+                if(winLen < minLen){
+                    minLen = winLen;
+                    left = i;
+                }
+                freq[(unsigned char)s[i]]++;
+                i++;
+            }
+            j++;
+        }
+        return minLen == 1e9 ? "" : s.substr(left, minLen);
+    }
+};
