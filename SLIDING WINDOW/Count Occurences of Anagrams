@@ -1,0 +1,36 @@
+class Solution {
+  public:
+    bool allZeros(vector<int> &freq){
+        for(int i=0; i<freq.size(); i++){
+            if(freq[i] != 0) return false;
+        }
+        return true;
+    }
+  
+    int search(string &pat, string &txt) {
+        int n = txt.size();
+        int k = pat.size();
+        
+        vector<int> freq(26, 0);
+        for(int i=0; i<k; i++){
+            char ch = pat[i];
+            freq[ch - 'a']++;
+        }
+        
+        int ans = 0;
+        int i = 0,  j = 0;
+        
+        while(j < n){
+            freq[txt[j] - 'a']--;
+            if(j-i + 1 == k){
+                if(allZeros(freq)){
+                    ans++;
+                }
+                freq[txt[i] - 'a']++;
+                i++;
+            }
+            j++;
+        }
+        return ans;
+    }
+};
