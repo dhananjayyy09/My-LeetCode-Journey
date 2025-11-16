@@ -1,0 +1,17 @@
+class Solution {
+public:
+    const long long MOD = 1e9 + 7;
+    long long numSub(string s) {
+        long long ans = 0;
+        long long count = 0;
+        for(char c : s){
+            if(c == '0'){
+                ans = (ans + (long long)(count * (count + 1)) / 2) % MOD;
+                count = 0;
+            }
+            else count++;
+        }
+        ans = (ans + (long long)(count * (count + 1)) / 2) % MOD;
+        return ans;
+    }
+};
