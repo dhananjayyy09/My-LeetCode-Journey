@@ -2,28 +2,26 @@ class Solution {
 public:
     int minTimeToReach(vector<vector<int>>& grid) {
         int m = grid.size(), n = grid[0].size();
-        priority_queue<vector<int>, vector<vector<int>>, greater<vector<int>>> pq;
+        priority_queue<tuple<int, int, int>, vector<tuple<int, int, int>>, greater<tuple<int, int, int>>>pq;
+        vector<pair<int, int>> dir = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
         vector<vector<int>> minTime(m, vector<int>(n, INT_MAX));
-        vector<pair<int, int>> dir = {{0,-1}, {0,1}, {-1,0}, {1,0}};
-        minTime[0][0] = 0;
         pq.push({0, 0, 0});
+        minTime[0][0] = 0;
 
         while(!pq.empty()){
-            int time = pq.top()[0];
-            int row = pq.top()[1];
-            int col = pq.top()[2];
+            auto[time, row, col] = pq.top();
             pq.pop();
 
             if(row == m-1 && col == n-1) return time;
             for(auto[dx, dy] : dir){
                 int nr = row + dx, nc = col + dy;
-                if(nr >=0 && nr < m && nc >=0 && nc < n){
+                if(nr >= 0 && nr < m && nc >= 0 && nc < n){
                     int cost = (row + col) % 2 + 1;
-                    int startTime = max(time, grid[nr][nc]);
-                    int newTime = cost + startTime;
+                    int start = max(grid[nr][nc], time);
+                    int newTime = start + cost;
                     if(newTime < minTime[nr][nc]){
                         minTime[nr][nc] = newTime;
-                        pq.push({newTime, nr, nc});
+                        pq.push({minTime[nr][nc], nr, nc});
                     }
                 }
             }
