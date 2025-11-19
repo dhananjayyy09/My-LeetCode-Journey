@@ -1,0 +1,24 @@
+class Solution {
+public:
+    bool check(char x){
+        return x == 'a' || x == 'e' || x == 'i' || x == 'o' || x == 'u';
+    }
+
+    int maxVowels(string s, int k) {
+        int n = s.size();
+        int i = 0, j = 0;
+        int ans = 0, vowels = 0;
+        while(j < n){
+            if(check(s[j])){
+                vowels++;
+            }
+            if(j-i+1 > k){
+                if(check(s[i])) vowels--;
+                i++;
+            }
+            ans = max(ans, vowels);
+            j++;
+        }
+        return ans;
+    }
+};
