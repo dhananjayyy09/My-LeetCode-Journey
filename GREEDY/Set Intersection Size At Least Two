@@ -1,0 +1,33 @@
+class Solution {
+public:
+    int intersectionSizeTwo(vector<vector<int>>& intervals) {
+        sort(intervals.begin(), intervals.end(), [](auto &a, auto &b){
+        if (a[1] == b[1]) return a[0] > b[0];
+            return a[1] < b[1];
+        });
+
+        vector<int> nums;
+        int a = -1, b = -1;
+        for(auto it : intervals){
+            int start = it[0];
+            int end = it[1];
+   
+            bool hasA = (a >= start && a <= end); 
+            bool hasB = (b >= start && b <= end);
+
+            if(hasA && hasB) continue;
+            else if(hasB){
+                nums.push_back(end);
+                a = b;
+                b = end;
+            }
+            else{
+                nums.push_back(end-1);
+                nums.push_back(end);
+                a = end-1;
+                b = end;
+            }
+        }
+        return nums.size();
+    }
+};
