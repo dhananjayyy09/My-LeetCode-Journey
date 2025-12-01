@@ -1,0 +1,13 @@
+class Solution {
+public:
+    long long maxRunTime(int n, vector<int>& batteries) {
+        sort(batteries.rbegin(), batteries.rend());
+        long long total = accumulate(batteries.begin(), batteries.end(), 0LL);
+        for(int i=0; i<batteries.size(); i++){
+            if(batteries[i] <= total / n) break;
+            total -= batteries[i];
+            n--;
+        }
+        return total / n;
+    }
+};
