@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int minSwaps(vector<int>& nums) {
+        int totalOnes = 0;
+        for(auto it : nums){
+            if(it == 1) totalOnes++;
+        }
+
+        vector<int> arr(nums);
+        arr.insert(arr.end(), nums.begin(), nums.end());
+        int n = arr.size();
+        int ones = 0, maxOnes = 0;
+        int i = 0, j = 0;
+        while(j < n){
+            if(arr[j] == 1) ones++;
+            if(j-i+1 > totalOnes){
+                if(arr[i] == 1) ones--;
+                i++;
+            }
+            maxOnes = max(maxOnes, ones);
+            j++;
+        }
+        return totalOnes - maxOnes; 
+    }
+};
