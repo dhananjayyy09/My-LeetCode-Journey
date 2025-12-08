@@ -1,0 +1,51 @@
+class Solution {
+public:
+    int longestSubarrayy(vector<int>& nums, int limit) {
+        int n = nums.size();
+        int maxLen = 0;
+        int minVal = 1e9, maxVal = -1e9;
+        int i = 0, j = 0;
+        while(j < n){
+            minVal = min(minVal, nums[j]);
+            maxVal = max(maxVal, nums[j]);
+            while(abs(maxVal - minVal) > limit){
+                minVal = 1e9, maxVal = -1e9;
+                i++;
+                for(int k=i; k<=j; k++){
+                    minVal = min(minVal, nums[k]);
+                    maxVal = max(maxVal, nums[k]); 
+                }
+            }
+            maxLen = max(maxLen, j-i+1);
+            j++;
+        }
+        return maxLen;
+    }
+
+    // optimal
+    typedef pair<int, int> P;
+    int longestSubarray(vector<int>& nums, int limit) {
+        int n = nums.size();    
+        priority_queue<P, vector<P>> maxPq;
+        priority_queue<P, vector<P>, greater<P>> minPq;
+        int i = 0, j = 0;
+        int maxLen = 0;
+        while(j < n){
+            maxPq.push({nums[j], j});
+            minPq.push({nums[j], j});
+
+            while(maxPq.top().first - minPq.top().first > limit){
+                i = min(maxPq.top().second, minPq.top().second) + 1;
+                while(maxPq.top().second < i){
+                    maxPq.pop();
+                }
+                while(minPq.top().second < i){
+                    minPq.pop();
+                }
+            }
+            maxLen = max(maxLen, j-i+1);
+            j++;
+        }
+        return maxLen;
+    }
+};
