@@ -1,0 +1,25 @@
+class Solution {
+public:
+    bool isOdd(int n){
+        return n % 2 == 1;
+    }
+
+    int solve(vector<int>& nums, int k){
+        int n = nums.size();
+        int count = 0, odds = 0;
+        int i = 0, j = 0;
+        for(int j=0; j<n; j++){
+            if(isOdd(nums[j])) odds++;
+            while(odds > k){
+                if(isOdd(nums[i])) odds--;
+                i++;
+            }
+            count += j-i+1;
+        }
+        return count;
+    }
+
+    int numberOfSubarrays(vector<int>& nums, int k) {
+        return solve(nums, k) - solve(nums, k-1);
+    }
+};
