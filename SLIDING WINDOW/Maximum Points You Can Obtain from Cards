@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int maxScore(vector<int>& nums, int k) {
+        int n = nums.size();
+        int leftSum = 0, rightSum = 0;
+        for(int i=0; i<k ; i++){
+            leftSum += nums[i];
+        }
+        int maxSum = leftSum;
+        for(int i=1; i<=k; i++){
+            leftSum -= nums[k-i];
+            rightSum += nums[n-i];
+            maxSum = max(maxSum, leftSum + rightSum);
+        } 
+        return maxSum;
+    }
+};
