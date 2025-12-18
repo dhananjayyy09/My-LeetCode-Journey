@@ -1,0 +1,32 @@
+class Solution {
+public:
+    long long maxProfit(vector<int>& prices, vector<int>& strategy, int k) {
+        int n = prices.size();
+        vector<long long> profit;
+        for(int i=0; i<n; i++){
+            profit.push_back(prices[i] * strategy[i]);
+        }
+        long long realProfit = 0;
+        for(int i=0; i<n; i++){
+            realProfit += prices[i] * strategy[i];
+        }
+        long long orgPro = 0, modPro = 0;
+        long long maxProfit = 0;
+        int i = 0, j = 0;
+        for(int j=0; j<n; j++){
+            orgPro += profit[j];
+            if(j-i+1 > k/2){
+                modPro += prices[j];
+            }
+            while(j-i+1 > k){
+                orgPro -= profit[i];
+                modPro -= prices[i + k/2];
+                i++;
+            }
+            if(j-i+1 == k){
+                maxProfit = max(modPro - orgPro, maxProfit);
+            }
+        }
+        return maxProfit + realProfit;
+    }
+};
