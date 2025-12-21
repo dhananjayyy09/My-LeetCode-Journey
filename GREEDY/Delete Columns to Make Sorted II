@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int minDeletionSize(vector<string>& s) {
+        int m = s.size(), n = s[0].size();
+        vector<bool> sorted(m, false);
+        int count = 0;
+        for(int j=0; j<n; j++){
+            bool deleted = false;
+            for(int i=0; i<m-1; i++){
+                if(!sorted[i] && s[i][j] > s[i+1][j]){
+                    deleted = true;
+                    count++;
+                    break;
+                }
+            }
+            if (deleted) continue;
+            for(int i=0; i<m-1; i++){
+                sorted[i] = sorted[i] | s[i][j] < s[i+1][j]; 
+            }
+        }
+        return count;
+    }
+};
