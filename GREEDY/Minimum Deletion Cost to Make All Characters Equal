@@ -1,0 +1,18 @@
+class Solution {
+public:
+    long long minCost(string s, vector<int>& cost) {
+        int n = s.size();
+        long long totalCost = 0;
+        vector<long long> keep(26, 0);
+        for(int i=0; i<n; i++){
+            totalCost += cost[i];
+            keep[s[i] - 'a'] += cost[i];
+        }
+
+        long long ans = LLONG_MAX;
+        for(int i=0; i<26; i++){
+            if(keep[i] > 0) ans = min(ans, totalCost - keep[i]);
+        }
+        return ans;        
+    }
+};
