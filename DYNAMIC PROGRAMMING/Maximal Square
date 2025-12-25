@@ -1,8 +1,6 @@
 class Solution {
 public:
     int maximalSquare(vector<vector<char>>& matrix) {
-        if (matrix.empty() || matrix[0].empty())
-            return 0;
         int m = matrix.size(), n = matrix[0].size();
         vector<vector<int>> dp(m, vector<int>(n, 0));
         int maxSide = 0;
