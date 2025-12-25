@@ -9,21 +9,27 @@ public:
         return dp[i][j] = triangle[i][j] + min(diag, down);
     }
 
-    int minimumTotal(vector<vector<int>>& triangle) {
+    int minimummTotal(vector<vector<int>>& triangle) {
         int m = triangle.size();
         vector<vector<int>> dp(m, vector<int>(m, -1));
         return solve(0, 0, triangle, m, dp);
     }
 
     //tabulation
-    int minimummTotal(vector<vector<int>>& triangle) {
+    int minimumTotal(vector<vector<int>>& triangle) {
         int m = triangle.size();
-        vector<vector<int>> dp = triangle;
-         for (int i = m - 2; i >= 0; i--) {
-            for (int j = 0; j < triangle[i].size(); j++) {
-                dp[i][j] = triangle[i][j] + min(dp[i+1][j], dp[i+1][j+1]);
+        vector<vector<int>> dp(m, vector<int>(m));
+        for(int j=0; j<m; j++){
+            dp[m-1][j] = triangle[m-1][j];
+        } 
+        for(int i=m-2; i>=0; i--){
+            for(int j=i; j>=0; j--){
+                int down = dp[i+1][j];
+                int diag = dp[i+1][j+1];
+                dp[i][j] = triangle[i][j] + min(diag, down);
             }
         }        
         return dp[0][0];
     }
+
 };
