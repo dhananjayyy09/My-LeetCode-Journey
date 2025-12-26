@@ -1,16 +1,21 @@
 class Solution {
 public:
-    int findMaxForm(vector<string>& strs, int m, int n) {
-        auto &n0 = m, &n1 = n;
-        array<array<int, 101>, 101> dp{};
-        for (auto& str : strs){
-            int c0 = ranges::count(str, '0');
-            int c1 = str.size() - c0;
-            for (int i = m; i >= c0; --i)
-                for (int j = n; j >= c1; --j) {
-                    dp[i][j] = max(dp[i][j], 1 + dp[i - c0][j - c1]);
-                }
-        }
-        return dp[m][n];
+    int solve(int i, vector<string> &s, int m, int n, vector<vector<vector<int>>> &dp){
+        if(i < 0) return 0;
+        if(dp[i][m][n] != -1) return dp[i][m][n];
+        int c0 = count(s[i].begin(), s[i].end(), '0');
+        int c1 = s[i].size() - c0;
+        int noTake = solve(i-1, s, m, n, dp);
+        int take = -1e9;
+        if(m >= c0 && n >= c1){
+            take = 1 + solve(i-1, s, m-c0, n-c1, dp);
+        } 
+        return dp[i][m][n] = max(take, noTake);
+    }
+
+    int findMaxForm(vector<string>& s, int m, int n) {
+        int l = s.size();
+        vector<vector<vector<int>>> dp(l,vector<vector<int>>(m+1, vector<int>(n+1, -1)));
+        return solve(l-1, s, m, n, dp);
     }
 };
