@@ -1,0 +1,41 @@
+class Solution {
+public:
+    typedef pair<long long, int> L;
+    int mostBooked(int n, vector<vector<int>>& meetings) {
+        sort(meetings.begin(), meetings.end());
+        priority_queue<int, vector<int>, greater<int>> avble;
+        priority_queue<L, vector<L>, greater<L>> busy;
+        
+        vector<int> count(n, 0);
+        for(int i=0; i<n; i++){
+            avble.push(i);
+        }
+
+        for(auto &it : meetings){
+            int start = it[0], end = it[1];
+            int duration = end - start;
+            while(!busy.empty() && busy.top().first <= start){
+                avble.push(busy.top().second);
+                busy.pop();
+            }
+            if(!avble.empty()){
+                int room = avble.top();
+                avble.pop();
+                busy.push({end, room});
+                count[room]++;
+            } 
+            else{
+                auto[freeTime, room] = busy.top();
+                busy.pop();
+                busy.push({freeTime + duration, room});
+                count[room]++;
+            }
+        }
+
+        int ans = 0;
+        for(int i=0; i<n; i++){
+            if(count[i] > count[ans]) ans = i;
+        }
+        return ans;
+    }
+};
