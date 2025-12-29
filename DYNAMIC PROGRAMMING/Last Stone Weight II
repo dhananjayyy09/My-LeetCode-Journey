@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int solve(int i, vector<int> &stones, int total, int stoneSum, vector<vector<int>> &dp){
+        if (i < 0) return abs(total - 2 * stoneSum);
+        if(dp[i][stoneSum] != -1) return dp[i][stoneSum];
+        int noTake = solve(i-1, stones, total, stoneSum, dp);
+        int take = solve(i-1, stones, total, stoneSum + stones[i], dp);
+        return dp[i][stoneSum] = min(take, noTake);  
+    }
+
+    int lastStoneWeightII(vector<int>& stones) {
+        int n = stones.size();
+        int total = 0;
+        for(int i : stones) total += i;
+        vector<vector<int>> dp(n, vector<int>(total, -1));
+        return solve(n-1, stones, total, 0, dp);
+    }
+};
