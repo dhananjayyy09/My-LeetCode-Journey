@@ -1,0 +1,35 @@
+class Solution {
+public:
+    unordered_map<string, bool> memo;
+    bool solve(string curr, string above, unordered_map<string, vector<char>> &mp, int idx) {
+        if (curr.size() == 1) return true;
+        if (idx == curr.size() - 1) {
+            return solve(above, "", mp, 0);
+        }
+
+        string key = curr + "|" + above + "|" + to_string(idx);
+        if (memo.count(key)) return memo[key];
+
+        string pair = curr.substr(idx, 2);
+        if (!mp.count(pair)) {
+            return memo[key] = false;
+        }
+
+        for (char ch : mp[pair]) {
+            above.push_back(ch); // DO
+            if (solve(curr, above, mp, idx + 1)) { // EXPLORE
+                return memo[key] = true;
+            }
+            above.pop_back(); // UNDO
+        }
+        return memo[key] = false;
+    }
+
+    bool pyramidTransition(string bottom, vector<string>& allowed) {
+        unordered_map<string, vector<char>> mp;
+        for (auto &it : allowed) {
+            mp[it.substr(0, 2)].push_back(it[2]);
+        }
+        return solve(bottom, "", mp, 0);
+    }
+};
