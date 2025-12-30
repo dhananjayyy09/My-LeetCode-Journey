@@ -1,34 +1,24 @@
 class Solution {
 public:
     //memoization
-     bool solve(int i, int target, vector<int>& arr, vector<vector<int>>& dp)
-     {
-         if (target == 0)
-             return true;
-         if (i == 0)
-             return arr[0] == target;
-        if (dp[i][target] != -1)
-            return dp[i][target];
-
-        bool notake = solve(i-1, target, arr, dp);
+    bool solve(int i, int target, vector<int>& nums, vector<vector<int>>& dp){
+        if(target == 0) return true;
+        if(i == 0) return target == nums[0];
+        if(dp[i][target] != -1) return dp[i][target];
+        bool noTake = solve(i-1, target, nums, dp);
         bool take = false;
-        if(target >= arr[i]){
-            take = solve(i-1, target-arr[i],arr,dp);
-        }
-        return dp[i][target] = take || notake;
+        if(target > nums[i]) take = solve(i-1, target - nums[i], nums, dp);
+        return dp[i][target] = take || noTake;
     }
 
     bool canPartition(vector<int>& nums) {
-        int sum = 0;
         int n = nums.size();
-        for (int i = 0; i < n; i++) {
-            sum += nums[i];
-        }
-        if (sum % 2 != 0)
-            return false;
-        int k = sum / 2;
-        vector<vector<int>> dp(n, vector<int>(k + 1, -1));
-        return solve(n - 1, k, nums, dp);
+        int sum = 0;
+        for(auto &it : nums) sum += it;
+        if (sum % 2 != 0) return false;
+        int target = sum / 2;
+        vector<vector<int>> dp(n, vector<int>(target + 1, -1));
+        return solve(n-1, target, nums, dp);
     }
 
     // tabulation
