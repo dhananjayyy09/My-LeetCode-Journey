@@ -1,0 +1,18 @@
+class Solution{
+	public:
+	int solve(int i, vector<int> &arr, int k, vector<vector<int>> &dp){
+		if(k == 0) return 1;
+		if(i < 0) return 0;
+		if(dp[i][k] != -1) return dp[i][k];
+		int noTake = solve(i-1, arr, k, dp);
+		int take = 0;
+		if(arr[i] <= k) take = solve(i-1, arr, k - arr[i], dp);
+		return dp[i][k] = take + noTake;
+	}
+
+	int perfectSum(vector<int>&arr, int k){
+		int n = arr.size();
+		vector<vector<int>> dp(n, vector<int>(k+1, -1));
+		return solve(n-1, arr, k, dp);
+	}
+};
