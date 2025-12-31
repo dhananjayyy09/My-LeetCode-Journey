@@ -2,19 +2,20 @@ class Solution {
 public:
     // memoization
     int solve(int i, vector<int>& coins, int amt, vector<vector<int>>& dp) {
-        if (amt == 0)
-            return 0;
-        if (i < 0 || amt < 0)
-            return 1e9;
-        if (dp[i][amt] != -1)
-            return dp[i][amt];
-
-        int notake = solve(i - 1, coins, amt, dp);
+        if(amt == 0) return 0;
+        if(i < 0 || amt < 0) return 1e9;
+        if(dp[i][amt] != -1) return dp[i][amt];
+        int noTake = solve(i-1, coins, amt, dp);
         int take = 1e9;
-        if (coins[i] <= amt) {
-            take = 1 + solve(i, coins, amt - coins[i], dp);
-        }
-        return dp[i][amt] = min(take, notake);
+        if(coins[i] <= amt) take = 1 + solve(i, coins, amt - coins[i], dp);
+        return dp[i][amt] = min(take, noTake);
+    }
+
+    int coinChange(vector<int>& coins, int amt) {
+        int n = coins.size();
+        vector<vector<int>> dp(n, vector<int>(amt + 1, -1));
+        int ans = solve(n-1, coins, amt, dp);
+        return ans == 1e9 ? -1 : ans;
     }
 
     // tabulation
@@ -43,7 +44,7 @@ public:
     }
 
     // space optimise
-    int coinChange(vector<int>& coins, int amt) {
+    int coinChangee(vector<int>& coins, int amt) {
         int n = coins.size();
         vector<int> prev(amt + 1, 1e9), cur(amt + 1, 1e9);
         for (int i = 0; i < n; ++i)
