@@ -1,0 +1,17 @@
+class Solution{
+  public:
+    int solve(int i, vector<int> &price, vector<vector<int>> &dp, int maxL){
+      if(maxL == 0 || i < 0) return 0;
+      if(dp[i][maxL] != -1) return dp[i][maxL];
+      int noTake = solve(i-1, price, dp, maxL);
+      int take = 0;
+      int rodL = i+1;
+      if(rodL <= maxL) take = price[i] + solve(i, price, dp, maxL - rodL);
+      return dp[i][maxL] = max(take, noTake); 
+    }
+
+    int rodCutting(vector<int> price, int n) {
+        vector<vector<int>> dp(n, vector<int>(n+1, -1));
+        return solve(n-1, price, dp, n);
+    }
+};
