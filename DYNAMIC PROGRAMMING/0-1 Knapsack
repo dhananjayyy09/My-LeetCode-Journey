@@ -1,0 +1,16 @@
+class Solution{
+public:
+    int solve(int i, vector<int>& wt, vector<int>& val, int w, vector<vector<int>> &dp){
+        if(i < 0 || w == 0) return 0;
+        if(dp[i][w] != -1) return dp[i][w];
+        int noTake = solve(i-1, wt, val, w, dp);
+        int take = 0;
+        if(wt[i] <= w) take = val[i] + solve(i, wt, val, w - wt[i], dp);
+        return dp[i][w] = max(take, noTake);
+    }
+
+   int unboundedKnapsack(vector<int>& wt, vector<int>& val, int n, int w) {
+        vector<vector<int>> dp(n, vector<int>(w+1, -1));
+        return solve(n-1, wt, val, w, dp);
+    }
+};
