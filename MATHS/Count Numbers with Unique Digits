@@ -1,0 +1,22 @@
+class Solution {
+public:
+   bool isUnique(int num) {
+        unordered_set<int> seen;
+        while (num > 0) {
+            int digit = num % 10;
+            if (seen.count(digit)) return false;
+            seen.insert(digit);
+            num /= 10;
+        }
+        return true;
+    }
+
+    int countNumbersWithUniqueDigits(int n) {
+        int range = pow(10, n);
+        int count = 0;
+        for(int i=0; i<range; i++){
+            if(isUnique(i)) count++;
+        }
+        return count;
+    }
+};
