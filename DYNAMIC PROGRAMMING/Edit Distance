@@ -1,24 +1,21 @@
 class Solution {
 public:
     // memoization
-    int solve(string& word1, string& word2, int i, int j,
-              vector<vector<int>>& dp) {
-        if (i == 0)
-            return j;
-        if (j == 0)
-            return i;
-        if (dp[i][j] != -1)
-            return dp[i][j];
+    int solve(int i, int j, string word1, string word2, vector<vector<int>> &dp){
+        if(i == 0) return j;
+        if(j == 0) return i;
+        if(dp[i][j] != -1) return dp[i][j];
+        if(word1[i-1] == word2[j-1]) return dp[i][j] = solve(i-1, j-1, word1, word2, dp);
+        int del = solve(i-1, j, word1, word2, dp);
+        int insert = solve(i, j-1, word1, word2, dp);
+        int update = solve(i-1, j-1, word1, word2, dp);
+        return dp[i][j] = 1 + min({del, insert, update});
+    }
 
-        if (word1[i - 1] == word2[j - 1]) {
-            return dp[i][j] = solve(word1, word2, i - 1, j - 1, dp);
-        }
-
-        int insert = solve(word1, word2, i, j - 1, dp);
-        int del = solve(word1, word2, i - 1, j, dp);
-        int replace = solve(word1, word2, i - 1, j - 1, dp);
-
-        return dp[i][j] = 1 + min({insert, del, replace});
+    int minDistance(string word1, string word2) {
+        int m = word1.size(), n = word2.size();
+        vector<vector<int>> dp(m+1, vector<int>(n+1, -1));
+        return solve(m, n, word1, word2, dp);
     }
 
     // tabulation
