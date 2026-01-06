@@ -1,0 +1,48 @@
+class Solution {
+public:
+    // memoization
+    bool solve(int i, int j, string &s, vector<vector<int>> &dp){
+        if(i >= j) return true;
+        if(dp[i][j] != -1) return dp[i][j];
+        if(s[i] == s[j] && solve(i+1, j-1, s, dp)) return dp[i][j] = true;
+        return dp[i][j] = false;
+    }
+
+    string longestPalindrome(string s){
+        int n = s.size();
+        vector<vector<int>> dp(n, vector<int>(n, -1));
+        int maxLen = 0, idx = -1;
+        for(int i=0; i<n; i++){
+            for(int j=i; j<n; j++){
+                if(solve(i, j, s, dp) && j-i+1 > maxLen){
+                    maxLen = j-i+1;
+                    idx = i;
+                }
+            }
+        }
+        string ans = s.substr(idx, maxLen);
+        return ans;
+    }
+
+
+    // tabulation
+    string longestPalindromee(string s) {
+        int n = s.size();
+        vector<vector<bool>> dp(n, vector<bool>(n, false));
+        int idx = 0, len = 0;
+        string ans = "";
+        for(int i = n-1; i >= 0; i--){
+            for(int j = i; j < n; j++){
+                if(s[i] == s[j] && (j-i+1<= 2 || dp[i+1][j-1])){
+                    dp[i][j] = true;
+                    if(j-i+1 > len){
+                        len = j-i+1;
+                        idx = i;
+                    }
+                }
+            }
+        }
+        ans = s.substr(idx, len);
+        return ans;
+    }
+};
