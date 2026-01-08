@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int solve(int i, int j, vector<int>& nums1, vector<int>& nums2, vector<vector<int>> &dp){
+        if(i < 0 || j < 0) return -1e9;
+        if(dp[i][j] != -1) return dp[i][j];
+        int onePro = nums1[i] * nums2[j];
+        int otherPro = nums1[i] * nums2[j] + solve(i-1, j-1, nums1, nums2, dp);
+        int skip1 = solve(i-1, j, nums1, nums2, dp);
+        int skip2 = solve(i, j-1, nums1, nums2, dp);
+        return dp[i][j] = max({onePro, otherPro, skip1, skip2});
+    }
+
+    int maxDotProduct(vector<int>& nums1, vector<int>& nums2) {
+        int m = nums1.size(), n = nums2.size();
+        vector<vector<int>> dp(m, vector<int>(n, -1));
+        return solve(m-1, n-1, nums1, nums2, dp);
+    }
+};
