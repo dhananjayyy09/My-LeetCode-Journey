@@ -1,40 +1,35 @@
 class Solution {
 public:
-    long long dp[1001][501][3];
-    long long solve(int idx, int state,int k, int n, vector<int>&prices)
-    {
-        if( (k==0 || idx==n) && state==0) return 0;
-        if( (k==0 || idx==n) && state!=0) return -(1e18);
-
-        if(dp[idx][k][state]!=-1) return dp[idx][k][state];
-
-        if(state==0) // no position -> we can either continue, buy new or sell new
-        {
-            long long temp1 = solve(idx+1,0,k,n,prices); //proceeding without action
-            long long temp2 = -prices[idx]+solve(idx+1,1,k,n,prices); //buying a stock
-            long long temp3 = prices[idx]+solve(idx+1,2,k,n,prices); //selling a stock
-            
-            return dp[idx][k][state] = max({temp1,temp2,temp3});
-        }else if(state==1) //if already bought stock -> can continiue or sell
-        {
-            long long temp1 = solve(idx+1,1,k,n,prices); //proceeding without action
-            long long temp2 = prices[idx]+solve(idx+1,0,k-1,n,prices); //selling the stock 
-
-            return dp[idx][k][state]= max(temp1,temp2);
-        }else{
-
-            long long temp1 = solve(idx+1,2,k,n,prices); // continue without action
-            long long temp2 = -prices[idx]+solve(idx+1,0,k-1,n,prices); //buyback stock
-
-            return dp[idx][k][state]=max(temp1,temp2);
-        }
-
-        return 0; //unreachable since state will always be 0,1,2
-    }
-    long long maximumProfit(vector<int>& prices, int k) {
-        memset(dp,-1,sizeof(dp));
+    typedef long long LL;
+    long long solve(int i, int state, int k,vector<int>& prices,vector<vector<vector<LL>>>& dp) {
         int n = prices.size();
-        return solve(0,0,k,n,prices);
+        if( (k == 0 || i == n) && state == 0) return 0;
+        if( (k == 0 || i == n) && state != 0) return -(1e18);
+        if (dp[i][state][k] != -1) return dp[i][state][k];
         
+        long long profit = 0;
+        if (state == 0) {  
+            LL noTake = solve(i+1, 0, k, prices, dp);
+            LL buy = -prices[i] + solve(i+1, 1, k, prices, dp);
+            LL sell = prices[i] + solve(i+1, 2, k, prices, dp);
+            profit = max({noTake, buy, sell});
+        }
+        else if (state == 1) {  
+            LL noTake = solve(i+1, 1, k, prices, dp);
+            LL sell = prices[i] + solve(i+1, 0, k-1, prices, dp);
+            profit = max(noTake, sell);
+        }
+        else {
+            LL noTake = solve(i+1, 2, k, prices, dp);
+            LL buy = -prices[i] + solve(i+1, 0, k-1, prices, dp);
+            profit = max(noTake, buy);
+        }
+        return dp[i][state][k] = profit;
+    }
+
+    long long maximumProfit(vector<int>& prices, int k) {
+        int n = prices.size();
+        vector<vector<vector<LL>>> dp(n, vector<vector<LL>>(3, vector<LL>(k + 1, -1)));
+        return solve(0, 0, k, prices, dp); 
     }
 };
