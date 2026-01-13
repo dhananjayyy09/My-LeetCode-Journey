@@ -1,0 +1,34 @@
+class Solution {
+public:
+    long long totalArea = 0;
+    bool check(double midY, vector<vector<int>> &squares){
+        double botArea = 0.0;
+        for(auto &s : squares){
+            int botY = s[1], topY = s[1] + s[2], l = s[2];
+            if(midY > topY){
+                botArea += 1.0* l*l; 
+            } 
+            else if(midY > botY){
+                botArea += 1.0 * l* (midY - botY);
+            }
+        }
+        return botArea >= totalArea / 2.0;
+    }
+
+    double separateSquares(vector<vector<int>>& squares) {
+        double low = 0, high = 0;
+        for(auto &s : squares){
+            high = max(high, (double)s[1] + s[2]);
+            totalArea += 1LL * s[2] * s[2];
+        }
+
+        while(high - low >= pow(10, -5)){
+            double mid = low + (high - low) / 2;
+            if (check(mid, squares))
+                high = mid;
+            else
+                low = mid;
+        }
+        return low; 
+    }
+};
