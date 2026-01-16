@@ -1,0 +1,21 @@
+class Solution {
+public:
+    bool solve(int i, int j, string &s, string &t, vector<vector<int>> &dp){
+        if(j < 0) return true;
+        if(i < 0) return false;
+        if(dp[i][j] != -1) return dp[i][j];
+        if(s[i] == t[j]) return dp[i][j] = solve(i-1, j-1, s, t, dp);
+        return dp[i][j] = solve(i-1, j, s, t, dp);
+    }
+
+    int numMatchingSubseq(string s, vector<string>& words) {
+        int n = s.size();
+        int ans = 0;
+        for(int i=0; i < words.size(); i++){
+            int m = words[i].size();
+            vector<vector<int>> dp(n, vector<int>(m, -1));
+            if(solve(n-1, m-1, s, words[i], dp)) ans++;
+        }
+        return ans;
+    }
+};
