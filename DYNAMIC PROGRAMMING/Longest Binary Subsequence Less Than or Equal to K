@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int solve(int i, int num, string &s, int k, vector<vector<int>> &dp){
+        int n = s.size();
+        if(i >= n) return 0;
+        if(dp[i][num] != -1) return dp[i][num];
+        int noTake = solve(i+1, num, s, k, dp);
+        int take = 0;
+        int newNum = num * 2 + (s[i] - '0');
+        if(newNum <= k) take = 1 + solve(i+1, newNum, s, k, dp);
+        return dp[i][num] = max(take, noTake); 
+    }
+
+    int longestSubsequence(string s, int k) {
+        int n = s.size();
+        vector<vector<int>> dp(n, vector<int>(k+1, -1));
+        return solve(0, 0, s, k, dp);
+    }
+};
