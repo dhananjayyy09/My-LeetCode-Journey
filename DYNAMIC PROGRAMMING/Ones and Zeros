@@ -1,21 +1,43 @@
 class Solution {
 public:
-    int solve(int i, vector<string> &s, int m, int n, vector<vector<vector<int>>> &dp){
+    // memoization
+    int solve(int i, vector<string>& s, vector<vector<vector<int>>> &dp, int m, int n){
         if(i < 0) return 0;
         if(dp[i][m][n] != -1) return dp[i][m][n];
         int c0 = count(s[i].begin(), s[i].end(), '0');
         int c1 = s[i].size() - c0;
-        int noTake = solve(i-1, s, m, n, dp);
-        int take = -1e9;
-        if(m >= c0 && n >= c1){
-            take = 1 + solve(i-1, s, m-c0, n-c1, dp);
-        } 
+        int noTake = solve(i-1, s, dp, m, n);
+        int take = 0;
+        if(c0 <= m && c1 <= n){
+            take = 1 + solve(i-1, s, dp, m - c0, n - c1);
+        }
         return dp[i][m][n] = max(take, noTake);
     }
 
-    int findMaxForm(vector<string>& s, int m, int n) {
+    int findMaxFormm(vector<string>& s, int m, int n) {
         int l = s.size();
         vector<vector<vector<int>>> dp(l,vector<vector<int>>(m+1, vector<int>(n+1, -1)));
-        return solve(l-1, s, m, n, dp);
+        return solve(l-1, s, dp, m, n);
+    }
+
+    // tabulation
+    int findMaxForm(vector<string> &s, int m, int n){
+        int l = s.size();
+        vector<vector<vector<int>>> dp(l+1,vector<vector<int>>(m+1, vector<int>(n+1, 0)));
+        for(int i = 1; i <= l; i++){
+            int c0 = count(s[i-1].begin(), s[i-1].end(), '0');
+            int c1 = s[i-1].size() - c0;
+            for(int j = 0; j <= m; j++){
+                for(int k = 0; k <= n; k++){
+                    int noTake = dp[i-1][j][k];
+                    int take = 0;
+                    if(j >= c0 && k >= c1){
+                        take = 1 + dp[i-1][j - c0][k - c1];
+                    }
+                    dp[i][j][k] = max(take, noTake);
+                }
+            }
+        }
+        return dp[l][m][n];
     }
 };
