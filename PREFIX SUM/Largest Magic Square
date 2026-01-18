@@ -1,0 +1,56 @@
+class Solution {
+public:
+    int largestMagicSquare(vector<vector<int>>& grid) {
+        int m = grid.size(), n = grid[0].size();
+        vector<vector<int>> gridR(m, vector<int>(n, 0));
+        vector<vector<int>> gridC(m, vector<int>(n, 0));
+        
+        for(int i=0; i<m; i++){
+            gridR[i][0] = grid[i][0];
+            for(int j=1; j<n; j++){
+                gridR[i][j] = gridR[i][j-1] + grid[i][j];
+            } 
+        }
+        for(int j=0; j<n; j++){
+            gridC[0][j] = grid[0][j];
+            for(int i=1; i<m; i++){
+                gridC[i][j] = gridC[i-1][j] + grid[i][j];
+            }
+        }
+        
+        for(int s = min(m,n); s >= 2; s--){
+            for(int i = 0; i+s-1 < m ; i++){
+                for(int j = 0; j+s-1 < n; j++){
+                    int target = gridR[i][j+s-1] - ((j > 0) ? gridR[i][j-1] : 0);
+                    
+                    bool same = true;
+                    for(int r = i+1; r < i+s; r++){
+                        int sum = gridR[r][j+s-1] - ((j > 0) ? gridR[r][j-1] : 0);
+                        if(sum != target){
+                            same = false;
+                            break;
+                        }
+                    }
+
+                    if(!same) continue;
+                    for(int c = j+1; c < j+s; c++){
+                        int sum = gridC[i+s-1][c] - ((i > 0) ? gridC[i-1][c] : 0);
+                        if(sum != target){
+                            same = false;
+                            break;
+                        }
+                    }
+
+                    if(!same) continue;
+                    int diag1 = 0, diag2 = 0;
+                    for(int k = 0; k < s; k++){
+                        diag1 += grid[i+k][j+k];
+                        diag2 += grid[i+k][j+s-k-1];
+                    }
+                    if(diag1 == target && diag2 == target) return s;
+                }
+            }
+        }
+        return 1;
+    }
+};
