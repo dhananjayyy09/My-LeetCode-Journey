@@ -1,0 +1,35 @@
+class Solution {
+public:
+    bool solve(string &s, string &t){
+        if(t.size() + 1 != s.size()) return false;
+        int i = 0, j = 0;
+        while(i < s.size()){
+            if(j < t.size() && s[i] == t[j]){
+                i++;
+                j++;
+            } else{
+                i++;
+            }
+        }
+        return j == t.size();
+    }
+
+    int longestStrChain(vector<string>& words) {
+        int n = words.size();
+        sort(words.begin(), words.end(), [](const string &a, const string &b) {
+            return a.length() < b.length();
+        });
+
+        int ans = 1;
+        vector<int> dp(n, 1);
+        for(int i=0; i<n; i++){
+            for(int j=0; j<i; j++){
+                if(solve(words[i], words[j])){
+                    dp[i] = max(dp[i], dp[j] + 1);
+                }
+            }
+            ans = max(dp[i], ans);
+        }
+        return ans;
+    }
+};
