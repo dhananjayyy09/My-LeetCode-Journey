@@ -1,8 +1,31 @@
 class Solution {
 public:
+    // memoization
+    bool solve(int i, string &s, vector<string> &wordDict, vector<int> &dp){
+        int n = s.size();
+        if(i == n) return true;
+        if(dp[i] != -1) return dp[i];
+        for(auto &w : wordDict){
+            int len = w.size();
+            if(i + len <= n && s.substr(i, len) == w){
+                if(solve(i + len, s, wordDict, dp)){
+                    return dp[i] = true;
+                }
+            }
+        }
+        return dp[i] = false;
+    }
+
+    bool wordBreakk(string s, vector<string> &wordDict){
+        int n = s.size();
+        vector<int> dp(n, -1);
+        return solve(0, s, wordDict, dp);
+    }
+
+    // tabulation
     bool wordBreak(string s, vector<string>& wordDict) {
         int n = s.size();
-        vector<bool> dp(n+1, false);
+        vector<int> dp(n+1, 0);
         dp[n] = true;
         for(int i = n-1; i >= 0; i--){
             for(auto &w : wordDict){
@@ -10,7 +33,6 @@ public:
                 if(i + len <= n && s.substr(i, len) == w){
                     if(dp[i + len]){
                         dp[i] = true;
-                        break;
                     }
                 }
             }
