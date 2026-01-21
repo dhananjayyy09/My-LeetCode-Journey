@@ -1,6 +1,26 @@
 class Solution {
 public:
-    bool isInterleave(string s1, string s2, string s3) {
+    // memoization
+    bool solve(int i, int j, string &s1, string &s2, string &s3, vector<vector<int>> &dp){
+        if(i < 0 && j < 0) return true;
+        if(i < 0) return s2[j] == s3[i+j+1] && solve(i, j-1, s1, s2, s3, dp);
+        if(j < 0) return s1[i] == s3[i+j+1] && solve(i-1, j, s1, s2, s3, dp);
+        if(dp[i][j] != -1) return dp[i][j];
+        bool ans = false;
+        if(s1[i] == s3[i+j+1]) return ans |= solve(i-1, j, s1, s2, s3, dp);
+        if(s2[j] == s3[i+j+1]) return ans |= solve(i, j-1, s1, s2, s3, dp);
+        return dp[i][j] = ans;
+    }
+
+    bool isInterleave(string s1, string s2, string s3){
+        int m = s1.size(), n = s2.size(), l = s3.size();
+        if(m + n != l) return false;
+        vector<vector<int>> dp(m, vector<int>(n, -1));
+        return solve(m-1, n-1, s1, s2, s3, dp);
+    }
+
+    // tabulation
+    bool isInterleavee(string s1, string s2, string s3) {
         int m = s1.size(), n = s2.size(), l = s3.size();
         if(m + n != l) return false;
         vector<vector<int>> dp(m+1, vector<int>(n+1, false));
