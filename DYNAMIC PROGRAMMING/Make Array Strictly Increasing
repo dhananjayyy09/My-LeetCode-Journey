@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int solve(int i, vector<int>& arr1, vector<int>& arr2, int prev, map<pair<int, int>, int> &dp){
+        int n = arr1.size();
+        if(i >= n) return 0;
+        if(dp.count({i, prev})) return dp[{i, prev}];
+        int op1 = 1e9 + 1;
+        if(arr1[i] > prev) op1 = solve(i+1, arr1, arr2, arr1[i], dp);
+        int op2 = 1e9 + 1;
+        auto it = upper_bound(arr2.begin(), arr2.end(), prev);
+        if(it != arr2.end()){
+            prev = *it;
+            op2 = 1 + solve(i+1, arr1, arr2, prev, dp);
+        }
+        return dp[{i, prev}] = min(op1, op2);
+    }
+
+    int makeArrayIncreasing(vector<int>& arr1, vector<int>& arr2) {
+        map<pair<int, int>, int> dp;
+        sort(arr2.begin(), arr2.end());
+        int ans = solve(0, arr1, arr2, -1e9, dp);
+        return ans >= 1e9 ? -1 : ans;
+    }
+};
