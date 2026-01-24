@@ -1,0 +1,51 @@
+class Solution {
+public:
+    // memoization
+    int solve(int i, vector<int> &nums, vector<int> &dp){
+        int n = nums.size();
+        if(i >= n) return 0;
+        int curSum = 0, curVal = nums[i];
+        int curIdx = i;
+        while(curIdx < n && nums[curIdx] == curVal){
+            curSum += curVal;
+            curIdx++;
+        }
+        int nxtIdx = curIdx;
+        while(nxtIdx < n && nums[nxtIdx] == curVal + 1){
+            nxtIdx++;
+        }
+        int noTake = solve(i+1, nums, dp);
+        int take = curSum + solve(nxtIdx, nums, dp);
+        return dp[i] = max(noTake, take);
+    }
+
+    int deleteAndEarnn(vector<int>& nums) {
+        int n = nums.size();
+        sort(nums.begin(), nums.end());
+        vector<int> dp(n, -1);
+        return solve(0, nums, dp);
+    }
+
+    // tabulation
+    int deleteAndEarn(vector<int>& nums){
+        int n = nums.size();
+        sort(nums.begin(), nums.end());
+        vector<int> dp(n+1, 0);
+        for(int i=n-1; i>=0; i--){
+            int curSum = 0, curVal = nums[i];
+            int curIdx = i;
+            while(curIdx < n && nums[curIdx] == curVal){
+                curSum += curVal;
+                curIdx++;
+            }
+            int nxtIdx = curIdx;
+            while(nxtIdx < n && nums[nxtIdx] == curVal + 1){
+                nxtIdx++;
+            }
+            int noTake = dp[i+1];
+            int take = curSum + dp[nxtIdx];
+            dp[i] = max(noTake, take);
+        }
+        return dp[0];
+    }
+};
