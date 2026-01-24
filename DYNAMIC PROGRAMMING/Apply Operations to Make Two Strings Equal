@@ -1,0 +1,29 @@
+class Solution {
+public:
+    int solve(int i, int miss, vector<int> &pos, int x, vector<vector<int>> &dp){
+        int k = pos.size();
+        if(i >= k) return miss == 0 ? 0 : 1e9;
+        if(dp[i][miss] != -1) return dp[i][miss];
+        int op1 = 1e9;
+        if(i+1 < k){
+            int cost = pos[i+1] - pos[i];
+            op1 = cost + solve(i+2, miss, pos, x, dp);
+        }
+        int op2 = x + solve(i+1, miss + 1, pos, x, dp);
+        int op3 = 1e9;
+        if(miss > 0) op3 = solve(i+1, miss - 1, pos, x, dp);
+        return dp[i][miss] = min({op1, op2, op3});
+    }
+
+    int minOperations(string s1, string s2, int x) {
+        int n = s1.size();
+        vector<int> pos;
+        for(int i=0; i<n; i++){
+            if(s1[i] != s2[i]) pos.push_back(i);
+        }
+        int k = pos.size();
+        vector<vector<int>> dp(k+1, vector<int>(k+1, -1));
+        if(k % 2 == 1) return -1;
+        return solve(0, 0, pos, x, dp);
+    }
+};
