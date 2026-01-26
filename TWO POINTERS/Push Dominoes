@@ -21,6 +21,7 @@ public:
                 ans[i] = dominoes[i];
                 continue;
             }
+
             int l = rightClosestL[i], r = leftClosestR[i];
             if(r == -1 && l == -1) ans[i] = '.';
             else if(r == -1) ans[i] = 'L';
