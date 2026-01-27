@@ -1,31 +1,26 @@
 class Solution {
 public:
+    typedef pair<int, int> P;
     int minCost(int n, vector<vector<int>>& edges) {
-        priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> pq;
-        vector<vector<pair<int,int>>> adj(n);
-        for(auto &e : edges){
-            int u = e[0];
-            int v = e[1];
-            int w = e[2];
-            adj[u].push_back({v, w});
-            adj[v].push_back({u, 2*w});
+        priority_queue<P, vector<P>, greater<P>> pq;
+        vector<vector<P>> adj(n);
+        for(auto &it : edges){
+            int u = it[0], v = it[1], w = it[2];
+            adj[u].push_back({v, w}); 
+            adj[v].push_back({u, 2*w}); 
         }
-        vector<int> dist(n, INT_MAX);
+        vector<int> dist(n, 1e9);
         dist[0] = 0;
         pq.push({0, 0});
 
         while(!pq.empty()){
-            auto currDis = pq.top().first;
-            auto node = pq.top().second;
+            auto[curDis, node] = pq.top();
             pq.pop();
 
-            if (currDis > dist[node]) continue;
             if(node == n-1) return dist[n-1];
-            for(auto it : adj[node]){
-                auto adjNode = it.first;
-                auto wt = it.second;
-                if(wt + currDis < dist[adjNode]){
-                    dist[adjNode] = wt + currDis;
+            for(auto[adjNode, adjDis] : adj[node]){
+                if(adjDis + curDis < dist[adjNode]){
+                    dist[adjNode] = adjDis + curDis;
                     pq.push({dist[adjNode], adjNode});
                 }
             }
