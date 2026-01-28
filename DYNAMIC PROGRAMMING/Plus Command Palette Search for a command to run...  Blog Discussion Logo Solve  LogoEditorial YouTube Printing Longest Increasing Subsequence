@@ -1,0 +1,29 @@
+int lengthOfLIS(vector<int> &nums){
+        int n = nums.size();
+        vector<int> dp(n, 1), hash(n);
+        int lastIdx = 0;
+        int maxi = 0;
+        for(int i = 0; i < n; i++){
+            hash[i] = i;
+            for(int j = 0; j < i; j++){
+                if(nums[j] < nums[i] && 1 + dp[j] > dp[i]){
+                    dp[i] = 1 + dp[j];
+                    hash[i] = j;
+                }
+            }
+            if(dp[i] > maxi){
+                maxi = dp[i];
+                lastIdx = i;
+            }
+        }  
+
+        vector<int> lis;
+        lis.push_back(nums[lastIdx]);
+        while(hash[lastIdx] != lastIdx){
+            lastIdx = hash[lastIdx];
+            lis.push_back(nums[lastIdx]);
+        }
+        reverse(lis.begin(), lis.end());
+        for(auto it : lis) cout << it << " ";
+        return maxi;
+    }
