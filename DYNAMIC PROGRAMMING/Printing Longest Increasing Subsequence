@@ -1,4 +1,6 @@
-int lengthOfLIS(vector<int> &nums){
+class Solution{
+public:
+    int lengthOfLIS(vector<int> &nums){
         int n = nums.size();
         vector<int> dp(n, 1), hash(n);
         int lastIdx = 0;
@@ -10,12 +12,12 @@ int lengthOfLIS(vector<int> &nums){
                     dp[i] = 1 + dp[j];
                     hash[i] = j;
                 }
-            }
-            if(dp[i] > maxi){
-                maxi = dp[i];
-                lastIdx = i;
-            }
-        }  
+        }
+        if(dp[i] > maxi){
+           maxi = dp[i];
+           lastIdx = i;
+        }
+     }  
 
         vector<int> lis;
         lis.push_back(nums[lastIdx]);
@@ -27,3 +29,4 @@ int lengthOfLIS(vector<int> &nums){
         for(auto it : lis) cout << it << " ";
         return maxi;
     }
+};
