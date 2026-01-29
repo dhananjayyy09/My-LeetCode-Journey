@@ -1,21 +1,20 @@
 class Solution {
 public:
     typedef pair<int, int> P;
-    vector<int> dijkstra(int src, vector<vector<P>>& adj) {
-        priority_queue<P, vector<P>, greater<>> pq;
+    vector<int> djikstra(int src, vector<vector<P>> &adj){
+        priority_queue<P, vector<P>, greater<P>> pq;
         vector<int> dist(26, 1e9);
-        dist[src] = 0;
         pq.push({0, src});
+        dist[src] = 0;
 
-        while (!pq.empty()) {
-            auto [curDis, node] = pq.top();
+        while(!pq.empty()){
+            auto[curDis, node] = pq.top();
             pq.pop();
 
-            if (curDis > dist[node])
-                continue;
-            for (auto [adjNode, adjDis] : adj[node]) {
-                if (curDis + adjDis < dist[adjNode]) {
-                    dist[adjNode] = curDis + adjDis;
+            if(curDis > dist[node]) continue;
+            for(auto[adjNode, adjDis] : adj[node]){
+                if(adjDis + curDis < dist[adjNode]){
+                    dist[adjNode] = adjDis + curDis;
                     pq.push({dist[adjNode], adjNode});
                 }
             }
@@ -26,20 +25,20 @@ public:
     long long minimumCost(string source, string target, vector<char>& original, vector<char>& changed, vector<int>& cost) {
         int n = original.size();
         vector<vector<P>> adj(26);
-        for (int i = 0; i < n; i++) {
+        for(int i=0; i<n; i++){
             int u = original[i] - 'a', v = changed[i] - 'a', w = cost[i];
             adj[u].push_back({v, w});
         }
 
         vector<vector<int>> allDist(26);
-        for (int i = 0; i < 26; i++) {
-            allDist[i] = dijkstra(i, adj);
+        for(int i = 0; i < 26; i++){
+            allDist[i] = djikstra(i, adj);
         }
 
         long long ans = 0;
-        for (int i = 0; i < source.size(); i++) {
+        for(int i = 0; i < source.size(); i++){
             int s = source[i] - 'a', t = target[i] - 'a';
-            if (allDist[s][t] == 1e9) return -1;
+            if(allDist[s][t] == 1e9) return -1;
             ans += allDist[s][t];
         }
         return ans;
