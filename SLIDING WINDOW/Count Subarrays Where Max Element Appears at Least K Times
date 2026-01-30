@@ -7,13 +7,9 @@ public:
         int i = 0, j = 0;
         long long maxi = *max_element(nums.begin(), nums.end());
         while(j < n){
-            if(nums[j] == maxi){
-                freq++;
-            }
+            if(nums[j] == maxi) freq++;
             while(freq >= k){
-                if(nums[i] == maxi){
-                    freq--;
-                }
+                if(nums[i] == maxi) freq--;
                 i++;
             }
             count += i; 
