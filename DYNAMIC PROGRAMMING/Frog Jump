@@ -1,0 +1,29 @@
+class Solution {
+public:
+    unordered_map<int, int> mp;
+    bool solve(int csi, int preJp, vector<int> &stones, vector<vector<int>> &dp){
+        int n = stones.size();
+        if(csi == n-1) return true;
+        if(dp[csi][preJp] != -1) return dp[csi][preJp];
+        bool ans = false;
+        for(int nxtJp = preJp - 1; nxtJp <= preJp + 1; nxtJp++){
+            if(nxtJp > 0){
+                int ns = stones[csi] + nxtJp;
+                if(mp.count(ns)){
+                    ans |= solve(mp[ns], nxtJp, stones, dp);
+                }
+            }
+        }
+        return dp[csi][preJp] = ans;
+    }
+
+    bool canCross(vector<int>& stones) {
+        int n = stones.size();
+        if(stones[1] != 1) return false;
+        for(int i=0; i<n; i++){
+            mp[stones[i]] = i;
+        }
+        vector<vector<int>> dp(n, vector<int>(n, -1));
+        return solve(0, 0, stones, dp);
+    }
+};
