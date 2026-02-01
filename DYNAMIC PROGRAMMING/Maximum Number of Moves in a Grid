@@ -1,0 +1,26 @@
+class Solution {
+public:
+    vector<pair<int, int>> dirs = {{-1, 1}, {0, 1}, {1, 1}};
+    int solve(int i, int j, vector<vector<int>>& grid, vector<vector<int>>& dp){
+        int m = grid.size(), n = grid[0].size();
+        if(dp[i][j] != -1) return dp[i][j];
+        int moves = 0;
+        for(auto[dx, dy] : dirs){
+            int nr = i+dx, nc = j+dy;
+            if(nr >= 0 && nr < m && nc >= 0 && nc < n && grid[nr][nc] > grid[i][j]){
+                moves = max(moves, 1 + solve(nr, nc, grid, dp));
+            }
+        }
+        return dp[i][j] = moves;
+    } 
+
+    int maxMoves(vector<vector<int>>& grid) {
+        int m = grid.size(), n = grid[0].size();
+        vector<vector<int>> dp(m, vector<int>(n, -1));
+        int maxi = 0;
+        for(int i = 0; i < m; i++){
+            maxi = max(maxi, solve(i, 0, grid, dp));
+        }
+        return maxi;
+    }
+};
