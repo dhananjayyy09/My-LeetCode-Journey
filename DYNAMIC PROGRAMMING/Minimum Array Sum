@@ -1,0 +1,43 @@
+class Solution {
+public:
+    int solve(int i, int k, int op1, int op2, vector<int> &nums, vector<vector<vector<int>>> &dp){
+        int n = nums.size();
+        if(i == n) return 0;
+        if(dp[i][op1][op2] != -1) return dp[i][op1][op2];
+
+        int ans = 1e9;
+        if(op1 > 0){
+            int val = (nums[i] + 1) / 2;
+            int task1 = val + solve(i+1, k, op1-1, op2, nums, dp);
+            ans = min(ans, task1);
+        }
+        if(op2 > 0 && nums[i] >= k){
+            int val = nums[i] - k;
+            int task2 = val + solve(i+1, k, op1, op2-1, nums, dp);
+            ans = min(ans, task2);
+        }
+        if(op1 > 0 && op2 > 0){
+            int val = (nums[i] + 1) / 2;
+            if(val >= k){
+                val -= k;
+                int task3 = val + solve(i+1, k, op1-1, op2-1, nums, dp);
+                ans = min(ans, task3);
+            }
+            if(nums[i] >= k){
+                val = nums[i] - k;
+                val = (val + 1) / 2;
+                int task4 = val + solve(i+1, k, op1-1, op2-1, nums, dp);
+                ans = min(ans, task4);
+            }
+        }
+        int skip = nums[i] + solve(i+1, k, op1, op2, nums, dp);
+        ans = min(ans, skip);
+        return dp[i][op1][op2] = ans;
+    }
+
+    int minArraySum(vector<int>& nums, int k, int op1, int op2) {
+        int n = nums.size();
+        vector<vector<vector<int>>> dp(n, vector<vector<int>>(n+1, vector<int>(n+1, -1)));
+        return solve(0, k, op1, op2, nums, dp);
+    }
+};
