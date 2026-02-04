@@ -1,5 +1,6 @@
 class Solution {
 public:
+    // memoization
     int countSteps(int ri, int i, int n){
         int dist = abs(i - ri);
         int roundDist = n - dist;
@@ -22,9 +23,34 @@ public:
         return dp[ri][ki] = ans;
     }
 
-    int findRotateSteps(string ring, string key) {
+    int findRotateStepss(string ring, string key) {
         int n = ring.size(), m = key.size();
         vector<vector<int>> dp(n, vector<int>(m, -1));
         return solve(0, 0, ring, key, dp);
+    }
+
+    // tabulation
+    int findRotateSteps(string ring, string key) {
+        int n = ring.size(), m = key.size();
+        vector<vector<int>> dp(n+1, vector<int>(m+1, 1e9));
+        for(int ri = 0; ri < n; ri++){
+            dp[ri][m] = 0;
+        }
+
+        for(int ki = m-1; ki >= 0; ki--){
+            for(int ri = n-1; ri >= 0; ri--){
+                int ans = 1e9;
+                int totalSteps = 0;
+                for(int i = 0; i < n; i++){
+                    if(ring[i] == key[ki]){
+                        int steps = 1 + countSteps(ri, i, n);
+                        totalSteps = steps + dp[i][ki+1];
+                        ans = min(ans, totalSteps);
+                    }
+                }
+                dp[ri][ki] = ans;
+            }
+        }
+        return dp[0][0]; 
     }
 };
