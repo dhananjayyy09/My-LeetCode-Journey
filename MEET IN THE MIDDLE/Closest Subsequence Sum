@@ -1,0 +1,36 @@
+class Solution {
+public:
+    vector<long long> generateSum(vector<int> nums){
+        vector<long long> sums = {0};
+        for(auto &it : nums){
+            int n = sums.size();
+            for(int i=0; i<n; i++){
+                sums.push_back(sums[i] + it);
+            }
+        }
+        return sums;
+    }
+
+    int minAbsDifference(vector<int>& nums, int goal) {
+        int n = nums.size();    
+        vector<int> left(nums.begin(), nums.begin() + n/2);
+        vector<int> right(nums.begin() + n/2, nums.end());
+        vector<long long> L = generateSum(left);
+        vector<long long> R = generateSum(right);
+
+        long long ans = LLONG_MAX;
+        sort(R.begin(), R.end());
+        for(long long x : L){
+            int target = goal - x;
+            auto it = lower_bound(R.begin(), R.end(), target);
+            if(it != R.end()){
+                ans = min(ans, llabs(goal - (x + *it)));
+            }
+            if(it != R.begin()){
+                --it;
+                ans = min(ans, llabs(goal - (x + *it)));
+            }
+        }
+        return ans;
+    }
+};
