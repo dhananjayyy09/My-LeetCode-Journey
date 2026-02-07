@@ -1,0 +1,34 @@
+class Solution {
+public:
+    // memoization
+    int solve(int i, int prev, string s, int k, vector<vector<int>> &dp){
+        int n = s.size();
+        if(i == n) return 0;
+        if(dp[i][prev] != -1) return dp[i][prev];
+        int noTake = solve(i+1, prev, s, k, dp);
+        int take = 0, curr = s[i] - 'a';
+        if(prev == 26 || abs(curr - prev) <= k) take = 1 + solve(i+1, curr, s, k, dp);
+        return dp[i][prev] = max(take, noTake); 
+    }
+
+    int longestIdealStringg(string s, int k) {
+        int n = s.size();
+        vector<vector<int>> dp(n, vector<int>(27, -1));
+        return solve(0, 26, s, k, dp);
+    }
+
+    // tabulation
+    int longestIdealString(string s, int k) {
+        int n = s.size();
+        vector<vector<int>> dp(n+1, vector<int>(27, 0));
+        for(int i = n-1; i >= 0; i--){
+            for(int prev = 0; prev <= 26; prev++){
+                int noTake = dp[i+1][prev];
+                int take = 0, curr = s[i] - 'a';
+                if(prev == 26 || abs(curr - prev) <= k) take = 1 + dp[i+1][curr];
+                dp[i][prev] = max(take, noTake); 
+            }
+        }
+        return dp[0][26];
+    }
+};
