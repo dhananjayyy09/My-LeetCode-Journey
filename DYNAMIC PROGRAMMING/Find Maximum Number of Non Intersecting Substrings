@@ -1,0 +1,40 @@
+class Solution {
+public:
+    // memoization
+    int solve(int i, string &word, vector<int> &dp){
+        int n = word.size();
+        if(i >= n) return 0;
+        if(dp[i] != -1) return dp[i];
+        int noTake = solve(i+1, word, dp);
+        int take = 0;
+        for(int j=i+3; j<n; j++){
+            if(word[i] == word[j]){
+                take = max(take, 1 + solve(j+1, word, dp));
+            }
+        }
+        return dp[i] = max(take, noTake);
+    }
+
+    int maxSubstringss(string word) {
+        int n = word.size();
+        vector<int> dp(n, -1);
+        return solve(0, word, dp);
+    }
+
+    // tabulation
+    int maxSubstrings(string word) {
+        int n = word.size();
+        vector<int> dp(n+1, 0);
+        for(int i = n-1; i >= 0; i--){
+            int noTake = dp[i+1];
+            int take = 0;
+            for(int j=i+3; j<n; j++){
+                if(word[i] == word[j]){
+                    take = max(take, 1 + dp[j+1]);
+                }
+            }
+            dp[i] = max(take, noTake);
+        }
+        return dp[0];
+    }
+};
