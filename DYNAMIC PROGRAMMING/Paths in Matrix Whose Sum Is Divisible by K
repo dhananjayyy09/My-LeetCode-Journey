@@ -4,7 +4,6 @@ public:
     int solve(int i, int j, vector<vector<int>> &grid, int currSum, int k,vector<vector<vector<int>>> &dp){
         int m = grid.size(), n = grid[0].size();
         if(i < 0 || i >= m || j < 0 || j >= n) return 0;
-
         int mod = currSum % k;
         if(dp[i][j][mod] != -1) return dp[i][j][mod];
         if(i == m-1 && j == n-1){
@@ -12,7 +11,6 @@ public:
         }
         int down = solve(i+1, j, grid, currSum + grid[i][j], k, dp);
         int right = solve(i, j+1, grid, currSum + grid[i][j], k, dp);
-
         return dp[i][j][mod] = (down + right) % MOD;
     }
 
