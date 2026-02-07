@@ -1,0 +1,44 @@
+class Solution {
+public:
+    const int MOD = 1e9 + 7;
+    // memoization
+    int solve(int i,int j,int curXor, vector<vector<int>>& grid,int k, vector<vector<vector<int>>>&dp){
+        int m = grid.size(), n = grid[0].size();
+        if(i < 0 || i >= m || j < 0 || j >= n) return 0;
+        curXor ^= grid[i][j];
+        if(dp[i][j][curXor] != -1) return dp[i][j][curXor];
+        if(i == m-1 && j == n-1) return curXor == k ? 1 : 0;
+        int down = solve(i+1, j, curXor, grid, k, dp);
+        int right = solve(i, j+1, curXor, grid, k, dp);
+        return dp[i][j][curXor] = (right + down) % MOD;
+    }
+
+    int countPathsWithXorValuee(vector<vector<int>>& grid, int k) {
+        int m = grid.size(), n = grid[0].size();
+        vector<vector<vector<int>>> dp(m, vector<vector<int>>(n, vector<int>(16, -1)));
+        return solve(0, 0, 0, grid, k, dp);
+    }
+
+    // tabulation
+    int countPathsWithXorValue(vector<vector<int>>& grid, int k) {
+        int m = grid.size(), n = grid[0].size();
+        vector<vector<vector<int>>> dp(m, vector<vector<int>>(n, vector<int>(16, 0)));
+        dp[0][0][grid[0][0]] = 1;
+        
+        for(int i = 0; i < m; i++) {
+            for(int j = 0; j < n; j++) {
+                for(int x = 0; x < 16; x++) {
+                    if(i+1 < m) {
+                        int nx = x ^ grid[i+1][j];
+                        dp[i+1][j][nx] = (dp[i+1][j][nx] + dp[i][j][x]) % MOD;
+                    }
+                    if(j+1 < n) {
+                        int nx = x ^ grid[i][j+1];
+                        dp[i][j+1][nx] = (dp[i][j+1][nx] + dp[i][j][x]) % MOD;
+                    }
+                }
+            }
+        }
+        return (dp[m-1][n-1][k]) % MOD;
+    }
+};
