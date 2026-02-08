@@ -22,16 +22,38 @@ public:
     }
 
     // tabulation
-    int maxSubstrings(string word) {
+    int maxSubstringsss(string word){
         int n = word.size();
         vector<int> dp(n+1, 0);
         for(int i = n-1; i >= 0; i--){
             int noTake = dp[i+1];
             int take = 0;
-            for(int j=i+3; j<n; j++){
+            for(int j = i+3; j < n; j++){
                 if(word[i] == word[j]){
                     take = max(take, 1 + dp[j+1]);
                 }
+            }
+            dp[i] = max(take, noTake);
+        }
+        return dp[0];
+    }
+
+    // optimal tabulation & binary search
+    int maxSubstrings(string word){
+        int n = word.size();
+        vector<int> dp(n+1, 0);
+        vector<vector<int>> pos(26);
+        for(int i = 0; i < n; i++){
+            pos[word[i] -'a'].push_back(i);
+        }
+        for(int i = n-1; i >= 0; i--){
+            int noTake = dp[i+1];
+            int take = 0;
+            auto &vec = pos[word[i] - 'a'];
+            auto it = lower_bound(vec.begin(), vec.end(), i+3);
+            if(it != vec.end()){
+                int j = *it;
+                take = 1 + dp[j+1];
             }
             dp[i] = max(take, noTake);
         }
