@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int maximumLength(vector<int>& nums) {
+        int n = nums.size();
+        int even = 0, odd = 0, alt = 0;
+        int exp = nums[0] % 2;
+        for(auto &it : nums){
+            if(it % 2 == 0) even++;
+            else odd++;
+            if(it % 2 == exp){
+                alt++;
+                exp = 1 - exp;
+            }
+        }
+        return max({even, odd, alt});
+    }
+};
