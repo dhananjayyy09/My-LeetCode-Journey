@@ -1,0 +1,37 @@
+class Solution {
+public:
+    // memoization
+    int solve(int i, vector<int> &nums, int target, vector<vector<int>> &dp){
+        if(target == 0) return 0;
+        if(target < 0 || i < 0) return -1e9;
+        if(dp[i][target] != -1) return dp[i][target];
+        int noTake = solve(i-1, nums, target, dp);
+        int take = -1e9;
+        if(nums[i] <= target) take = 1 + solve(i-1, nums, target - nums[i], dp);
+        return dp[i][target] = max(take, noTake);
+    }
+
+    int lengthOfLongestSubsequencee(vector<int>& nums, int target) {
+        int n = nums.size();
+        vector<vector<int>> dp(n, vector<int>(target + 1, -1));
+        int ans = solve(n-1, nums, target, dp);
+        return ans > 0 ? ans : -1;
+    }
+
+    // tabulation
+    int lengthOfLongestSubsequence(vector<int>& nums, int target) {
+        int n = nums.size();
+        vector<vector<int>> dp(n+1, vector<int>(target + 1, -1e9));
+        for(int i = 0; i <= n; i++) dp[i][0] = 0;
+        for(int i = 1; i <= n; i++){
+            for(int t = 0; t <= target; t++){
+                int noTake = dp[i-1][t];
+                int take = -1e9;
+                if(nums[i-1] <= t) take = 1 + dp[i-1][t - nums[i-1]];
+                dp[i][t] = max(take, noTake);
+            }
+        }
+        int ans = dp[n][target];
+        return ans > 0 ? ans : -1;
+    }
+};
