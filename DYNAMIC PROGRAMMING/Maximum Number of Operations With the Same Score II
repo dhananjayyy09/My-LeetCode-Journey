@@ -1,0 +1,38 @@
+class Solution {
+public:
+    int solve(int i, int j, int score, vector<int> &nums, vector<vector<int>> &dp){
+        int n = nums.size();
+        if(i >= j) return 0;
+        if(dp[i][j] != -1) return dp[i][j];
+        int op1 = 0;
+        if(i+1 < j && nums[i] + nums[i+1] == score){
+            op1 = 1 + solve(i+2, j, score, nums, dp);
+        }
+        int op2 = 0;
+        if(nums[i] + nums[j] == score){
+            op2 = 1 + solve(i+1, j-1, score, nums, dp);
+        }
+        int op3 = 0;
+        if(i <= j-1 && nums[j] + nums[j-1] == score){
+            op3 = 1 + solve(i, j-2, score, nums, dp);
+        }
+        return dp[i][j] = max({op1, op2, op3});
+    }
+
+    int maxOperations(vector<int>& nums) {
+        int n = nums.size();
+        int ans = 0;
+        vector<vector<int>> dp1(n, vector<int>(n, -1));
+        int score1 = nums[0] + nums[1];
+        ans = max(ans, 1 + solve(2, n-1, score1, nums, dp1));
+
+        vector<vector<int>> dp2(n, vector<int>(n, -1));
+        int score2 = nums[0] + nums[n-1];
+        ans = max(ans, 1 + solve(1, n-2, score2, nums, dp2));
+
+        vector<vector<int>> dp3(n, vector<int>(n, -1));
+        int score3 = nums[n-1] + nums[n-2];
+        ans = max(ans, 1 + solve(0, n-3, score3, nums, dp3));
+        return ans;
+    }
+};
