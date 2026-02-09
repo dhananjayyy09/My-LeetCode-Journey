@@ -1,0 +1,49 @@
+class Solution {
+public:
+    typedef long long ll;
+    typedef pair<ll,int> P;
+    bool isPossible(ll minAllow, vector<vector<P>> &adj, vector<bool> &online, ll k){
+        int n = adj.size();
+        priority_queue<P, vector<P>, greater<P>> pq;
+        vector<ll> dist(n, LLONG_MAX);
+        pq.push({0, 0});
+        dist[0] = 0;
+
+        while(!pq.empty()){
+            auto[curDis, node] = pq.top();
+            pq.pop();
+
+            if(curDis > dist[node]) continue;
+            for(auto[adjNode, adjDis] : adj[node]){
+                if(adjDis < minAllow) continue;
+                if(adjDis + curDis < dist[adjNode] && online[adjNode] && adjDis + curDis <= k){
+                    dist[adjNode] = adjDis + curDis;
+                    pq.push({dist[adjNode], adjNode});
+                }
+            }
+        }
+        return dist[n-1] <= k;
+    }
+
+    int findMaxPathScore(vector<vector<int>>& edges, vector<bool>& online, long long k) {
+        int n = online.size();
+        int low = 0, high = -1;
+        vector<vector<P>> adj(n);
+        for(auto &it : edges){
+            int u = it[0], v = it[1], w = it[2];
+            adj[u].push_back({v, w});
+            high = max(high, w);
+        }
+
+        int ans = -1;
+        while(low <= high){
+            int mid = low + (high - low) / 2;
+            if(isPossible(mid, adj, online, k)){
+                ans = mid;
+                low = mid + 1;
+            }
+            else high = mid - 1;
+        }
+        return ans;
+    }
+};
