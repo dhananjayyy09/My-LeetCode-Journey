@@ -1,0 +1,29 @@
+class Solution {
+public:
+    typedef pair<int, string> P;
+    struct cmp{
+        bool operator()(P &a, P &b){
+            if(a.first == b.first) return a.second > b.second;
+            return a.first < b.first;
+        }
+    };
+
+    vector<string> topKFrequent(vector<string>& words, int k) {
+        unordered_map<string, int> mp;
+        for(auto &it : words){
+            mp[it]++;
+        }
+        priority_queue<P, vector<P>, cmp> pq;
+        for(auto &it : mp){
+            pq.push({it.second, it.first});
+        }
+
+        vector<string> ans;
+        while(k--){
+            auto[freq, w] = pq.top();
+            pq.pop();
+            ans.push_back(w);
+        }
+        return ans;
+    }
+};
