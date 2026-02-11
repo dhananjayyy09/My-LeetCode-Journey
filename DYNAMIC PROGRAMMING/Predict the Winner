@@ -1,0 +1,20 @@
+class Solution {
+public:
+    int solve(int i, int j, vector<int> &nums, vector<vector<int>> &dp){
+        if(i > j) return 0;
+        if(dp[i][j] != -1) return dp[i][j];
+        int takeFirst = nums[i] + min(solve(i+2, j, nums, dp), solve(i+1, j-1, nums, dp));
+        int takeLast = nums[j] + min(solve(i+1, j-1, nums, dp), solve(i, j-2, nums, dp));
+        return dp[i][j] = max(takeFirst, takeLast);
+    }
+
+    bool predictTheWinner(vector<int>& nums) {
+        int n = nums.size();
+        int total = 0;
+        for(auto &it : nums) total += it;
+        vector<vector<int>> dp(n, vector<int>(n, -1));
+        int p1 = solve(0, n-1, nums, dp);
+        int p2 = total - p1;
+        return p1 >= p2 ? true : false;
+    }
+};
