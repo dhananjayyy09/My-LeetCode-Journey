@@ -1,0 +1,35 @@
+class Solution {
+public:
+    pair<int, int> getCoordinates(int num, int n){
+        int rowFrmBottom = (num - 1) / n;
+        int row = n-1 - rowFrmBottom;
+        int colFrmBottom = (num - 1) % n;
+        int col;
+        if(rowFrmBottom % 2 == 0) col = colFrmBottom;
+        else col = n-1 - colFrmBottom;
+        return {row, col};
+    }
+
+    int snakesAndLadders(vector<vector<int>>& board) {
+        int n = board.size();
+        queue<pair<int, int>> q;
+        q.push({1, 0});
+        vector<bool> vis(n*n+1, false);
+
+        while(!q.empty()){
+            auto[curr, moves] = q.front();
+            q.pop();
+
+            if(curr == n*n) return moves;
+            for(int next = curr+1; next <= min(curr+6, n*n); next++){
+                auto[r,c] = getCoordinates(next, n);
+                int dest = (board[r][c] == -1) ? next : board[r][c];
+                if(!vis[dest]){
+                    vis[dest] = true;
+                    q.push({dest, moves+1});
+                }
+            }
+        }
+        return -1;
+    }
+};
