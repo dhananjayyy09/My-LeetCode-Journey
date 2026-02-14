@@ -2,12 +2,12 @@ class Solution {
 public:
     int orangesRotting(vector<vector<int>>& grid) {
         int m = grid.size(), n = grid[0].size();
-        queue<pair< int, int>> q;
+        queue<tuple< int, int, int>> q;
         vector<pair<int, int>> dir = {{0,1}, {0,-1}, {1,0}, {-1,0}};
         for(int i=0; i<m; i++){
             for(int j=0; j<n; j++){
                 if(grid[i][j] == 2){
-                    q.push({i, j});
+                    q.push({i, j, 0});
                 }
             }
         }
@@ -22,20 +22,17 @@ public:
             if(!isFresh) return 0;
         }
         
-        int time = -1; 
+        int ans = 0;
         while(!q.empty()){
-            time++;
-            int size = q.size();
+            auto[row, col, time] = q.front();
+            q.pop();
 
-            while(size--){
-                auto[row, col] = q.front();
-                q.pop();
-                for(auto[dx, dy] : dir){
-                    int nr = dx + row, nc = dy + col;
-                    if(nr >= 0 && nr < m && nc >= 0 && nc < n && grid[nr][nc] == 1){
-                        grid[nr][nc] = 2;
-                        q.push({nr, nc});
-                    }
+            ans = max(ans, time);
+            for(auto[dx, dy] : dir){
+                int nr = dx + row, nc = dy + col;
+                if(nr >= 0 && nr < m && nc >= 0 && nc < n && grid[nr][nc] == 1){
+                    grid[nr][nc] = 2;
+                    q.push({nr, nc, time+1});
                 }
             }
         }
@@ -45,6 +42,6 @@ public:
                 if(grid[i][j] == 1) return -1;
             }
         }
-        return time;
+        return ans;
     }
 };
