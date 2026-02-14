@@ -1,0 +1,18 @@
+class Solution {
+public:
+    double solve(int i, int j, int poured, vector<vector<double>> &dp){
+        if(i < 0 || j < 0 || i < j) return 0.0;
+        if(i == 0 && j == 0) return poured;
+        if(dp[i][j] != -1) return dp[i][j];
+        double upLeft = (solve(i-1, j-1, poured, dp) - 1) / 2.0;
+        double upRight = (solve(i-1, j, poured, dp) - 1) / 2.0;
+        if(upLeft < 0) upLeft = 0.0;
+        if(upRight < 0) upRight = 0.0;
+        return dp[i][j] = upLeft + upRight;        
+    }
+
+    double champagneTower(int poured, int row, int glass) {
+        vector<vector<double>> dp(101, vector<double>(101, -1));
+        return min(1.0, solve(row, glass, poured, dp))    ;
+    }
+};
