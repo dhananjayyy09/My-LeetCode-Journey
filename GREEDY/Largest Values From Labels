@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int largestValsFromLabels(vector<int>& values, vector<int>& labels, int wanted, int limit) {
+        int n = values.size();
+        unordered_map<int, int> mp;
+        vector<pair<int, int>> valLabels;
+        for(int i=0; i<n; i++){
+            valLabels.push_back({values[i], labels[i]});
+        }
+        sort(valLabels.rbegin(), valLabels.rend());
+        
+        int maxSum = 0;
+        int items = 0;
+        for(auto [val, lab] : valLabels){
+            if((!mp.count(lab) || mp[lab] < limit) && items < wanted){
+                maxSum += val;
+                items++;
+                mp[lab]++;
+            }
+            else if(mp[lab] >= limit) continue;
+        }
+        return maxSum;
+    }
+};
