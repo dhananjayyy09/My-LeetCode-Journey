@@ -1,0 +1,15 @@
+class Solution {
+public:
+    int minFlips(string target) {
+        int n = target.size();
+        char prev = '0';
+        int flips = 0;
+        for(char c : target){
+            if(c != prev){
+                prev = c;
+                flips++;
+            }
+        }
+        return flips;
+    }
+};
