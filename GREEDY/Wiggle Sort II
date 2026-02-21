@@ -1,0 +1,17 @@
+class Solution {
+public:
+    void wiggleSort(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> arr = nums;
+        sort(arr.begin(), arr.end());
+        int mid = (n+1)/2 - 1,  end = n-1;
+        for(int k = 0; k < n; k++){
+            if(k % 2 == 0){
+                nums[k] = arr[mid--];
+            }
+            else{
+                nums[k] = arr[end--];
+            } 
+        }
+    }
+};
