@@ -11,7 +11,7 @@ This is my personal coding journey to improve problem-solving skills, strengthen
 ---
 
 ## 📂 Repository Structure
-Each folder contains solutions for a specific topic (e.g., Linked List, Arrays, Dynamic Programming).
+Each folder contains solutions for a specific topic (e.g. Linked List, Arrays, Dynamic Programming).
 # 📚 My LeetCode Journey
 
 Welcome to my **LeetCode practice repository**!  
