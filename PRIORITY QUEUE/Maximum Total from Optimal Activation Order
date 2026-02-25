@@ -1,0 +1,19 @@
+class Solution {
+public:
+    long long maxTotal(vector<int>& value, vector<int>& limit) {
+        int n = value.size();
+        unordered_map<int, priority_queue<int>> elements;
+        for(int i = 0; i < n; i++){
+            elements[limit[i]].push(value[i]);
+        }
+
+        long long total = 0;
+        for(auto &[lim, pq] : elements){
+            for(int i = 0; i < lim && !pq.empty(); i++){
+                total += pq.top();
+                pq.pop();
+            }
+        }
+        return total;
+    }
+};
