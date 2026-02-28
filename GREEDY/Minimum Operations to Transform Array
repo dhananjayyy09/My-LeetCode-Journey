@@ -1,0 +1,21 @@
+class Solution {
+public:
+    typedef long long ll;
+    long long minOperations(vector<int>& nums1, vector<int>& nums2) {
+        int n = nums1.size();
+        ll ops = 1;
+        ll extraOps = LLONG_MAX;
+        for(int i = 0; i < n; i++){
+            ops += abs(nums1[i] - nums2[i]);
+            int last = nums2[n];
+            int high = max(nums1[i], nums2[i]), low = min(nums2[i], nums1[i]);
+            if(last >= low && last <= high) {
+                extraOps = 0;
+            } else {
+                ll cost = min(abs(nums1[i] - last), abs(nums2[i] - last));
+                extraOps = min(extraOps, cost);
+            }
+        }
+        return ops + extraOps;
+    }
+};
