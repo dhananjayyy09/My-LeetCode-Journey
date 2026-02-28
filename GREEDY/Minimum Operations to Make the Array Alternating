@@ -1,0 +1,52 @@
+class Solution {
+public:
+    int minimumOperations(vector<int>& nums) {
+        int n = nums.size();
+        unordered_map<int, int> odd, even;
+        int odds = 0, evens = 0;
+        for(int i = 0; i < n; i++){
+            if(i % 2 == 0){
+                even[nums[i]]++;
+                evens++;
+            } 
+            else {
+                odd[nums[i]]++;
+                odds++;
+            } 
+        }
+
+        priority_queue<pair<int, int>> oddPq, evenPq;
+        for(auto [num, freq] : odd){
+            oddPq.push({freq, num});
+        }
+        for(auto [num, freq] : even){
+            evenPq.push({freq, num});
+        }
+
+        int maxFreqE = 0, maxFreqO = 0;
+        int maxElemE = -1, maxElemO = -1;
+        if(!oddPq.empty()){
+            auto [freq1, num1] = oddPq.top();
+            oddPq.pop();
+            maxElemO = num1, maxFreqO = freq1;
+        } 
+        if(!evenPq.empty()){
+            auto [freq2, num2] = evenPq.top();
+            evenPq.pop();
+            maxElemE = num2, maxFreqE = freq2;
+        }
+
+        if(maxElemO == maxElemE) {
+            int op1 = 0, op2 = 0;
+            if(!evenPq.empty()) op1 = (evens - evenPq.top().first) + (odds - maxFreqO);
+            else op1 = evens + (odds - maxFreqO);
+
+            if(!oddPq.empty()) op2 = (odds - oddPq.top().first) + (evens - maxFreqE);
+            else op2 = odds + (evens - maxFreqE);
+            return min(op1, op2);
+        }   
+
+        int ops = (evens - maxFreqE) + (odds - maxFreqO);  
+        return ops;
+    }
+};
