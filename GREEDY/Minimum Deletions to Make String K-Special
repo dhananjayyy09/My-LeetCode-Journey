@@ -1,0 +1,32 @@
+class Solution {
+public:
+    int minimumDeletions(string word, int k) {
+        unordered_map<int, int> mp;
+        for(auto &it : word){
+            mp[it]++;
+        }
+
+        vector<int> freq;
+        for(auto [w,f] : mp){
+            freq.push_back(f);
+        }
+
+        int n = freq.size();
+        int minDel = 1e9;
+        for(int i = 0; i < n; i++){
+            int minFreq = freq[i];
+            int del = 0;
+            for(int j = 0; j < n; j++){
+                if(i == j) continue;
+                if(freq[j] < minFreq){
+                    del += freq[j];
+                }
+                else if(freq[j] > k + minFreq){
+                    del += freq[j] - (k + minFreq);
+                }
+            }
+            minDel = min(minDel, del);
+        }
+        return minDel;
+    }
+};
