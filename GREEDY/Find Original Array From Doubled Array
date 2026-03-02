@@ -1,0 +1,24 @@
+class Solution {
+public:
+    vector<int> findOriginalArray(vector<int>& changed) {
+        int n = changed.size();
+        sort(changed.begin(), changed.end());
+        unordered_map<int, int> freq;
+        for(auto &it : changed){
+            freq[it]++;
+        }
+
+        vector<int> original;
+        for(auto &num : changed){
+            if(freq[num] == 0) continue;
+            if(freq[num * 2] == 0) return {};
+            original.push_back(num);
+            freq[num]--;
+            freq[num * 2]--;
+        }
+        
+        int m = original.size();
+        if(m != n/2) return {};
+        return original;
+    }
+};
