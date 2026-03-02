@@ -1,0 +1,33 @@
+class Solution {
+public:
+    int minSwaps(vector<vector<int>>& grid) {
+        int n = grid.size();
+        vector<int> endZeros(n);
+        for(int i = 0; i < n; i++){
+            int j = n-1;
+            int zeros = 0;
+            while(j >= 0 && grid[i][j] == 0){
+                zeros++;
+                j--;
+            }
+            endZeros[i] = zeros;
+        }
+
+        int swaps = 0;
+        for(int i = 0; i < n; i++){
+            int needZero = n-i-1;
+            int j = i;
+            while(j < n && endZeros[j] < needZero){
+                j++;
+            }
+            if(j == n) return -1;
+
+            while(j > i){
+                swap(endZeros[j], endZeros[j-1]);
+                swaps++;
+                j--;
+            }
+        }
+        return swaps;
+    }
+};
