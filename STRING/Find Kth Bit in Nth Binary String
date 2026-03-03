@@ -1,0 +1,22 @@
+class Solution {
+public:
+    string invert(string str){
+        for(auto &it : str){
+            if(it == '0') it = '1';
+            else it = '0';
+        }
+        return str;
+    }
+
+    char findKthBit(int n, int k) {
+        string str = "0";
+        string prev = str;
+        for(int i = 1; i < n; i++){
+            string inv = invert(prev);
+            reverse(inv.begin(), inv.end());
+            str += "1" + inv;
+            prev = str;
+        }
+        return str[k-1];
+    }
+};
