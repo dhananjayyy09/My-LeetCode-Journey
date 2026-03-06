@@ -1,0 +1,21 @@
+class Solution {
+public:
+    long long maxSpending(vector<vector<int>>& values) {
+        int m = values.size(), n = values[0].size();
+        priority_queue<int, vector<int>, greater<int>> pq;
+        for(int i = 0; i < m; i++){
+            for(int j = 0; j < n; j++){
+                pq.push(values[i][j]);
+            }
+        }
+
+        long long money = 0;
+        long long d = 1;
+        while(!pq.empty() && d <= m*n){
+            money += pq.top() * d;
+            pq.pop();
+            d++;
+        }
+        return money;
+    }
+};
