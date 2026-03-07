@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int maxStarSum(vector<int>& val, vector<vector<int>>& edges, int k) {
+        int n = val.size();
+        vector<vector<pair<int, int>>> adj(n);
+        for(auto &it : edges){
+            int u = it[0], v = it[1];
+            adj[u].push_back({val[v], v});
+            adj[v].push_back({val[u], u});
+        }
+
+        int maxSum = -1e9;
+        for(int i = 0; i < n; i++){
+            sort(adj[i].rbegin(), adj[i].rend());
+            int sum = val[i];
+            for(int j = 0; j < k && j < adj[i].size(); j++){
+                if(adj[i][j].first < 0) break;
+                sum += adj[i][j].first;
+            }
+            maxSum = max(maxSum, sum);
+        }
+        return maxSum;
+    }
+};
