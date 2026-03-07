@@ -1,0 +1,29 @@
+class Solution {
+public:
+    int minFlips(string s) {
+        int k = s.size();
+        int flips = 1e9, f1 = 0, f2 = 0;
+        int i = 0, j = 0;
+
+        while(j < 2*k){
+            char exp1 = (j % 2 == 0) ? '1' : '0';
+            char exp2 = (j % 2 == 0) ? '0' : '1';
+            if(s[j % k] != exp1) f1++;
+            if(s[j % k] != exp2) f2++;
+
+            if(j-i+1 > k){
+                char exp1 = (i % 2 == 0) ? '1' : '0';
+                char exp2 = (i % 2 == 0) ? '0' : '1';
+                if(s[i % k] != exp1) f1--;
+                if(s[i % k] != exp2) f2--;
+                i++;
+            }
+
+            if(j-i+1 == k){
+                flips = min({flips, f1, f2});
+            }
+            j++;
+        }
+        return flips;
+    }
+};
