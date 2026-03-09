@@ -1,0 +1,25 @@
+class Solution {
+public:
+    const int MOD = 1e9 + 7;
+    int solve(int zeros, int ones, int prev, int limit, vector<vector<vector<int>>> &dp){
+        if(ones == 0 && zeros == 0) return 1;
+        if(dp[zeros][ones][prev] != -1) return dp[zeros][ones][prev];
+        int ans = 0;
+        if(prev == 2 || prev == 1){
+            for(int len = 1; len <= min(zeros, limit); len++){
+                ans = (ans + solve(zeros - len, ones, 0, limit, dp)) % MOD;
+            }
+        } 
+        if(prev == 2 || prev == 0) {
+            for(int len = 1; len <= min(ones, limit); len++){
+                ans = (ans + solve(zeros, ones - len, 1, limit, dp)) % MOD;
+            }
+        }
+        return dp[zeros][ones][prev] = ans;
+    }
+
+    int numberOfStableArrays(int zero, int one, int limit) {
+        vector<vector<vector<int>>> dp(zero + 1, vector<vector<int>>(one + 1, vector<int>(3, -1)));
+        return solve(zero, one, 2, limit, dp);
+    }
+};
