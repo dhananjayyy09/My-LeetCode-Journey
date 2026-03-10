@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int maxNonOverlapping(vector<int>& nums, int target) {
+        unordered_set<int> st;
+        st.insert(0);
+        int count = 0;
+        int sum = 0;
+
+        for(auto &it : nums){
+            sum += it;
+            if(st.count(sum - target)){
+                count++;
+                st.clear();
+                st.insert(0);
+                sum = 0;
+            } else {
+                st.insert(sum);
+            }
+        }
+        return count;
+    }
+};
