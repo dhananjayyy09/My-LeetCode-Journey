@@ -1,0 +1,63 @@
+class Solution {
+public:
+    // memoization
+    int solve(int i, int prevE, vector<vector<int>> &taps, int n, vector<vector<int>> &dp){
+        int m = taps.size();
+        if(prevE >= n) return 0;
+        if(i == m) return 1e9;
+        if(dp[i][prevE + 1] != -1) return dp[i][prevE + 1];
+        int noTake = solve(i+1, prevE, taps, n, dp);
+        int take = 1e9;
+        int currS = taps[i][0], currE = taps[i][1];
+        if((prevE == -1 && currS == 0) || (prevE != -1 && prevE >= currS && currE > prevE)){
+            take = 1 + solve(i+1, currE, taps, n, dp);
+        } 
+        return dp[i][prevE + 1] = min(take, noTake);
+    }
+
+    int minTapss(int n, vector<int>& ranges) {
+        int m = ranges.size();
+        vector<vector<int>> taps;
+        for(int i = 0; i < m; i++){
+            int left = max(0, i - ranges[i]), right = min(n, i + ranges[i]);
+            taps.push_back({left, right});
+        }
+        sort(taps.begin(), taps.end());
+        vector<vector<int>> dp(m, vector<int>(n+1, -1));
+        int ans = solve(0, -1, taps, n, dp);
+        return ans >= 1e9 ? -1 : ans;
+    }
+
+    // tabulation
+    int minTaps(int n, vector<int>& ranges) {
+        int m = ranges.size();
+        vector<vector<int>> taps;
+        for(int i = 0; i < m; i++){
+            int left = max(0, i - ranges[i]);
+            int right = min(n, i + ranges[i]);
+            taps.push_back({left, right});
+        }
+
+        sort(taps.begin(), taps.end());
+        vector<vector<int>> dp(m+1, vector<int>(n+2, 1e9));
+        for(int prevE = -1; prevE <= n; prevE++){
+            if(prevE >= n) dp[m][prevE + 1] = 0;
+            else dp[m][prevE + 1] = 1e9;
+        }
+
+        for(int i = m-1; i >= 0; i--){
+            for(int prevE = -1; prevE <= n; prevE++){
+                int noTake = dp[i+1][prevE + 1];
+                int take = 1e9;
+                int currS = taps[i][0], currE = taps[i][1];
+                if((prevE == -1 && currS == 0) || (prevE != -1 && prevE >= currS && currE > prevE)){
+                    take = 1 + dp[i+1][currE + 1];
+                }
+                dp[i][prevE + 1] = min(take, noTake);
+            }
+        }
+
+        int ans = dp[0][0]; 
+        return ans >= 1e9 ? -1 : ans;
+    }
+};
