@@ -1,0 +1,50 @@
+class Solution {
+public:
+    // memoization
+    int solve(int i, int prevE, vector<vector<int>>& clips, int time, vector<vector<int>> &dp){
+        int n = clips.size();
+        if(prevE >= time) return 0;
+        if(i == n) return 1e9;
+        if(dp[i][prevE+1] != -1) return dp[i][prevE+1];
+        int noTake = solve(i+1, prevE, clips, time, dp);
+        int take = 1e9;
+        int currS = clips[i][0], currE = clips[i][1];
+        if((prevE == -1 && currS == 0) || (prevE != -1 && prevE >= currS && currE > prevE)){
+            take = 1 + solve(i+1, currE, clips, time, dp);
+        }
+        return dp[i][prevE+1] = min(take, noTake);
+    }
+
+    int videoStitchingg(vector<vector<int>>& clips, int time) {
+        int n = clips.size();
+        sort(clips.begin(), clips.end());
+        vector<vector<int>> dp(n, vector<int>(time + 1, -1));
+        int ans = solve(0, -1, clips, time, dp);
+        return (ans >= 1e9 ? -1 : ans);
+    }
+
+    // tabulation
+    int videoStitching(vector<vector<int>>& clips, int time) {
+        int n = clips.size();
+        sort(clips.begin(), clips.end());
+        vector<vector<int>> dp(n+1, vector<int>(time + 2, 1e9));
+        for(int prev = -1; prev <= time; prev++){
+            if(prev >= time) dp[n][prev + 1] = 0;
+        }
+
+        for(int i = n-1; i >= 0; i--){
+            for(int prevE = -1; prevE <= time; prevE++){
+                int noTake = dp[i+1][prevE + 1];
+                int take = 1e9;
+                int currS = clips[i][0], currE = min(clips[i][1], time);
+                if((prevE == -1 && currS == 0) || (prevE != -1 && prevE >= currS && currE > prevE)){
+                    take = 1 + dp[i + 1][currE + 1];
+                }
+                dp[i][prevE + 1] = min(take, noTake);(take, noTake);
+            }
+        }
+
+        int ans = dp[0][0];
+        return ans >= 1e9 ? -1 : ans;
+    }
+};
