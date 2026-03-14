@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int minTaps(int n, vector<int>& ranges) {
+        int m = ranges.size();
+        vector<int> garden(n+1, 0);
+        for(int i = 0; i < m; i++){
+            int start = max(0, i - ranges[i]), end = min(n, i + ranges[i]);
+            garden[start] = max(garden[start], end);
+        }
+
+        int taps = 0;
+        int maxEnd = 0, curEnd = 0;
+        for(int i = 0; i <= n; i++){
+            if(i > maxEnd) return -1;
+            if(i > curEnd){
+                taps++;
+                curEnd = maxEnd;
+            }
+            maxEnd = max(maxEnd, garden[i]);
+        }
+        return taps;
+    }
+};
