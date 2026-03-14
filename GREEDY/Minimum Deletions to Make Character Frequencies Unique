@@ -1,0 +1,20 @@
+class Solution {
+public:
+    int minDeletions(string s) {
+        unordered_map<char, int> mp;
+        for(auto &it : s){
+            mp[it]++;
+        }
+
+        int del = 0;
+        unordered_set<int> seen;
+        for(auto &[c,freq] : mp){
+            while(freq > 0 && seen.count(freq)){
+                freq--;
+                del++;
+            }
+            if(!seen.count(freq) && freq > 0) seen.insert(freq);
+        }
+        return del;
+    }
+};
