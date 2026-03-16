@@ -1,0 +1,37 @@
+class Solution {
+public:
+    long long minimumCost(int m, int n, vector<int>& hor, vector<int>& ver) {
+        int x = hor.size(), y = ver.size();
+        sort(hor.rbegin(), hor.rend());
+        sort(ver.rbegin(), ver.rend());
+
+        long long cost = 0;
+        int hpcs = 1, vpcs = 1;
+        int i = 0, j = 0;
+        
+        while(i < x && j < y){
+            if(hor[i] >= ver[j]){
+                cost += hor[i] * vpcs;
+                hpcs++;
+                i++;
+            }
+            else {
+                cost += ver[j] * hpcs;
+                vpcs++;
+                j++;
+            }
+        }
+        while(i < x){
+            cost += hor[i] * vpcs;
+            hpcs++;
+            i++;
+        }
+        while(j < y){
+            cost += ver[j] * hpcs;
+            vpcs++;
+            j++;
+        }
+        
+        return cost;
+    }
+};
