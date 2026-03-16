@@ -1,0 +1,29 @@
+class Solution {
+public:
+    double gain(int p, int t){
+        return (double)(p+1) / (t+1) - (double) p/t;
+    }
+
+    double maxAverageRatio(vector<vector<int>>& classes, int extra) {
+        priority_queue<tuple<double, int, int>> pq;
+        for(auto &it : classes) {
+            int p = it[0], t = it[1];
+            pq.push({gain(p,t), p, t});
+        }
+
+        while(extra--){
+            auto [r,p,t] = pq.top();
+            pq.pop();
+            pq.push({gain(p+1, t+1), p+1, t+1});
+        }
+
+        int n = classes.size();
+        double pRatio = 0;
+        while(!pq.empty()){
+            auto [r, p, t] = pq.top();
+            pq.pop();
+            pRatio += (double) p/t;
+        }
+        return pRatio / n;
+    }
+};
