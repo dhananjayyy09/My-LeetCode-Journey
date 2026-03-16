@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int solve(int i1, int i2, int j1, int j2, vector<int>& hor, vector<int>& ver, vector<vector<vector<vector<int>>>> &dp) {
+        if (i1 == i2 && j1 == j2) return 0;
+        if(dp[i1][i2][j1][j2] != -1) return dp[i1][i2][j1][j2];
+        int minCost = 1e9;
+        for (int k = i1; k < i2; k++) {
+            int cost = hor[k] + solve(i1, k, j1, j2, hor, ver, dp) + solve(k+1, i2, j1, j2, hor, ver, dp);
+            minCost = min(minCost, cost);
+        }
+        for (int k = j1; k < j2; k++) {
+            int cost = ver[k] + solve(i1, i2, j1, k, hor, ver, dp) + solve(i1, i2, k+1, j2, hor, ver, dp);
+            minCost = min(minCost, cost);
+        }
+        return dp[i1][i2][j1][j2] = minCost;
+    }
+
+    int minimumCost(int m, int n, vector<int>& hor, vector<int>& ver) {
+        vector<vector<vector<vector<int>>>> dp(m, vector<vector<vector<int>>>(
+            m, vector<vector<int>>(n, vector<int>(n, -1))));
+        return solve(0, m-1, 0, n-1, hor, ver, dp);
+    }
+};
