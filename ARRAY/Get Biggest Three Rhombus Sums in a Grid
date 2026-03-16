@@ -1,0 +1,33 @@
+class Solution {
+public:
+    set<int> st;
+    void addSet(int sum){
+        st.insert(sum);
+        if(st.size() > 3){
+            st.erase(st.begin());
+        }
+    }
+
+    vector<int> getBiggestThree(vector<vector<int>>& grid) {
+        int m = grid.size(), n = grid[0].size();
+        for(int r = 0; r < m; r++){
+            for(int c = 0; c < n; c++){
+                
+                addSet(grid[r][c]);
+                for(int s = 1; r+s < m && r-s >= 0 && c+s < n && c-s >= 0; s++){
+                    int sum = 0;
+                    for(int k = 0; k <= s-1; k++){
+                        sum += grid[r+s-k][c-k];
+                        sum += grid[r-s+k][c+k];
+                        sum += grid[r+k][c-s+k];
+                        sum += grid[r-k][c+s-k];
+                    }
+                    addSet(sum);
+                }
+            }
+        }
+
+        vector<int> ans(st.rbegin(), st.rend());
+        return ans;
+    }
+};
