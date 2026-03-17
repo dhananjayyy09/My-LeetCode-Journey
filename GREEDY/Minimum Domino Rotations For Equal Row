@@ -1,0 +1,37 @@
+class Solution {
+public:
+    int minDominoRotations(vector<int>& top, vector<int>& bottom) {
+        int n = top.size();
+        unordered_map<int, int> mp;
+        for(int i = 0; i < n; i++){
+            mp[top[i]]++;
+            mp[bottom[i]]++;
+        }
+
+        priority_queue<pair<int, int>> pq;
+        for(auto [val, freq] : mp){
+            if(freq >= n){
+                pq.push({freq, val});
+            }
+        }
+
+        while(!pq.empty()){
+            auto [freq, target] = pq.top();
+            pq.pop();
+
+            int moves1 = 0, moves2 = 0;
+            bool ok = true;
+            for(int i = 0; i < n; i++){
+                if(top[i] != target && bottom[i] != target){
+                    ok = false;
+                    break;
+                }
+                if(top[i] != target) moves1++;
+                if(bottom[i] != target) moves2++;
+            }
+            
+            if(ok) return min(moves1, moves2);
+        }
+        return -1;
+    }
+};
