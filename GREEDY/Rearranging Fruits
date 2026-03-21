@@ -1,0 +1,33 @@
+class Solution {
+public:
+    long long minCost(vector<int>& basket1, vector<int>& basket2) {
+        unordered_map<int, int> mp;
+        for(auto &it : basket1){
+            mp[it]++;
+        }
+        for(auto &it : basket2){
+            mp[it]--;
+        }
+
+        vector<int> extra;
+        for(auto &[num, freq] : mp){
+            if(freq == 0) continue;
+            if(freq % 2 != 0) return -1;
+            for(int i = 0; i < abs(freq)/2; i++){
+                extra.push_back(num);
+            }
+        }
+
+        int mini = 1e9;
+        for(auto &it : basket1) mini = min(mini, it);
+        for(auto &it : basket2) mini = min(mini, it);
+        sort(extra.begin(), extra.end());
+
+        int n = extra.size();
+        long long ops = 0;
+        for(int i = 0; i < n/2; i++){
+            ops += min(extra[i], 2 * mini);
+        }
+        return ops;
+    }
+};
