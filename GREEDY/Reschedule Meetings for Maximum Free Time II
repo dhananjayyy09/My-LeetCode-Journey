@@ -1,0 +1,33 @@
+class Solution {
+public:
+    int maxFreeTime(int eventTime, vector<int>& start, vector<int>& end) {
+        int n = end.size();
+        vector<int> free;
+        free.push_back(start[0]);
+        for(int i = 0; i < n-1; i++){
+            free.push_back(start[i+1] - end[i]);
+        }
+        free.push_back(eventTime - end[n-1]);
+
+        int m = free.size();
+        vector<int> maxRfree(m, 0);
+        vector<int> maxLfree(m, 0);
+        for(int i = m-2; i >= 0; i--){
+            maxRfree[i] = max(maxRfree[i+1], free[i+1]);
+        }
+        for(int i = 1; i < m; i++){
+            maxLfree[i] = max(maxLfree[i-1], free[i-1]);
+        }
+
+        int maxFree = 0;
+        for(int i = 1; i < m; i++){
+            int duration = end[i-1] - start[i-1];
+            int combine = free[i-1] + free[i];
+            if(duration <= max(maxLfree[i-1], maxRfree[i])){
+                maxFree = max(maxFree, duration + combine);
+            }
+            maxFree = max(maxFree, combine);
+        }
+        return maxFree;
+    }
+};
