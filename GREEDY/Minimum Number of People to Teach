@@ -1,0 +1,32 @@
+class Solution {
+public:
+    int minimumTeachings(int n, vector<vector<int>>& languages, vector<vector<int>>& friendships) {
+        unordered_set<int> sadUser;
+        for(auto &it : friendships){
+            int u = it[0] - 1, v = it[1] - 1;
+            unordered_set<int> lang(languages[u].begin(), languages[u].end());
+            bool canTalk = false;
+            for(auto &l : languages[v]){
+                if(lang.count(l)){
+                    canTalk = true;
+                    break;
+                }
+            }
+
+            if(!canTalk){
+                sadUser.insert(u);
+                sadUser.insert(v);
+            }
+        }
+
+        vector<int> sadLang(n+1, 0);
+        int maxKnow = 0;
+        for(auto &u : sadUser){
+            for(auto &l : languages[u]){
+                sadLang[l]++;
+                maxKnow = max(maxKnow, sadLang[l]);
+            }
+        }
+        return sadUser.size() - maxKnow;
+    }
+};
