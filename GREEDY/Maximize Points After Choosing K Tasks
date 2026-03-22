@@ -1,0 +1,28 @@
+class Solution {
+public:
+    long long maxPoints(vector<int>& technique1, vector<int>& technique2, int k) {
+        int n = technique1.size();
+        priority_queue<pair<int, int>> pq;
+        vector<int> vis(n, 0);
+
+        for(int i = 0; i < n; i++){
+            int gain = technique1[i] - technique2[i];
+            pq.push({gain, i});
+        }
+
+        long long ans = 0;
+        while(k-- && !pq.empty()){
+            auto [gain, idx] = pq.top();
+            pq.pop();
+            ans += technique1[idx];
+            vis[idx] = 1;
+        }
+
+        for(int i = 0; i < n; i++){
+            if(!vis[i]){
+                ans += max(technique1[i], technique2[i]);
+            }
+        }
+        return ans;
+    }
+};
