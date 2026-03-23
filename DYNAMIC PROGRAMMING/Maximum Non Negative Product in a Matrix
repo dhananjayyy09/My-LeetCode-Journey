@@ -1,0 +1,41 @@
+class Solution {
+public:
+    typedef long long ll;
+    const int MOD = 1e9 + 7;
+    int maxProductPath(vector<vector<int>>& grid) {
+        int m = grid.size(), n = grid[0].size();
+        vector<vector<ll>> maxi(m, vector<ll>(n));
+        vector<vector<ll>> mini(m, vector<ll>(n));
+
+        maxi[0][0] = grid[0][0];
+        mini[0][0] = grid[0][0];
+
+        for(int i = 1; i < m; i++){
+            maxi[i][0] = maxi[i-1][0] * grid[i][0];
+            mini[i][0] = mini[i-1][0] * grid[i][0];
+        }
+        for(int j = 1; j < n; j++){
+            maxi[0][j] = maxi[0][j-1] * grid[0][j];
+            mini[0][j] = mini[0][j-1] * grid[0][j];
+        }
+
+        for(int i = 1; i < m; i++){
+            for(int j = 1; j < n; j++){
+                ll maxUp = maxi[i-1][j], maxLeft = maxi[i][j-1];
+                ll minUp = mini[i-1][j], minLeft = mini[i][j-1];
+                ll val = grid[i][j];
+
+                ll a = maxUp * val;
+                ll b = maxLeft * val;
+                ll c = minUp * val;
+                ll d = minLeft * val;
+
+                maxi[i][j] = max({a, b, c, d});
+                mini[i][j] = min({a, b, c, d});
+            }
+        }
+
+        ll ans = maxi[m-1][n-1];
+        return ans < 0 ? -1 : ans % MOD;
+    }
+};
