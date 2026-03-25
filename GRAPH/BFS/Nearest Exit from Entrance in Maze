@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int nearestExit(vector<vector<char>>& maze, vector<int>& entrance) {
+        int m = maze.size(), n = maze[0].size();
+        int r = entrance[0], c = entrance[1];
+        queue<tuple<int, int, int>> q;
+        vector<pair<int, int>> dir = {{0, -1}, {0, 1}, {1, 0}, {-1, 0}};
+        q.push({r, c, 0});
+        maze[r][c] = '+';
+
+        while(!q.empty()){
+            auto [row, col, steps] = q.front();
+            q.pop();
+
+            for(auto [dx, dy] : dir){
+                int nr = row + dx, nc = col + dy;
+                if(nr < 0 || nr >= m || nc < 0 || nc >= n) continue;
+                if(maze[nr][nc] == '+') continue;
+                if(nr == 0 || nr == m-1 || nc == 0 || nc == n-1) return steps + 1;
+                q.push({nr, nc, steps + 1});
+                maze[nr][nc] = '+';
+            }
+        }                
+        return -1;
+    }
+};s
