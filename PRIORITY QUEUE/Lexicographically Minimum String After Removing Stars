@@ -1,0 +1,24 @@
+class Solution {
+public:
+    typedef pair<int, int> P;
+    string clearStars(string s) {
+        int n = s.size();
+        priority_queue<P, vector<P>, greater<P>> pq;
+        unordered_map<int, bool> mp;
+
+        for(int i = 0; i < n; i++){
+            if(s[i] == '*'){
+                mp[-pq.top().second] = true;
+                pq.pop();
+            }
+            else pq.push({s[i], -i});
+        }
+
+        string ans = "";
+        for(int i = 0; i < n; i++){
+            if(mp.count(i) || s[i] == '*') continue;
+            ans += s[i];
+        }
+        return ans;
+    }
+};
