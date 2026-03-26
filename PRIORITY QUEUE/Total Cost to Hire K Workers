@@ -1,0 +1,33 @@
+class Solution {
+public:
+    long long totalCost(vector<int>& costs, int k, int m) {
+        int n = costs.size();
+        priority_queue<int, vector<int>, greater<int>> leftPq, rightPq;
+
+        int i = 0, j = n-1;
+        for(int x = 0; x < m && i <= j; x++){
+            leftPq.push(costs[i++]);
+        }
+        for(int x = 0; x < m && i <= j; x++){
+            rightPq.push(costs[j--]);
+        }
+
+        long long cost = 0;
+        while(k--){
+            int leftVal = leftPq.empty() ? 1e9 : leftPq.top();
+            int rightVal = rightPq.empty() ? 1e9 : rightPq.top();
+
+            if(leftVal <= rightVal){
+                cost += leftVal;
+                leftPq.pop();
+                if(i <= j) leftPq.push(costs[i++]);
+            }
+            else {
+                cost += rightVal;
+                rightPq.pop();
+                if(i <= j) rightPq.push(costs[j--]);
+            }
+        }
+        return cost;
+    }
+};
