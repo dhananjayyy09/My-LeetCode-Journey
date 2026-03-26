@@ -1,0 +1,28 @@
+class Solution {
+public:
+    long long maxScore(vector<int>& nums1, vector<int>& nums2, int k) {
+        int n = nums1.size();
+        vector<pair<int, int>> arrays;
+        for(int i = 0; i < n; i++){
+            arrays.push_back({nums2[i], nums1[i]});
+        }
+        sort(arrays.rbegin(), arrays.rend());
+
+        priority_queue<int, vector<int>, greater<int>> pq;
+        long long totalScore = 0;
+        long long score = 0;
+        for(auto [mini, num] : arrays){
+            score += num;
+            pq.push(num);
+            if(pq.size() > k){
+                score -= pq.top();
+                pq.pop();
+            }
+            
+            if(pq.size() == k){
+                totalScore = max(totalScore, mini * score);
+            }
+        }
+        return totalScore;
+    }
+};
