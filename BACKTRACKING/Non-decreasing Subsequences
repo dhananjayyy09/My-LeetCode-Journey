@@ -1,0 +1,24 @@
+class Solution {
+public:
+    void solve(int idx, vector<int> &nums, vector<int> &curr, vector<vector<int>> &ans){
+        int n = nums.size();
+        if(curr.size() >= 2) ans.push_back(curr);
+        unordered_set<int> st;
+
+        for(int i = idx; i < n; i++){
+            if((curr.empty() || nums[i] >= curr.back()) && !st.count(nums[i])){
+                curr.push_back(nums[i]); // select
+                solve(i+1, nums, curr, ans); // explore
+                curr.pop_back(); // undo
+                st.insert(nums[i]);
+            }
+        }
+    }
+
+    vector<vector<int>> findSubsequences(vector<int>& nums) {
+        vector<vector<int>> ans;
+        vector<int> curr;
+        solve(0, nums, curr, ans);
+        return ans;
+    }
+};
