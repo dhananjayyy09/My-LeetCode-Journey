@@ -1,0 +1,41 @@
+class Solution {
+public:
+    vector<pair<int, int>> dir = {{0, 1}, {1, 0}, {-1, 0}, {0, -1}};
+    int solve(int i, int j, int empty, vector<vector<int>> &grid){
+        if(grid[i][j] == 2 && empty == 0) return 1;
+        int m = grid.size(), n = grid[0].size();
+        int temp = grid[i][j];
+        grid[i][j] = -1;
+        int ways = 0;
+        
+        for(auto [dx, dy] : dir){
+            int nr = i + dx, nc = j + dy;
+            if(nr >= 0 && nr < m && nc >= 0 && nc < n && grid[nr][nc] != -1){
+                ways += solve(nr, nc, empty - 1, grid);
+            }
+        }
+
+        grid[i][j] = temp;
+        return ways;
+    }
+    
+
+    int uniquePathsIII(vector<vector<int>>& grid) {
+        int m = grid.size(), n = grid[0].size();
+        int empty = 0;
+        for(int i = 0; i < m; i++){
+            for(int j = 0; j < n; j++){
+                if(grid[i][j] == 0) empty++;
+            }
+        }
+
+        for(int i = 0; i < m; i++){
+            for(int j = 0; j < n; j++){
+                if(grid[i][j] == 1) {
+                    return solve(i, j, empty + 1, grid);
+                }
+            }
+        }
+        return 0;
+    }
+};
