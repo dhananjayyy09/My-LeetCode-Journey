@@ -1,0 +1,35 @@
+class Solution {
+public:
+    vector<pair<int, int>> dir = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+    bool check(int i, int j, int wi, vector<vector<char>> &board, string &word){
+        if(wi == word.size()) return true; 
+        int m = board.size(), n = board[0].size();
+        bool found = false;
+        char temp = board[i][j];
+        board[i][j] = '#';
+
+        for(auto [dx, dy] : dir){
+            int nr = i + dx, nc = j + dy;
+            if(nr >= 0 && nr < m && nc >= 0 && nc < n && board[nr][nc] != '#'){
+                if(board[nr][nc] == word[wi]){
+                    found |= check(nr, nc, wi+1, board, word);
+                }
+            }
+        } 
+
+        board[i][j] = temp;
+        return found;
+    }
+
+    bool exist(vector<vector<char>>& board, string word) {
+        int m = board.size(), n = board[0].size();
+        for(int i = 0; i < m; i++){
+            for(int j = 0; j < n; j++){
+                if(board[i][j] == word[0]){
+                    if(check(i, j, 1, board, word)) return true;
+                }
+            }
+        }
+        return false;
+    }
+};
