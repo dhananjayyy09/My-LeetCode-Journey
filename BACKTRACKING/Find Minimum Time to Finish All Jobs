@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int ans = INT_MAX;
+    void solve(int idx, vector<int> &worker, vector<int> &jobs, int k){
+        int n = jobs.size();
+        if(idx >= n) {
+            int time = *max_element(worker.begin(), worker.end());
+            ans = min(time, ans);
+            return;
+        }
+        for(int i = 0; i < k; i++){
+            if(i > 0 && worker[i] == worker[i-1]) continue;
+            worker[i] += jobs[idx];
+            if(worker[i] < ans) solve(idx+1, worker, jobs, k);
+            worker[i] -= jobs[idx];
+            if(worker[i] == 0) break;
+        }
+    }
+
+    int minimumTimeRequired(vector<int>& jobs, int k) {
+        sort(jobs.rbegin(), jobs.rend());
+        vector<int> worker(k, 0);
+        solve(0, worker, jobs, k);
+        return ans;
+    }
+};
