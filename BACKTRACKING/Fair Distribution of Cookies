@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int solve(int idx, vector<int> &child, vector<int> &cookies, int k){
+        int n = cookies.size();
+        if(idx >= n) return *max_element(child.begin(), child.end());
+        int ans = 1e9;
+        for(int i = 0; i < k ; i++){
+            child[i] += cookies[idx];
+            ans = min(ans, solve(idx+1, child, cookies, k));
+            child[i] -= cookies[idx];
+        }
+        return ans;
+    }
+
+    int distributeCookies(vector<int>& cookies, int k) {
+        vector<int> child(k, 0);
+        return solve(0, child, cookies, k);
+    }
+};
