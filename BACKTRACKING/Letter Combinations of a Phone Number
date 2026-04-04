@@ -1,0 +1,33 @@
+class Solution {
+public:
+    unordered_map<char, string> phone;
+    void solve(int idx, string curr, string digits, vector<string> &ans){
+        if(curr.size() == digits.size()){
+            ans.push_back(curr);
+            return;
+        }
+
+        string letters = phone[digits[idx]];
+        for(char c : letters){
+            curr.push_back(c); // chose
+            solve(idx+1, curr, digits, ans); // explore
+            curr.pop_back();  // undo
+        }
+    }
+
+    vector<string> letterCombinations(string digits) {
+        phone['2'] = "abc";
+        phone['3'] = "def";
+        phone['4'] = "ghi";
+        phone['5'] = "jkl";
+        phone['6'] = "mno";
+        phone['7'] = "pqrs";
+        phone['8'] = "tuv";
+        phone['9'] = "wxyz";
+        
+        vector<string> ans;
+        string curr;
+        solve(0, curr, digits, ans);
+        return ans;
+    }
+};
