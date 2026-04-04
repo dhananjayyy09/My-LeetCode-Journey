@@ -1,0 +1,30 @@
+class Solution {
+public:
+    void solve(int idx, string &s, string &curr, vector<string> &ans){
+        if(curr.size() == s.size()){
+            ans.push_back(curr);
+            return;
+        }
+
+        if(isalpha(s[idx])){
+            curr.push_back(toupper(s[idx]));
+            solve(idx+1, s, curr, ans);
+            curr.pop_back();
+            curr.push_back(tolower(s[idx]));
+            solve(idx+1, s, curr, ans);
+            curr.pop_back();
+        }
+        else {
+            curr.push_back(s[idx]);
+            solve(idx+1, s, curr, ans);
+            curr.pop_back();
+        }
+    }
+
+    vector<string> letterCasePermutation(string s) {
+        vector<string> ans;
+        string curr;
+        solve(0, s, curr, ans);
+        return ans;
+    }
+};
