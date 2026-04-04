@@ -6,18 +6,22 @@ public:
             return;
         }
 
-        if(isalpha(s[idx])){
-            curr.push_back(toupper(s[idx]));
-            solve(idx+1, s, curr, ans);
-            curr.pop_back();
-            curr.push_back(tolower(s[idx]));
-            solve(idx+1, s, curr, ans);
-            curr.pop_back();
-        }
-        else {
-            curr.push_back(s[idx]);
-            solve(idx+1, s, curr, ans);
-            curr.pop_back();
+        int n = s.size();
+        for(int i = idx; i < n; i++){
+            if(isalpha(s[i])){
+                curr.push_back(toupper(s[i]));
+                solve(i+1, s, curr, ans);
+                curr.pop_back();
+                
+                curr.push_back(tolower(s[i]));
+                solve(i+1, s, curr, ans);
+                curr.pop_back();
+            }
+            else {
+                curr.push_back(s[i]);
+                solve(i+1, s, curr, ans);
+                curr.pop_back();
+            }
         }
     }
 
