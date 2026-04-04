@@ -6,16 +6,17 @@ public:
             ans.push_back(curr);
             return;
         }
-
+        
         string letters = phone[digits[idx]];
         for(char c : letters){
-            curr.push_back(c); // chose
-            solve(idx+1, curr, digits, ans); // explore
-            curr.pop_back();  // undo
+            curr.push_back(c);
+            solve(idx+1, curr, digits, ans);
+            curr.pop_back();
         }
     }
 
     vector<string> letterCombinations(string digits) {
+        if(digits.empty()) return {};
         phone['2'] = "abc";
         phone['3'] = "def";
         phone['4'] = "ghi";
