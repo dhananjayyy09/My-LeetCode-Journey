@@ -1,17 +1,35 @@
 class Solution {
 public:
+    // memoization
+    int solve(int target, vector<int> &nums, vector<int> &dp){
+        if(target == 0) return 1;
+        if(target < 0) return 0;
+        if(dp[target] != -1) return dp[target];
+        int ways = 0;
+        for(auto &num : nums){
+            ways += solve(target - num, nums, dp);
+        }
+        return dp[target] = ways;
+    }
+
+    int combinationSumm4(vector<int>& nums, int target) {
+        vector<int> dp(target + 1, -1);
+        return solve(target, nums, dp);
+    }
+
+    // tabulation
     int combinationSum4(vector<int>& nums, int target) {
-        int n = nums.size();
         vector<long long> dp(target + 1, 0);
         dp[0] = 1;
-        for(int t=1; t <= target; t++){
-            for(int num : nums){
-                if(num <= t){
-                    dp[t] += dp[t - num];
-                    if (dp[t] > INT_MAX) dp[t] = INT_MAX;  
+        for(int t = 1; t <= target; t++){
+            int ways = 0;
+            for(auto &num : nums){
+                if (t - num >= 0) {
+                    ways += dp[t - num];
                 }
             }
+            dp[t] = ways;
         }
-        return (int)dp[target];
+        return dp[target];
     }
 };
