@@ -1,0 +1,27 @@
+class Solution {
+public:
+    int maxCount = 0;
+    void solve(int i, int count, vector<vector<int>> &requests, vector<int> &ans){
+        int m = requests.size();
+        if(i == m){
+            for(auto x : ans){
+                if(x != 0) return;
+            }
+            maxCount = max(maxCount, count);
+            return;
+        }
+
+        ans[requests[i][0]]--;
+        ans[requests[i][1]]++;
+        solve(i+1, count + 1, requests, ans);
+        ans[requests[i][0]]++;
+        ans[requests[i][1]]--;
+        solve(i+1, count, requests, ans);
+    }
+
+    int maximumRequests(int n, vector<vector<int>>& requests) {
+        vector<int> ans(n, 0);
+        solve(0, 0, requests, ans);
+        return maxCount;
+    }
+};
