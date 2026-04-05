@@ -10,7 +10,7 @@ public:
         string letters = phone[digits[idx]];
         for(char c : letters){
             curr.push_back(c);
-            solve(idx+1, curr, digits, ans);
+            solve(idx + 1, curr, digits, ans);
             curr.pop_back();
         }
     }
