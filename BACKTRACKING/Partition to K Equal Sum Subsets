@@ -1,0 +1,34 @@
+class Solution {
+public:
+    bool solve(int idx, int target, vector<int> &nums, vector<int> &subsets, int k) {
+        int n = nums.size();
+        if(idx == n){
+            for(auto it : subsets){
+                if(it != target) return false;
+            }
+            return true;
+        }
+
+        for(int i = 0; i < k; i++){
+            if(i > 0 && subsets[i] == subsets[i-1]) continue;
+            if(subsets[i] + nums[idx] > target) continue;
+
+            subsets[i] += nums[idx];
+            if(solve(idx + 1, target, nums, subsets, k)) return true;
+            subsets[i] -= nums[idx];
+        }
+        return false;
+    }
+
+    bool canPartitionKSubsets(vector<int>& nums, int k) {
+        int sum = accumulate(nums.begin(), nums.end(), 0);
+        if(sum % k != 0) return false;
+
+        sort(nums.rbegin(), nums.rend());
+        int target = sum / k;
+        if(nums[0] > target) return false;
+
+        vector<int> subsets(k, 0);
+        return solve(0, target, nums, subsets, k);
+    }
+};
