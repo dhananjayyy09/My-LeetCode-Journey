@@ -1,0 +1,31 @@
+class Solution {
+public:
+    int ans = 0;
+    void solve(int node, int qlty, int curTime, int maxTime, vector<vector<pair<int,int>>> &adj, vector<int> &values, vector<int> &vis) {
+        if(node == 0) ans = max(ans, qlty);
+        for(auto [adjNode, adjTime] : adj[node]){
+            int newTime = curTime + adjTime;
+            if(newTime > maxTime) continue;
+            bool firstVis = (vis[adjNode] == 0) ? 1 : 0;
+            
+            vis[adjNode]++;
+            solve(adjNode, qlty + (firstVis == 1 ? values[adjNode] : 0), newTime, maxTime, adj, values, vis);
+            vis[adjNode]--;
+        }
+    }
+
+    int maximalPathQuality(vector<int>& values, vector<vector<int>>& edges, int maxTime) {
+        int n = values.size();
+        vector<vector<pair<int, int>>> adj(n);
+        for(auto it : edges){
+            int u = it[0], v = it[1], t = it[2];
+            adj[u].push_back({v, t});
+            adj[v].push_back({u, t});
+        }
+
+        vector<int> vis(n, 0);
+        vis[0] = 1;
+        solve(0, values[0], 0, maxTime, adj, values, vis);
+        return ans;
+    }
+};
