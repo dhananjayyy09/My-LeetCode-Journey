@@ -1,0 +1,49 @@
+class Solution {
+public:
+    vector<pair<int, int>> dir = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+    unordered_map<string, int> mp;
+    void solve(int i, int j, vector<vector<char>>& board, string &curr, vector<string> &ans){
+        int m = board.size(), n = board[0].size();
+        if(mp.count(curr)){
+            ans.push_back(curr);
+            mp.erase(curr);
+        }
+
+        char temp = board[i][j];
+        board[i][j] = '#';
+
+        for(auto [dx, dy] : dir){
+            int nr = i + dx, nc = j + dy;
+            if(nr >= 0 && nr < m && nc >= 0 && nc < n && board[nr][nc] != '#'){
+                curr.push_back(board[nr][nc]);
+                solve(nr, nc, board, curr, ans);
+                curr.pop_back();
+            }
+        }
+        board[i][j] = temp;
+    } 
+
+    vector<string> findWords(vector<vector<char>>& board, vector<string>& words) {
+        int m = board.size(), n = board[0].size();
+        vector<string> ans;
+        for(auto it : words){
+            mp[it]++;
+        }
+
+        unordered_map<char, int> start;
+        for(auto it : words){
+            start[it[0]]++;
+        }
+        
+        for(int i = 0; i < m; i++){
+            for(int j = 0; j < n; j++){
+                if(start.count(board[i][j])){
+                    string curr;
+                    curr.push_back(board[i][j]); 
+                    solve(i, j, board, curr, ans);
+                } 
+            }
+        }
+        return ans;
+    }
+};
