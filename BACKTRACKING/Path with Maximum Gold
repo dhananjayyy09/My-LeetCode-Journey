@@ -1,0 +1,30 @@
+ class Solution {
+public:
+    vector<pair<int, int>> dir = {{0, 1}, {1, 0}, {-1, 0}, {0, -1}};
+    int solve(int i, int j, vector<vector<int>> &grid){
+        int m = grid.size(), n = grid[0].size();
+        if(i < 0 || i >= m || j < 0 || j >= n || grid[i][j] == 0) return 0;
+
+        int ans = 0;
+        int temp = grid[i][j];
+        grid[i][j] = 0;
+        for(auto [dx, dy] : dir){
+            int nr = i + dx, nc = j + dy;
+            ans = max(ans, solve(nr, nc, grid));
+        }
+
+        grid[i][j] = temp;
+        return temp + ans;
+    }
+
+    int getMaximumGold(vector<vector<int>>& grid) {
+        int m = grid.size(), n = grid[0].size();
+        int maxDis = 0;
+        for(int i = 0; i < m; i++){
+            for(int j = 0; j < n; j++){
+                maxDis = max(maxDis, solve(i, j, grid));
+            }
+        }
+        return maxDis;
+    }
+};
