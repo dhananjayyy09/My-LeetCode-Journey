@@ -1,0 +1,32 @@
+class Solution {
+public:
+    int robotSim(vector<int>& commands, vector<vector<int>>& obstacles) {
+        vector<pair<int, int>> dir = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+        set<pair<int, int>> block;
+        for(auto it : obstacles){
+            block.insert({it[0], it[1]});
+        }
+
+        int maxDis = 0;
+        int x = 0, y = 0;
+        int d = 0;
+        for(auto &cmd : commands){
+            if(cmd == -1){
+                d = (d + 1) % 4;
+            }
+            else if(cmd == -2){
+                d = (d + 3) % 4;
+            }
+            else {
+                while(cmd--){
+                    auto [dx, dy] = dir[d];
+                    int nx = x + dx, ny = y + dy;
+                    if(block.count({nx, ny})) break;
+                    x = nx, y = ny;
+                    maxDis = max(maxDis, x*x + y*y);
+                }
+            }
+        }
+        return maxDis;
+    }
+};
