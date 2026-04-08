@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int minimumOperations(vector<int>& nums) {
+        unordered_map<int, int> freq;
+        for(auto it : nums){
+            freq[it]++;
+        } 
+
+        int ops = 0;
+        if(freq.size() == nums.size()) return 0;
+
+        int n = nums.size();
+        int i = 0;
+        while(freq.size() < n-i){
+            int cnt = 0;
+            while(cnt < 3 && i < n){
+                freq[nums[i]]--;
+                if(freq[nums[i]] == 0) freq.erase(nums[i]);
+                cnt++;
+                i++;
+            }
+            ops++;
+        }
+        return ops;
+    }
+};
