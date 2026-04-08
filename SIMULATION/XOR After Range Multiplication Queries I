@@ -1,0 +1,20 @@
+class Solution {
+public:
+    const int MOD = 1e9 + 7;
+    int xorAfterQueries(vector<int>& nums, vector<vector<int>>& queries) {
+        for(auto it : queries){
+            long long l = it[0], r = it[1], k = it[2], v = it[3];
+            long long idx = l;
+            while(idx <= r){
+                nums[idx] = (nums[idx] * v) % MOD;
+                idx += k;
+            }
+        }
+
+        int xorPro = 0;
+        for(auto it : nums){
+            xorPro ^= it;
+        }
+        return xorPro;
+    }
+};
