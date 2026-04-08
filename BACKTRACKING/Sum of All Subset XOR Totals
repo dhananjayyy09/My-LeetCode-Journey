@@ -1,0 +1,28 @@
+class Solution {
+public:
+    void solve(int idx, vector<int> &nums, vector<int> &curr, vector<vector<int>> &ans){
+        ans.push_back(curr);
+        int n = nums.size();
+        for(int i = idx; i < n; i++){
+            curr.push_back(nums[i]);
+            solve(i+1, nums, curr, ans);
+            curr.pop_back();
+        }
+    }
+
+    int subsetXORSum(vector<int>& nums) {
+        vector<vector<int>> ans;
+        vector<int> curr;
+        solve(0, nums, curr, ans);
+
+        int total = 0;
+        for(int i = 0; i < ans.size(); i++){
+            int xorr = 0;
+            for(int j = 0; j < ans[i].size(); j++){
+                xorr ^= ans[i][j];
+            }
+            total += xorr;
+        }
+        return total;
+    }
+};
