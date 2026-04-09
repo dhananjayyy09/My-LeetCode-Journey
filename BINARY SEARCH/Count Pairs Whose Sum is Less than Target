@@ -5,7 +5,7 @@ public:
         int left = 0, right = arr.size() - 1;
         int count = 0;
         while(left<right){
-            if(arr[left]+arr[right]<key){
+            if(arr[left] + arr[right] < key){
                 count = count + (right-left);
                 left++;
             }else{
