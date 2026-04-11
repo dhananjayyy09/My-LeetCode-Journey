@@ -1,0 +1,39 @@
+class Solution {
+public:
+    const double epsilon = 1e-6;
+    bool solve(vector<double> &cards){
+        if(cards.size() == 1) return abs(cards[0] - 24) <= epsilon;
+        for(int i = 0; i < cards.size(); i++){
+            for(int j = 0; j < cards.size(); j++){
+                if(i == j) continue;
+                
+                vector<double> rem;
+                for(int k = 0; k < cards.size(); k++){
+                    if(k != i && k != j){
+                        rem.push_back(cards[k]);
+                    }
+                }
+
+                double a = cards[i], b = cards[j];
+                vector<double> values = {a+b, a-b, b-a, a*b};
+                if(abs(a) > 0.0) values.push_back(b/a); 
+                if(abs(b) > 0.0) values.push_back(a/b); 
+
+                for(auto val : values){
+                    rem.push_back(val); // do
+                    if(solve(rem)) return true; // explore
+                    rem.pop_back(); // undo
+                }
+            }
+        }
+        return false;
+    }
+
+    bool judgePoint24(vector<int>& cards) {
+        vector<double> c;
+        for(int i = 0; i < cards.size(); i++){
+            c.push_back(double(cards[i]));
+        }
+        return solve(c);
+    }
+};
