@@ -1,0 +1,29 @@
+class Solution {
+public:
+    int solve(int i, vector<string>& words, vector<char>& letters, vector<int>& score, vector<int> &freq){
+        int n = words.size();
+        if(i == n) return 0;
+        int noTake = solve(i+1, words, letters, score, freq);
+        int curScore = 0, canTake = 1;
+        vector<int> temp = freq;
+        for(char c : words[i]){
+            if(temp[c-'a'] == 0){
+                canTake = 0;
+                break;
+            }
+            temp[c-'a']--;
+            curScore += score[c-'a'];
+        }
+        int take = 0;
+        if(canTake) take = curScore + solve(i+1, words, letters, score, temp);
+        return max(take, noTake);
+    }
+
+    int maxScoreWords(vector<string>& words, vector<char>& letters, vector<int>& score) {
+        vector<int> freq(26, 0);
+        for(auto c : letters){
+            freq[c-'a']++;
+        } 
+        return solve(0, words, letters, score, freq);
+    }
+};
