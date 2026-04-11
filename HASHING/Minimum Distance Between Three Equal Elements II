@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int minimumDistance(vector<int>& nums) {
+        int n = nums.size();
+        unordered_map<int, vector<int>> mp;
+        int minDis = 1e9;
+        for(int i = 0; i < n; i++){
+            int val = nums[i];
+            mp[val].push_back(i);
+
+            int m = mp[val].size();
+            if(m >= 3){
+                int a = mp[val][m-3];
+                int b = mp[val][m-2];
+                int c = mp[val][m-1];
+
+                int dist = abs(a-b) + abs(b-c) + abs(c-a);
+                minDis = min(minDis, dist);
+            }
+        }
+        return minDis == 1e9 ? -1 : minDis;
+    }
+};
