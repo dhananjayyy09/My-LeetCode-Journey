@@ -1,0 +1,35 @@
+class Solution {
+public:
+    string getHint(string secret, string guess) {
+        unordered_map<char, int> secretMp, guessMp;
+        for(auto c : secret) secretMp[c]++;
+        for(auto c : guess) guessMp[c]++;
+
+        int n = secret.size();
+        int right = 0;
+        for(int i = 0; i < n; i++){
+            if(guess[i] == secret[i]){
+                right++;
+                guessMp[guess[i]]--;
+                secretMp[guess[i]]--;
+                if(guessMp[guess[i]] == 0) guessMp.erase(guess[i]);
+                if(secretMp[guess[i]] == 0) secretMp.erase(guess[i]);
+            } 
+        }
+
+        int wrong = 0;
+        for(int i = 0; i < n; i++){
+            if(guess[i] != secret[i] && guessMp.count(guess[i]) && secretMp.count(guess[i])){
+                wrong++;
+                guessMp[guess[i]]--;
+                secretMp[guess[i]]--;
+                if(guessMp[guess[i]] == 0) guessMp.erase(guess[i]);
+                if(secretMp[guess[i]] == 0) secretMp.erase(guess[i]);
+            }
+        }
+
+        string r = to_string(right);
+        string w = to_string(wrong);
+        return r + "A" + w + "B";
+    }
+};
