@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int reversee(int num){
+        int rev = 0;
+        while(num > 0){
+            int last = num % 10;
+            rev = (rev * 10) + last;
+            num /= 10;
+        }
+        return rev;
+    }
+
+    int minMirrorPairDistance(vector<int>& nums) {
+        int n = nums.size();
+        unordered_map<int, int> mp; 
+        int ans = 1e9;
+        for(int j = 0; j < n; j++){
+            if(mp.count(nums[j])){
+                ans = min(ans, j - mp[nums[j]]);
+            }
+            int rev = reversee(nums[j]);
+            mp[rev] = j;
+        }
+        return ans == 1e9 ? -1 : ans;
+    }
+};
