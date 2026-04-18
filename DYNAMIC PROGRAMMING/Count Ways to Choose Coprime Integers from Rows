@@ -1,0 +1,21 @@
+class Solution {
+public:
+    const int MOD = 1e9 + 7;
+    int dp[151][151];
+    long long solve(int i, int g, vector<vector<int>> &mat){
+        int m = mat.size(), n = mat[0].size();
+        if(i == m) return g == 1;
+        if(dp[i][g] != -1) return dp[i][g];
+        long long ans = 0;
+        for(int j = 0; j < n; j++){
+            int newg = __gcd(g, mat[i][j]);
+            ans = (ans + solve(i+1, newg, mat)) % MOD;
+        }
+        return dp[i][g] = ans;
+    }
+
+    int countCoprime(vector<vector<int>>& mat) {
+        memset(dp, -1, sizeof(dp));
+        return solve(0, 0, mat);
+    }
+};
