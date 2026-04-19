@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int minimumSeconds(vector<int>& nums) {
+        int n = nums.size();
+        unordered_map<int, vector<int>> mp;
+        for(int i = 0; i < n; i++){
+            mp[nums[i]].push_back(i);
+        }
+
+        int minTime = 1e9;
+        for(auto [val, indices] : mp){
+            int m = indices.size();
+            int maxGap = 0;
+            for(int j = 1; j < m; j++){
+                maxGap = max(maxGap, indices[j] - indices[j-1] - 1); // consecutive
+            }
+            maxGap = max(maxGap, n-1 - indices[m-1] + indices[0]); // circular
+
+            int time = (maxGap + 1) / 2;
+            minTime = min(time, minTime);            
+        }
+        return minTime;
+    }
+};
