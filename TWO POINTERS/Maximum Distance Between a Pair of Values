@@ -5,7 +5,7 @@ public:
         int maxDis = 0;
         int i = 0, j = 0;
         while(i < m && j < n){
-            while(j < n && i <= j && nums1[i] <= nums2[j]){
+            while(j < n && nums1[i] <= nums2[j]){
                 maxDis = max(j-i, maxDis);
                 j++;
             }
