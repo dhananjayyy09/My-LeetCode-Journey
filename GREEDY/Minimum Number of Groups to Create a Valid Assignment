@@ -1,0 +1,34 @@
+class Solution {
+public:
+    int minGroupsForValidAssignment(vector<int>& balls) {
+        unordered_map<int, int> mp;
+        for(auto b : balls) {
+            mp[b]++;
+        }
+
+        vector<int> box;
+        for(auto [x, y] : mp) {
+            box.push_back(y);
+        }
+
+        int mini = 1e9;
+        for(int i : box) mini = min(mini, i);
+        
+        int ans = 1e9;
+        for(int k = 1; k <= mini; k++){
+            bool valid = true;
+            int total = 0;
+            
+            for(int f : box){
+                int grp = (f + k)/(k + 1);
+                if(grp * k > f){
+                    valid = false;
+                    break;
+                }
+                total += grp;
+            }
+            if(valid) ans = min(ans, total);
+        }
+        return ans;
+    }
+};
