@@ -5,12 +5,12 @@ public:
         int maxDis = 0;
         int i = 0, j = 0;
         while(i < m && j < n){
-            while(j < n && nums1[i] <= nums2[j]){
+            if(nums1[i] > nums2[j]){
+                i++;
+            } else {
                 maxDis = max(j-i, maxDis);
                 j++;
             }
-            i++;
-            j++;
         }
         return maxDis;
     }
