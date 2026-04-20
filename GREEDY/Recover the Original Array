@@ -1,0 +1,33 @@
+class Solution {
+public:
+    vector<int> recoverArray(vector<int>& nums) {
+        int n = nums.size();
+        sort(nums.begin(), nums.end());
+        
+        for(int i = 1; i < n; i++){
+            int diff = nums[i] - nums[0];
+            if(diff <= 0 || diff % 2 == 1) continue;
+            int k = diff / 2;
+            
+            vector<int> ans;
+            unordered_map<int, int> freq;
+            for(auto it : nums) freq[it]++;
+            bool valid = true;
+
+            for(int x : nums){
+                if(freq[x] == 0) continue;
+                if(freq[2*k + x] == 0){
+                    valid = false;
+                    break;
+                }
+
+                freq[x]--;
+                freq[2*k + x]--;
+                ans.push_back(x + k);
+            }
+            
+            if(valid && ans.size() == n/2) return ans;
+        }
+        return {};
+    }
+};
