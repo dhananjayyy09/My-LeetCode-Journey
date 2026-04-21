@@ -1,0 +1,28 @@
+class Solution {
+public:
+    typedef long long ll;
+    set<pair<int, long long>> dp;
+    bool solve(int i, ll curPro, ll target, vector<int> &nums){
+        int n = nums.size();
+        if(i == n || curPro > target) return false;
+        if(curPro == target) return true;
+        if(dp.count({i, curPro})) return false;
+        bool noTake = solve(i+1, curPro, target, nums);
+        bool take = solve(i+1, nums[i] * curPro, target, nums);
+        dp.insert({i, curPro});
+        return take || noTake;
+    }
+
+    bool checkEqualPartitions(vector<int>& nums, ll target) {
+        long double totalPro = 1;
+        for(auto it : nums){
+            totalPro *= it;
+        }
+        
+        totalPro = sqrt(totalPro);
+        double restPro = (totalPro - target);
+        if(restPro != 0) return false;
+        // if(totalPro != target * target);
+        return solve(0, 1, target, nums);
+    }
+};
