@@ -1,0 +1,31 @@
+class Solution {
+public:
+    typedef long long ll;
+    vector<long long> distance(vector<int>& nums) {
+        int n = nums.size();
+        vector<long long> arr(n, 0);
+        unordered_map<int, vector<int>> mp;
+        for(int i = 0; i < n; i++){
+            mp[nums[i]].push_back(i);
+        }
+
+        for(auto [nums, indices] : mp){
+            int m = indices.size();
+            if(m == 1) continue;
+            
+            vector<long long> prefix(m);
+            prefix[0] = indices[0];
+            for(int i = 1; i < m; i++){
+                prefix[i] = prefix[i-1] + indices[i];
+            }
+
+            for(int k = 0; k < m; k++){
+                ll left = (ll)indices[k] * k;
+                if(k > 0) left -= prefix[k-1];
+                ll right = (prefix[m-1] - prefix[k]) - (ll)indices[k] * (m-k-1);
+                arr[indices[k]] = left + right;
+            }
+        }
+        return arr;
+    }
+};
