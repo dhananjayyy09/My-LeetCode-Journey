@@ -1,0 +1,24 @@
+class Solution {
+public:
+    TreeNode *solve(int &p, int start, int end, vector<int>& preorder, vector<int>& inorder){
+        if(start > end) return NULL;
+        
+        int i = start;
+        int val = preorder[p];
+        while(i <= end && inorder[i] != val){
+            i++;
+        }
+
+        p++;
+        TreeNode *root = new TreeNode(val);
+        root->left = solve(p, start, i-1, preorder, inorder);
+        root->right = solve(p, i+1, end, preorder, inorder);
+        return root;
+    }
+
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+        int n = preorder.size();
+        int p = 0;
+        return solve(p, 0, n-1, preorder, inorder);   
+    }
+};
