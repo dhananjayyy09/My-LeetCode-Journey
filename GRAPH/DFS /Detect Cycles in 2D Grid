@@ -1,40 +1,28 @@
 class Solution {
 public:
-    int n, m;
-    bool dfs(vector<vector<char>>& grid, int x, int y, int px, int py, char tar,
-             vector<vector<bool>>& visited) {
-        visited[x][y] = true;
-        vector<int> dx = {0, 1, 0, -1};
-        vector<int> dy = {1, 0, -1, 0};
+    vector<pair<int, int>> dir = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+    bool dfs(int i, int j, int si, int sj, vector<vector<char>> &grid, vector<vector<int>> &vis){
+        int m = grid.size(), n = grid[0].size();
+        if(vis[i][j] == 1) return true;
+        vis[i][j] = 1;
 
-        for (int k = 0; k < 4; k++) {
-            int nx = x + dx[k];
-            int ny = y + dy[k];
-
-            if (nx < 0 || nx >= m || ny < 0 || ny >= n)
-                continue;
-            if (grid[nx][ny] != tar)
-                continue;
-            if (visited[nx][ny] and !(nx == px || ny == py))
-                return true;
-            if (!visited[nx][ny]) {
-                if (dfs(grid, nx, ny, x, y, tar, visited))
-                    return true;
+        for(auto [dx, dy] : dir){
+            int nr = i + dx, nc = j + dy;
+            if(nr >= 0 &&nr < m && nc >=0 && nc < n && grid[nr][nc] == grid[i][j]){
+                if(nr == si && nc == sj) continue;
+                if(dfs(nr, nc, i, j, grid, vis)) return true;
             }
         }
         return false;
     }
 
     bool containsCycle(vector<vector<char>>& grid) {
-        m = grid.size();
-        n = grid[0].size();
-        vector<vector<bool>> visited(m, vector<bool>(n, false));
-
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                if (!visited[i][j]) {
-                    if (dfs(grid, i, j, -1, -1, grid[i][j], visited))
-                        return true;
+        int m = grid.size(), n = grid[0].size();
+        vector<vector<int>> vis(m, vector<int> (n, 0));
+        for(int i = 0; i < m; i++){
+            for(int j = 0; j < n; j++){
+                if(!vis[i][j]){
+                    if(dfs(i, j, i, j, grid, vis)) return true;
                 }
             }
         }
