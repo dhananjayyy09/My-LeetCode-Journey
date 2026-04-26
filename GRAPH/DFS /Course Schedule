@@ -1,34 +1,30 @@
 class Solution {
 public:
-    bool dfs(int node, vector<vector<int>> &adj, vector<bool> &visited,vector<bool> &recstac){
-        visited[node] = true;
-        recstac[node] = true;
-        for(auto it : adj[node]){
-            if(!visited[it]){
-                if(dfs(it,adj,visited,recstac))
-                return true;
-            }
-            else if(recstac[it])
-            return true;
+    bool isCycle(int node, vector<vector<int>> &adj, vector<int> &vis, vector<int> &rec){
+        vis[node] = true;
+        rec[node] = true;
+
+        for(auto &it : adj[node]){
+            if(!vis[it] && isCycle(it, adj, vis, rec)) return true;
+            else if(vis[it] && rec[it]) return true;
         }
-        recstac[node] =false;
+
+        rec[node] = false;
         return false;
     }
 
-    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
-        int n = numCourses;
-        vector<vector<int>>adj(n);
-        for(auto pre : prerequisites){
-            adj[pre[1]].push_back(pre[0]);
+    bool canFinish(int n, vector<vector<int>>& prerequisites) {
+        vector<vector<int>> adj(n);
+        for(auto it : prerequisites){
+            int u = it[0], v = it[1];
+            adj[v].push_back(u);
         }
 
-        vector<bool>visited(n,false);
-        vector<bool>recstac(n,false);
-        for(int i=0;i<n;i++){
-            if(!visited[i]){
-                if(dfs(i,adj,visited,recstac))
-                return false;
-            }
+        vector<int> vis(n, 0);
+        vector<int> rec(n, 0);
+
+        for(int i = 0; i < n; i++){
+            if(!vis[i] && isCycle(i, adj, vis, rec)) return false; 
         }
         return true;
     }
