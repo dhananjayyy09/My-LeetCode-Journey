@@ -1,34 +1,29 @@
 class Solution {
 public:
-    bool dfs(int node, vector<int> &color, vector<vector<int>> &adj){
+    bool dfs(int node, int curClr, vector<vector<int>> &adj, vector<int> &color){
+        color[node] = curClr;
+        
         for(auto it : adj[node]){
+            if(color[node] == color[it]) return false;
             if(color[it] == -1){
-                color[it] = 1-color[node];
-                if(dfs(it, color, adj))
-                    return true;
+                int newClr = 1 - curClr;
+                if(!dfs(it, newClr, adj, color)) return false;
             }
-            else if(color[it] == color[node])
-                return true;
         }
-        return false;
+        return true;
     }
     
     bool possibleBipartition(int n, vector<vector<int>>& dislikes) {
         vector<vector<int>> adj(n+1);
         for(auto &a : dislikes){
-            int u = a[0];
-            int v = a[1];
+            int u = a[0], v = a[1];
             adj[u].push_back(v);
             adj[v].push_back(u);
         }
 
-        vector<int> color(n+1,-1);
-        for(int i=0; i<=n; i++){
-            if(color[i] == -1){
-                color[i] = 0;
-                if(dfs(i, color, adj))
-                return false;
-            }
+        vector<int> color(n+1, -1);
+        for(int i = 1; i <= n; i++){
+            if(color[i] == -1 && !dfs(i, 0, adj, color)) return false; 
         }
         return true;
     }
