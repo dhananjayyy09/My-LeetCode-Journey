@@ -1,0 +1,31 @@
+class Solution {
+public:
+    void bfs(vector<vector<int>> &adj, vector<int> &vis){
+        queue<int> q;
+        q.push(0);
+        vis[0] = 1;
+
+        while(!q.empty()){
+            auto node = q.front();
+            q.pop();
+
+            for(auto adjNode : adj[node]){
+                if(!vis[adjNode]){
+                    vis[adjNode] = 1;
+                    q.push(adjNode);
+                }
+            }
+        }
+    }
+
+    bool canVisitAllRooms(vector<vector<int>>& rooms) {
+        int n = rooms.size();
+        vector<int> vis(n, 0);
+        bfs(rooms, vis);
+
+        for(auto &it : vis){
+            if(!it) return false;
+        }
+        return 1;
+    }
+};
