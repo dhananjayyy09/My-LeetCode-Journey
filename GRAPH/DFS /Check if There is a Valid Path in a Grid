@@ -1,0 +1,38 @@
+class Solution {
+public:
+    unordered_map<int, vector<pair<int, int>>> directions = {
+        {1, {{0,-1}, {0,1}}},
+        {2, {{-1,0}, {1,0}}},
+        {3, {{0,-1}, {1,0}}},
+        {4, {{0,1}, {1,0}}},
+        {5, {{0,-1}, {-1,0}}},
+        {6, {{0,1}, {-1,0}}}
+    };
+
+    bool dfs(int i, int j, vector<vector<int>> &grid, vector<vector<int>> &vis){
+        int m = grid.size(), n = grid[0].size();
+        if(i == m-1 && j == n-1) return true;
+
+        vis[i][j] = 1;
+        for(auto &dir : directions[grid[i][j]]){
+            auto [dx, dy] = dir;
+            int nr = i + dx, nc = j + dy;
+            if(nr < 0 || nr >= m || nc < 0 || nc >= n || vis[nr][nc]) continue;
+            
+            for(auto &backDir : directions[grid[nr][nc]]){
+                auto [dx, dy] = backDir;
+                int bnr = nr + dx, bnc = nc + dy;
+                if(bnr == i && bnc == j){
+                    if(dfs(nr, nc, grid, vis)) return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    bool hasValidPath(vector<vector<int>>& grid) {
+        int m = grid.size(), n = grid[0].size();
+        vector<vector<int>> vis(m, vector<int>(n, 0));
+        return dfs(0, 0, grid, vis);
+    }
+};
