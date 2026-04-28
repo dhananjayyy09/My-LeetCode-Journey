@@ -9,8 +9,7 @@ public:
 
         int maxx = 0;
         for (int k = i; k <= j; ++k) {
-            int coins = nums[i - 1] * nums[k] * nums[j + 1] +
-                        solve(i, k - 1, nums, dp) + solve(k + 1, j, nums, dp);
+            int coins = nums[i - 1] * nums[k] * nums[j + 1] + solve(i, k - 1, nums, dp) + solve(k + 1, j, nums, dp);
             maxx = max(maxx, coins);
         }
 
