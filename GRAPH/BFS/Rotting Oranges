@@ -2,46 +2,34 @@ class Solution {
 public:
     int orangesRotting(vector<vector<int>>& grid) {
         int m = grid.size(), n = grid[0].size();
-        queue<tuple< int, int, int>> q;
-        vector<pair<int, int>> dir = {{0,1}, {0,-1}, {1,0}, {-1,0}};
-        for(int i=0; i<m; i++){
-            for(int j=0; j<n; j++){
-                if(grid[i][j] == 2){
-                    q.push({i, j, 0});
-                }
+        queue<pair<int, int>> q;
+        int time = 0, fresh = 0;
+        for(int i = 0; i < m; i++){
+            for(int j = 0; j < n; j++){
+                if(grid[i][j] == 2) q.push({i, j});
+                else if(grid[i][j] == 1) fresh++;
             }
         }
 
-        if(q.empty()){
-            bool isFresh = false;
-            for(int i=0; i<m; i++){
-                for(int j=0; j<n; j++){
-                    if(grid[i][j] == 1) isFresh = true;
-                }
-            }
-            if(!isFresh) return 0;
-        }
-        
-        int ans = 0;
-        while(!q.empty()){
-            auto[row, col, time] = q.front();
-            q.pop();
+        vector<pair<int, int>> dir = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+        while(!q.empty() && fresh > 0){
+            int sz = q.size();
+            time++;
 
-            ans = max(ans, time);
-            for(auto[dx, dy] : dir){
-                int nr = dx + row, nc = dy + col;
-                if(nr >= 0 && nr < m && nc >= 0 && nc < n && grid[nr][nc] == 1){
-                    grid[nr][nc] = 2;
-                    q.push({nr, nc, time+1});
+            while(sz--){
+                auto [row, col] = q.front();
+                q.pop();
+
+                for(auto [dx, dy] : dir){
+                    int nr = row + dx, nc = col + dy;
+                    if(nr >= 0 && nr < m && nc >= 0 && nc < n && grid[nr][nc] == 1){
+                        grid[nr][nc] = 2;
+                        fresh--;
+                        q.push({nr, nc});
+                    }
                 }
             }
         }
-        
-        for(int i=0; i<m; i++){
-            for(int j=0; j<n; j++){
-                if(grid[i][j] == 1) return -1;
-            }
-        }
-        return ans;
+        return fresh == 0 ? time : -1;
     }
 };
