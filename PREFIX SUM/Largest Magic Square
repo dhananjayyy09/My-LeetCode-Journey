@@ -5,15 +5,15 @@ public:
         vector<vector<int>> gridR(m, vector<int>(n, 0));
         vector<vector<int>> gridC(m, vector<int>(n, 0));
         
-        for(int i=0; i<m; i++){
+        for(int i = 0; i < m; i++){
             gridR[i][0] = grid[i][0];
-            for(int j=1; j<n; j++){
+            for(int j = 1; j < n; j++){
                 gridR[i][j] = gridR[i][j-1] + grid[i][j];
             } 
         }
-        for(int j=0; j<n; j++){
+        for(int j = 0; j < n; j++){
             gridC[0][j] = grid[0][j];
-            for(int i=1; i<m; i++){
+            for(int i = 1; i < m; i++){
                 gridC[i][j] = gridC[i-1][j] + grid[i][j];
             }
         }
