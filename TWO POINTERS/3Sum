@@ -1,0 +1,37 @@
+class Solution {
+public:
+    vector<vector<int>> twoSum(int i, int j, int target, vector<int> &nums){
+        vector<vector<int>> curr;
+
+        while(i < j){
+            int sum = nums[i] + nums[j];
+            if(sum < target) i++;
+            else if(sum > target) j--;
+            else {
+                while(i < j && nums[i] == nums[i+1]) i++;
+                while(i < j && nums[j] == nums[j-1]) j--;
+                curr.push_back({-target, nums[i], nums[j]});
+                i++;
+                j--;
+            }
+        }
+        return curr;
+    }
+
+    vector<vector<int>> threeSum(vector<int>& nums) {
+        int n = nums.size();
+        sort(nums.begin(), nums.end());
+        vector<vector<int>> ans;
+
+        for(int i = 0; i < n; i++){
+            if(i > 0 && nums[i] == nums[i-1]) continue;
+            int target = -nums[i];
+            vector<vector<int>> curr = twoSum(i+1, n-1, target, nums);
+
+            for(auto &vec : curr){
+                ans.push_back(vec);
+            }
+        }
+        return ans;
+    }
+};
