@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int dp[1001];
+    int solve(int i, int target, vector<int> &nums){
+        int n = nums.size();
+        if(i == n-1) return 0;
+        if(dp[i] != -1) return dp[i];
+        int ans = -1e9;
+        for(int j = i+1; j < n; j++){
+            if(abs(nums[j] - nums[i]) <= target){
+                int jump = solve(j, target, nums);
+                if(jump != -1e9) {
+                    ans = max(ans, 1 + jump);
+                }
+            }
+        }
+        return dp[i] = ans;
+    }
+
+    int maximumJumps(vector<int>& nums, int target) {
+        memset(dp, -1, sizeof(dp));
+        int ans = solve(0, target, nums);
+        return ans == -1e9 ? -1 : ans;
+    }
+};
