@@ -58,6 +58,9 @@ Example:
 ✅ Stack
 ✅ Queue
 ✅ Recursion
+✅ Backtrcking
+✅ Prefix Sum
+✅ Two Pointers
 
 ---
 
