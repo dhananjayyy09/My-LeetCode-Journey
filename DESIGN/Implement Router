@@ -50,10 +50,8 @@ public:
         }
 
         vector<int> &timeStamp = it->second;
-        int i = lower_bound(it->second.begin(), it->second.end(), start) -
-                timeStamp.begin();
-        int j = upper_bound(it->second.begin(), it->second.end(), end) -
-                timeStamp.begin();
+        int i = lower_bound(it->second.begin(), it->second.end(), start) - timeStamp.begin();
+        int j = upper_bound(it->second.begin(), it->second.end(), end) - timeStamp.begin();
 
         return j - i;
     }
