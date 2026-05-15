@@ -1,6 +1,6 @@
 class Solution {
 public:
-    string getHint(string secret, string guess) {
+    string getHint(string secret, string guess) { 
         unordered_map<char, int> secretMp, guessMp;
         for(auto c : secret) secretMp[c]++;
         for(auto c : guess) guessMp[c]++;
