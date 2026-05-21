@@ -27,8 +27,7 @@ public:
             auto nbr = boundCells.top();
             boundCells.pop();
             int ht = nbr.first;
-            int i = nbr.second.first;
-            int j = nbr.second.second;
+            int i = nbr.second.first, j = nbr.second.second;
 
             for(auto &d: dir){
                 int nr = i + d[0];
