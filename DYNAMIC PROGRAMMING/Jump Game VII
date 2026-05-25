@@ -1,6 +1,6 @@
 class Solution {
 public:
-    // memoization
+    // memoization 
     bool solve(int i, string &s, int minJp, int maxJp, vector<int> &dp){
         int n = s.size();
         if(i == n-1) return true;
