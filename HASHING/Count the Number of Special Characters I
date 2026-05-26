@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int numberOfSpecialChars(string word) {
+        unordered_map<char, int> up, low;
+        int count = 0;
+        for(auto &it : word){
+            if(isupper(it)) up[it]++;
+            else low[it]++;
+        }
+
+        for(char ch = 'a'; ch <= 'z'; ch++) {
+            if(low.count(ch) && up.count(ch - 'a'+'A')) {
+                count++;
+            }
+        }
+        return count;
+    }
+};
