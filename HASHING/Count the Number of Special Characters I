@@ -1,5 +1,5 @@
 class Solution {
-public:
+public: 
     int numberOfSpecialChars(string word) {
         unordered_map<char, int> up, low;
         int count = 0;
