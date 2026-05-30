@@ -1,5 +1,5 @@
 class Solution {
-public:
+public: 
     int getSum(int num){
         int sum = 0;
         while(num > 0){
