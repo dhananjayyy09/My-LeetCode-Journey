@@ -9,6 +9,6 @@ public:
                 ans += cost[i];
             }
         }
-        return ans;
+        return ans; 
     }
 };
