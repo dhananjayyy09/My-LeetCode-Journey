@@ -5,4 +5,4 @@ public:
         long long mini = *min_element(nums.begin(), nums.end());
         return (maxi - mini) * k;
     }
-};
+}; 
