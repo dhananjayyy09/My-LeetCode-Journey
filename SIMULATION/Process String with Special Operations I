@@ -1,0 +1,16 @@
+class Solution {
+public:
+    string processStr(string s) {
+        string ans = "";
+        for(auto it : s){
+            if(islower(it)) ans += it;
+            else if(it == '*') {
+                if(ans.size() >= 1) ans.pop_back();
+                else continue;
+            }
+            else if(it == '#') ans += ans;
+            else reverse(ans.begin(), ans.end());
+        }
+        return ans;
+    }
+};
