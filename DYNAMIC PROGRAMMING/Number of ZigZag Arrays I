@@ -33,7 +33,7 @@ public:
     }
 
     // tabulation
-    int zigZagArrays(int n, int l, int r) {
+    int zigZagArrayys(int n, int l, int r) {
         int h = r-l+1;
         int dp[2001][2001][2];
         memset(dp, 0, sizeof(dp));
@@ -53,6 +53,36 @@ public:
                 }
                 dp[i][prev][1] = inc;
                 dp[i][prev][0] = dec;
+            }
+        }
+
+        ll ans = 0;
+        for(int st = 1; st <= h; st++){
+            ans = (ans + dp[1][st][0]) % MOD;
+            ans = (ans + dp[1][st][1]) % MOD;
+        }
+        return ans;        
+    }
+
+    // optimal
+    int zigZagArrays(int n, int l, int r) {
+        int h = r-l+1;
+        int dp[2001][2001][2];
+        for(int prev = 1; prev <= h; prev++){
+            dp[n][prev][1] = 1;
+            dp[n][prev][0] = 1;
+        }
+
+        for(int i = n-1; i >= 1 ; i--){
+            vector<ll> preSum0(h+1, 0), preSum1(h+1, 0);
+            for(int val = 1; val <= h; val++){
+                preSum0[val] = (preSum0[val-1] + dp[i+1][val][0]) % MOD; 
+                preSum1[val] = (preSum1[val-1] + dp[i+1][val][1]) % MOD; 
+            }
+
+            for(int prev = 1; prev <= h; prev++){
+                dp[i][prev][0] = preSum1[prev-1];
+                dp[i][prev][1] = (preSum0[h] - preSum0[prev] + MOD) % MOD;
             }
         }
 
