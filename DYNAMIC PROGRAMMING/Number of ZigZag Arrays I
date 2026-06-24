@@ -1,0 +1,66 @@
+class Solution {
+public:
+    const int MOD = 1e9 + 7;
+    typedef long long ll;
+    ll dp[2001][2001][2];
+    
+    // memoization
+    ll solve(int i, int prev, int inc, int h, int n){
+        if(i == n) return 1;
+        if(dp[i][prev][inc] != -1) return dp[i][prev][inc];
+        ll res = 0;
+        if(inc){
+            for(int nxt = prev + 1; nxt <= h; nxt++){
+                res = (res + solve(i+1, nxt, 0, h, n)) % MOD;
+            }
+        } else {
+            for(int nxt = 1; nxt < prev; nxt++){
+                res = (res + solve(i+1, nxt, 1, h, n)) % MOD;
+            }
+        }
+        return dp[i][prev][inc] = res;
+    }
+
+    int zigZagArrayss(int n, int l, int r) {
+        int h = r-l+1;
+        memset(dp, -1, sizeof(dp));
+        ll ans = 0;
+        for(int st = 1; st <= h; st++){
+            ans = (ans + solve(1, st, 1, h, n)) % MOD;
+            ans = (ans + solve(1, st, 0, h, n)) % MOD;
+        }
+        return ans;
+    }
+
+    // tabulation
+    int zigZagArrays(int n, int l, int r) {
+        int h = r-l+1;
+        int dp[2001][2001][2];
+        memset(dp, 0, sizeof(dp));
+        for(int prev = 1; prev <= h; prev++){
+            dp[n][prev][1] = 1;
+            dp[n][prev][0] = 1;
+        }
+
+        for(int i = n-1; i >= 1 ; i--){
+            for(int prev = 1; prev <= h; prev++){
+                ll inc = 0, dec = 0;
+                for(int nxt = prev + 1; nxt <= h; nxt++){
+                    inc = (inc + dp[i+1][nxt][0]) % MOD;
+                }
+                for(int nxt = 1; nxt < prev; nxt++){
+                    dec = (dec + dp[i+1][nxt][1]) % MOD;
+                }
+                dp[i][prev][1] = inc;
+                dp[i][prev][0] = dec;
+            }
+        }
+
+        ll ans = 0;
+        for(int st = 1; st <= h; st++){
+            ans = (ans + dp[1][st][0]) % MOD;
+            ans = (ans + dp[1][st][1]) % MOD;
+        }
+        return ans;        
+    }
+};
