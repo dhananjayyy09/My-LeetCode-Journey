@@ -19,7 +19,7 @@ public:
             if(x1 > x4){
                 h = p1-1;
             } else {
-                l = p1 + 1;
+                l = p1+1;
             }
         }
         return -1;
