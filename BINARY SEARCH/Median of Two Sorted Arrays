@@ -1,0 +1,27 @@
+class Solution {
+public:
+    double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
+        int m = nums1.size(), n = nums2.size();
+        if(m > n) return findMedianSortedArrays(nums2, nums1);
+
+        int l = 0, h = m;
+        while(l <= h){
+            int p1 = l + (h-l) / 2;
+            int p2 = (m+n+1) / 2 - p1;
+            int x1 = (p1 == 0) ? -1e9 : nums1[p1-1], x2 = (p2 == 0) ? -1e9 : nums2[p2-1];
+            int x3 = (p1 == m) ? 1e9 :  nums1[p1], x4 = (p2 == n) ? 1e9 : nums2[p2];
+
+            if(x1 <= x4 && x2 <= x3){
+                if((m+n) % 2 == 1) return max(x1, x2);
+                return (max(x1, x2) + min(x3, x4)) / 2.0;
+            }        
+
+            if(x1 > x4){
+                h = p1-1;
+            } else {
+                l = p1 + 1;
+            }
+        }
+        return -1;
+    }
+};
