@@ -1,31 +1,26 @@
 class Solution {
 public:
-    void dfs(int node, unordered_map<int, vector<pair<int, int>>> &adj, vector<bool> &visited, int &ans){
-        visited[node] = true;
-        for(auto &it : adj[node]){
-            int v = it.first;
-            int d = it.second;
-            ans = min(ans, d);
-
-            if(!visited[v]){
-                dfs(v, adj, visited, ans);
+    int ans = 1e9;
+    void dfs(int node, vector<vector<pair<int, int>>> &adj, vector<bool> &vis){
+        vis[node] = 1;
+        for(auto [adjNode, adjDis] : adj[node]){
+            ans = min(ans, adjDis);
+            if(!vis[adjNode]){
+                dfs(adjNode, adj, vis);
             }
         }
     }
 
     int minScore(int n, vector<vector<int>>& roads) {
-        unordered_map<int, vector<pair<int, int>>> adj;
-        for(auto a : roads){
-            int u = a[0];
-            int v = a[1];
-            int d = a[2];
-
-            adj[u].push_back({v,d});
-            adj[v].push_back({u,d});
+        vector<vector<pair<int, int>>> adj(n+1);
+        for(auto &it : roads){
+            int u = it[0], v = it[1], w = it[2];
+            adj[u].push_back({v, w});
+            adj[v].push_back({u, w});
         }
-        vector<bool> visited(n, false);
-        int ans = INT_MAX;
-        dfs(1, adj, visited, ans);
-        return ans;
+
+        vector<bool> vis(n+1, 0);
+        dfs(1, adj, vis);
+        return ans; 
     }
 };
