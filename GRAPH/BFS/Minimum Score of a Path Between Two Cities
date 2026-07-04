@@ -1,0 +1,31 @@
+class Solution {
+public:
+    int minScore(int n, vector<vector<int>>& roads) {
+        vector<vector<pair<int, int>>> adj(n+1);
+        for(auto &it : roads){
+            int u = it[0], v = it[1], w = it[2];
+            adj[u].push_back({v, w});
+            adj[v].push_back({u, w});
+        }
+
+        vector<bool> vis(n+1, 0);
+        queue<int> q;
+        q.push(1);
+        vis[1] = 1;
+
+        int ans = 1e9;
+        while(!q.empty()){
+            auto node = q.front();
+            q.pop();
+            vis[node] = 1;
+
+            for(auto [adjNode, adjDis] : adj[node]){
+                ans = min(ans, adjDis);
+                if(!vis[adjNode]){
+                    q.push(adjNode);
+                }
+            }
+        }
+        return ans;
+    }
+};
