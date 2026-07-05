@@ -1,0 +1,54 @@
+class Solution {
+public:
+    const int MOD = 1e9 + 7;
+    int dp1[101][101];
+    int getVal(char ch) {
+        if (ch >= '0' && ch <= '9') return ch - '0';
+        return 0; 
+    }
+
+    int getSum(int i, int j, vector<vector<char>> &grid) {    
+        int n = grid.size();
+        if (i < 0 || j < 0 || grid[i][j] == 'X') return -1e9;
+        if (i == 0 && j == 0) return 0;
+        if(dp1[i][j] != -1) return dp1[i][j];
+        int up = getSum(i-1, j, grid);
+        int left = getSum(i, j-1, grid);
+        int diag = getSum(i-1, j-1, grid);
+        int best = (getVal(grid[i][j]) + max({up, left, diag})) % MOD;
+        return dp1[i][j] = (best == -1e9) ? -1e9 : best;
+    } 
+
+    int getPaths(int i, int j, int target, vector<vector<char>> &grid, vector<vector<vector<int>>> &dp2){
+        if (i < 0 || j < 0 || grid[i][j] == 'X') return 0;
+        if (i == 0 && j == 0) {
+            return (target == 0);
+        }        
+        if(dp2[i][j][target] != -1) return dp2[i][j][target];
+        int val = getVal(grid[i][j]);
+        if(target < val) return 0;
+        int up = getPaths(i-1, j, target - val, grid, dp2);
+        int left = getPaths(i, j-1, target - val, grid, dp2);
+        int diag = getPaths(i-1, j-1, target - val, grid, dp2);
+        return dp2[i][j][target] = (up + left + diag) % MOD;
+    }
+
+    vector<int> pathsWithMaxScore(vector<string>& board) {
+        int n = board.size();
+        vector<vector<char>> grid;
+        for (string s : board) {
+            vector<char> row(s.begin(), s.end());
+            grid.push_back(row);
+        }
+        if(grid[n-1][n-1] != 'S' || grid[0][0] != 'E') return {0, 0};
+        
+        memset(dp1, -1, sizeof(dp1));
+        int maxSum = getSum(n-1, n-1, grid);
+        if(maxSum < 0) return {0, 0};
+        
+        vector<vector<vector<int>>> dp2(n, vector<vector<int>>(n, vector<int>(maxSum + 1, -1)));
+        int paths = getPaths(n-1, n-1, maxSum, grid, dp2);
+        if(paths == 0) return {0, 0};
+        return {maxSum, paths};
+    }
+};
