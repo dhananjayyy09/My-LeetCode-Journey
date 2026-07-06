@@ -2,7 +2,7 @@ class Solution {
 public:
     const int MOD = 1e9 + 7;
     int dp1[101][101];
-    int getVal(char ch) {
+    int getVal(char ch) { 
         if (ch >= '0' && ch <= '9') return ch - '0';
         return 0; 
     }
