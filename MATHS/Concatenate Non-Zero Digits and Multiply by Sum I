@@ -1,0 +1,21 @@
+class Solution {
+public:
+    long long sumAndMultiply(int n) {
+        string no = to_string(n);
+        string num;
+        for(auto &it : no){
+            if(it == '0') continue;
+            else num += it;
+        }
+        if(num.size() == 0) return 0;
+
+        long long nm = stoll(num);
+        long long temp = nm;
+        long long sum = 0;
+        while(temp > 0){
+            sum += temp % 10;
+            temp /= 10;
+        }
+        return sum * nm;
+    }
+};
