@@ -10,7 +10,7 @@ public:
         if(num.size() == 0) return 0;
 
         long long nm = stoll(num);
-        long long temp = nm;
+        long long temp = nm; 
         long long sum = 0;
         while(temp > 0){
             sum += temp % 10;
