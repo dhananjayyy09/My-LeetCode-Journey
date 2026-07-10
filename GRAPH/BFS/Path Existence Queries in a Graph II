@@ -1,0 +1,42 @@
+class Solution {
+public:
+    int bfs(int node, int dest, vector<vector<int>> &adj, int n){
+        queue<int> q;
+        vector<int> dist(n, -1);
+        dist[node] = 0;
+        q.push(node);
+
+        while(!q.empty()){
+            auto node = q.front();
+            q.pop();
+
+            for(auto adjNode : adj[node]){
+                if(dist[adjNode] == -1){
+                    dist[adjNode] = 1 + dist[node];
+                    q.push(adjNode);
+                }
+            }
+        }
+        return dist[dest];
+    }
+
+    vector<int> pathExistenceQueries(int n, vector<int>& nums, int maxDiff, vector<vector<int>>& queries) {
+        vector<vector<int>> adj(n);
+        for(int i = 0; i < n; i++){
+            for(int j = i + 1; j < n; j++){
+                if(abs(nums[i] - nums[j]) <= maxDiff){
+                    adj[i].push_back(j);
+                    adj[j].push_back(i);
+                }
+            }
+        }
+
+        vector<int> ans;
+        for(auto &it : queries){
+            int src = it[0], dest = it[1];
+            int res = bfs(src, dest, adj, n);
+            ans.push_back(res);
+        }
+        return ans;
+    }
+};
