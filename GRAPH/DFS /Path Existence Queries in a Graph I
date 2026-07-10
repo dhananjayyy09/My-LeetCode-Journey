@@ -1,0 +1,33 @@
+class Solution {
+public:
+    bool dfs(int node, int dest, vector<vector<int>> &adj, vector<int> &vis){
+        vis[node] = 1;
+        if(node == dest) return true;
+        for(auto it : adj[node]){
+            if(!vis[it]){
+                if(dfs(it, dest, adj, vis)) return true;
+            }
+        }
+        return false;
+    }
+
+    vector<bool> pathExistenceQueries(int n, vector<int>& nums, int maxDiff, vector<vector<int>>& queries) {
+        vector<vector<int>> adj(n);
+        for(int i = 1; i < n; i++){
+            if(nums[i] - nums[i-1] <= maxDiff){
+                adj[i].push_back(i-1);
+                adj[i-1].push_back(i);
+            }
+            else adj[i-1].push_back(i-1);
+        }
+
+        vector<bool> ans;
+        for(auto &it : queries){
+            int src = it[0], dest = it[1];
+            vector<int> vis(n, 0);
+            bool res = dfs(src, dest, adj, vis);
+            ans.push_back(res);
+        }
+        return ans;
+    }
+};
