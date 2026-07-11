@@ -60,7 +60,7 @@ Example:
 ✅ Recursion
 ✅ Backtrcking
 ✅ Prefix Sum
-✅ Two Pointers
+✅ Two Pointers 
 
 ---
 
