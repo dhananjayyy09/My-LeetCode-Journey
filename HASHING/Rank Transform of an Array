@@ -1,0 +1,21 @@
+class Solution {
+public:
+    vector<int> arrayRankTransform(vector<int>& arr) {
+        int n = arr.size();
+        vector<int> temp = arr;
+        sort(temp.begin(), temp.end());
+        
+        unordered_map<int, int> mp;
+        unordered_set<int> st; 
+        for(int i = 0; i < n; i++){
+            st.insert(temp[i]);
+            mp[temp[i]] = st.size();
+        }        
+
+        vector<int> ans;
+        for(int i = 0; i < n; i++){
+            ans.push_back(mp[arr[i]]);
+        }
+        return ans;
+    }
+};
