@@ -1,0 +1,16 @@
+class Solution {
+public:
+    int digitFrequencyScore(int n) {
+        string num = to_string(n);
+        unordered_map<int, int> mp;
+        for(auto &it : num){
+            mp[it]++;
+        }
+
+        int sum = 0;
+        for(auto [nm, freq] : mp){
+            sum += (freq * (nm - '0'));
+        }
+        return sum;
+    }
+};
