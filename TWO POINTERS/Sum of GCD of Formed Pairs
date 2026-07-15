@@ -1,0 +1,23 @@
+class Solution {
+public:
+    long long gcdSum(vector<int>& nums) {
+        int n = nums.size();
+        int maxi = nums[0];
+        vector<int> preGCD(n);
+        for(int i = 0; i < n; i++){
+            maxi = max(maxi, nums[i]);
+            preGCD[i] = gcd(maxi, nums[i]);
+        }
+
+        sort(preGCD.begin(), preGCD.end());
+        int i = 0, j = n-1;
+        long long sum = 0;
+        while(i < j){
+            int curGCD = gcd(preGCD[i], preGCD[j]); 
+            sum += curGCD;
+            i++;
+            j--;
+        }
+        return sum;
+    }
+};
