@@ -11,3 +11,12 @@ public:
         return gcd(evenSum, oddSum);
     }
 };
+
+// optimal
+class Solution {
+public:
+    int gcdOfOddEvenSums(int n) {
+        int evenSum = n*(n+1), oddSum = n*n;
+        return gcd(evenSum, oddSum);
+    }
+};
