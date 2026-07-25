@@ -1,0 +1,36 @@
+class Solution {
+public:
+    int minNumberOfFrogs(string croakOfFrogs) {
+        int n = croakOfFrogs.size();
+        int c = 0, r = 0, a = 0, o = 0, k = 0;
+        int active = 0, ans = 0;
+        for(auto &it : croakOfFrogs){
+            if(it == 'c'){
+                active++;
+                ans = max(ans, active);
+                c++;
+            } 
+            else if(it == 'r'){
+                if(c == 0) return -1;
+                c--;
+                r++;
+            }
+            else if(it == 'o'){
+                if(r == 0) return -1;
+                r--;
+                o++;
+            }
+            else if(it == 'a'){
+                if(o == 0) return -1;
+                o--;
+                a++;
+            }
+            else if(it == 'k'){
+                if(a == 0) return -1;
+                a--;
+                active--;
+            }
+        }
+        return active == 0 ? ans : -1;
+    }
+};
