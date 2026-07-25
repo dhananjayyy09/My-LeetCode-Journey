@@ -1,7 +1,6 @@
 class Solution {
 public:
     int minNumberOfFrogs(string croakOfFrogs) {
-        int n = croakOfFrogs.size();
         int c = 0, r = 0, a = 0, o = 0, k = 0;
         int active = 0, ans = 0;
         for(auto &it : croakOfFrogs){
