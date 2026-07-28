@@ -1,0 +1,12 @@
+class Solution {
+public:
+    string smallestPalindrome(string s) {
+        int n = s.size();
+        string ans = s.substr(0, n/2);
+        sort(ans.begin(), ans.end());
+        string temp = ans;
+        if(n % 2 == 1) ans += s[n/2];
+        reverse(temp.begin(), temp.end());
+        return ans + temp;        
+    }
+};
