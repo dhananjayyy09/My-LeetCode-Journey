@@ -14,14 +14,6 @@ This is my personal coding journey to improve problem-solving skills, strengthen
 Each folder contains solutions for a specific topic (e.g. Linked List, Arrays, Dynamic Programming).
 ---
 
-## 🚀 About
-This is my personal coding journey to improve problem-solving skills, strengthen Data Structures & Algorithms (DSA) knowledge, and prepare for coding interviews.
-
----
-
-## 📂 Repository Structure
-Each folder contains solutions for a specific topic (e.g., Linked List, Arrays, Dynamic Programming).
-
 Example:
 
 ---
