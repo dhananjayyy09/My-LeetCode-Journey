@@ -1,0 +1,43 @@
+class Solution {
+public:
+    TreeNode* getLCA(TreeNode* root, int p, int q){
+        if(!root) return NULL;
+        if(p == root->val || q == root->val) return root;
+        
+        TreeNode* left = getLCA(root->left, p, q);
+        TreeNode* right = getLCA(root->right, p, q);
+        if(left && right) return root;
+
+        if(!left) return right;
+        return left;
+    }
+
+    bool dfs(TreeNode* root, string &path, int target){
+        if(!root) return false;
+        if(root->val == target) return true;
+        
+        path.push_back('L');
+        if(dfs(root->left, path, target)) return true;
+        path.pop_back();
+        
+        path.push_back('R');
+        if(dfs(root->right, path, target)) return true;
+        path.pop_back();
+
+        return false;
+    }
+
+    string getDirections(TreeNode* root, int src, int dst) {
+        TreeNode* lca = getLCA(root, src, dst);
+        string srcPath = "", dstPath = "";
+        dfs(lca, srcPath, src);
+        dfs(lca, dstPath, dst);
+
+        string ans = "";
+        for(int i = 0; i < srcPath.size(); i++){
+            ans.push_back('U');
+        }
+        ans += dstPath;
+        return ans;
+    }
+};
