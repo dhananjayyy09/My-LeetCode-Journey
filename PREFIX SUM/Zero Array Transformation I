@@ -2,14 +2,18 @@ class Solution {
 public:
     bool isZeroArray(vector<int>& nums, vector<vector<int>>& queries) {
         int n = nums.size();
+        vector<int> diff(n, 0);
         for(auto &it : queries){
             int l = it[0], r = it[1];
-            for(int i = l; i <= r; i++){
-                if(nums[i] > 0) nums[i] --;  
-            }
+            diff[l]++;
+            if(r+1 < n) diff[r+1]--;
         }
 
-        int sum = accumulate(nums.begin(), nums.end(), 0);
-        return sum == 0;
+        int preSum = 0;
+        for(int i = 0; i < n; i++){
+            preSum += diff[i];
+            if(preSum < nums[i]) return 0;
+        }
+        return 1;
     }
 };
