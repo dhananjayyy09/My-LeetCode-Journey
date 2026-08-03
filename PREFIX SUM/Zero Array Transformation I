@@ -1,0 +1,15 @@
+class Solution {
+public:
+    bool isZeroArray(vector<int>& nums, vector<vector<int>>& queries) {
+        int n = nums.size();
+        for(auto &it : queries){
+            int l = it[0], r = it[1];
+            for(int i = l; i <= r; i++){
+                if(nums[i] > 0) nums[i] --;  
+            }
+        }
+
+        int sum = accumulate(nums.begin(), nums.end(), 0);
+        return sum == 0;
+    }
+};
