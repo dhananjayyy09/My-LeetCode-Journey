@@ -8,7 +8,7 @@ This repo contains my solutions to various **LeetCode problems**, organized by t
 ## 🚀 About
 This is my personal coding journey to improve problem-solving skills, strengthen Data Structures & Algorithms (DSA) knowledge, and prepare for coding interviews.
 
----
+--- 
 
 ## 📂 Repository Structure
 Each folder contains solutions for a specific topic (e.g. Linked List, Arrays, Dynamic Programming).
