@@ -19,18 +19,23 @@ public:
         vector<int> spcs(n, 0);
         markSpcs(k, adj, spcs);
 
+        bool all = false;
         for(auto &it : invocations){
             int u = it[0], v = it[1];
             if(!spcs[u] && spcs[v]){
-                vector<int> ans;
-                for(int i = 0; i < n; i++) ans.push_back(i);
-                return ans;
+                all = true;
             }
         }
 
         vector<int> ans;
-        for(int i = 0; i < n; i++){
-            if(!spcs[i]) ans.push_back(i);
+        if(all){
+            for(int i = 0; i < n; i++){
+                ans.push_back(i);
+            }
+        } else {
+            for(int i = 0; i < n; i++){
+                if(!spcs[i]) ans.push_back(i);
+            }
         }
         return ans;
     }
