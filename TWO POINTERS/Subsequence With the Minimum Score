@@ -1,0 +1,48 @@
+class Solution {
+public:
+    int minimumScore(string s, string t) {
+        int m = s.size(), n = t.size();
+        vector<int> pre(n, -1);
+        int l = 0;
+
+        for(int i = 0; i < n; i++){
+            while(l < m && s[l] != t[i]) l++;
+            if(l == m) break;
+            pre[i] = l;
+            l++;
+        }
+
+        vector<int> suff(n, -1);
+        int r = m-1;
+
+        for(int i = n-1; i >= 0; i--){
+            while(r >= 0 && s[r] != t[i]) r--;
+            if(r < 0) break;
+            suff[i] = r;
+            r--;
+        }
+
+        int ans = n;
+        for(int i = 0; i < n; i++){
+            if(pre[i] != -1) {
+                ans = min(ans, n-i-1);
+            }
+        }
+
+        for(int j = 0; j < n; j++){
+            if(suff[j] != -1) { 
+                ans = min(ans, j);
+            }
+        }
+
+        int j = 0;
+        for(int i = 0; i < n; i++){
+            if(i > 0 && pre[i-1] == -1) break;
+
+            int prePos = (i == 0) ? -1 : pre[i-1];
+            while(j < n && (suff[j] == -1 || suff[j] <= prePos)) j++;
+            if(j < n) ans = min(ans, j-i);
+        }
+        return max(0, ans);
+    }
+};
