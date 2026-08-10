@@ -1,0 +1,35 @@
+class Solution {
+public:
+    // memoization
+    int dp[1002];
+    int solve(int i, vector<int> &prices){
+        int n = prices.size();
+        if(2*i >= n) return prices[i-1];
+        if(dp[i] !=-1) return dp[i];
+        int coins = 1e9;
+        for(int j = i+1; j <= min(n, 2*i+1); j++){
+            coins = min(coins, prices[i-1] + solve(j, prices));
+        }
+        return dp[i] = coins;
+    }
+
+    int minimumCoinss(vector<int>& prices) {
+       memset(dp, -1, sizeof(dp));
+       return solve(1, prices);
+    }
+
+    // tabulation
+    int minimumCoins(vector<int>& prices) {
+        int n = prices.size();
+        vector<int> dp(n+2, 0);
+        dp[n+1] = 0;
+        for(int i = n; i >= 1; i--){
+            int coins = 1e9;
+            for(int j = i+1; j <= min(n+1, 2*i+1); j++){
+                coins = min(coins, prices[i-1] + dp[j]);
+            }
+            dp[i] = coins;
+        }
+        return dp[1];        
+    }
+};s
