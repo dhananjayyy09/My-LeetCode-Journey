@@ -1,0 +1,39 @@
+class Solution {
+public:
+    void dfs(int u, vector<int> &comp, vector<int> &vis, vector<int> &nums){
+        vis[u] = 1;
+        comp.push_back(u);
+
+        int n = nums.size();    
+        for(int v = 0; v < n; v++){
+            if(vis[v]) continue;
+
+            if((v < u && nums[v] > nums[u]) || (v > u && nums[v] < nums[u])){
+                dfs(v, comp, vis,  nums);
+            }
+        }
+    }
+
+    vector<int> maxValue(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> ans(n), vis(n, 0);
+
+        for(int i = 0; i < n; i++){
+            if(!vis[i]){
+                vector<int> comp;
+                dfs(i, comp, vis, nums);
+
+                int maxi = -1e9;
+                for(int it : comp){
+                    maxi = max(maxi, nums[it]);
+                }
+
+                for(int it : comp){
+                    ans[it] = maxi;
+                }
+            }
+        }
+
+        return ans;
+    }
+}; 
