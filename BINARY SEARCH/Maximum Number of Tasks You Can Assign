@@ -35,8 +35,7 @@ public:
             if(isPossible(mid, t, w, p, s )) {
                 ans = mid;
                 l = mid + 1;
-            } 
-            else {
+            } else {
                 r = mid - 1;
             } 
         }
