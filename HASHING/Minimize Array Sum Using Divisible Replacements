@@ -1,0 +1,21 @@
+class Solution {
+public:
+    long long minArraySum(vector<int>& nums) {
+        int n = nums.size();
+        unordered_set<int> seen(nums.begin(), nums.end());
+        long long sum = 0;
+
+        for(int i = 0; i < n; i++){
+            int nm = nums[i];
+            int temp = nm;
+            for(int d = 1; d*d <= temp; d++){
+                if(temp % d != 0) continue;
+                if(seen.count(d)) nm = min(nm, d);
+                int div2 = temp / d;
+                if(seen.count(div2)) nm = min(nm, div2);
+            }
+            sum += nm; 
+        }
+        return sum;
+    }
+};
