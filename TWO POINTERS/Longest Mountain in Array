@@ -23,4 +23,30 @@ public:
         }
         return maxLen;
     }
+
+    // OPTIMAL
+    int longestMountain(vector<int>& arr) {
+            int n = arr.size();
+            if(n < 3) return 0;
+            int maxLen = 0, inc = 0, dec = 0;
+            
+            for(int i = 1; i < n; i++){
+                if(arr[i] > arr[i-1]){
+                    if(dec > 0) inc = 0;
+                    inc++;
+                    dec = 0;
+                }
+                else if(arr[i] < arr[i-1]){
+                    if(inc > 0) {
+                        dec++;
+                        maxLen = max(maxLen, inc + dec + 1);
+                    }
+                }
+                else {
+                    inc = 0;
+                    dec = 0;
+                }
+            }
+            return maxLen;
+        }
 };
