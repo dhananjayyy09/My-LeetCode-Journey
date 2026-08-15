@@ -1,0 +1,53 @@
+class Solution {
+public:
+    int solve1(int i, int j, vector<vector<int>>& fruits){
+        int n = fruits.size();
+        int ans = 0;
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < n; j++){
+                if(i == j) ans += fruits[i][j]; 
+            }
+        }
+        return ans;
+    }
+
+    int dp2[1001][1001];
+    vector<pair<int, int>> dir2 = {{1, -1}, {1, 1}, {1, 0}};
+    int solve2(int i, int j, vector<vector<int>>& fruits){
+        int n = fruits.size();
+        if(i < 0 || i >= n || j < 0 || j >= n) return -1e9;
+        if(i == n-2 && j == n-1) return fruits[n-2][n-1];
+        if(dp2[i][j] != -1) return dp2[i][j];
+        int ans = -1e9;
+        for(auto [dx, dy] : dir2){
+            int nr = i + dx, nc = j + dy;
+            ans = max(ans, solve2(nr, nc, fruits));
+        }
+        return dp2[i][j] = fruits[i][j] + ans;
+    }
+
+    int dp3[1001][1001];
+    vector<pair<int, int>> dir3 = {{-1, 1}, {1, 1}, {0, 1}};
+    int solve3(int i, int j, vector<vector<int>>& fruits){
+        int n = fruits.size();
+        if(i < 0 || i >= n || j < 0 || j >= n) return -1e9;
+        if(i == n-1 && j == n-2) return fruits[n-1][n-2];
+        if(dp3[i][j] != -1) return dp3[i][j];
+        int ans = -1e9;
+        for(auto [dx, dy] : dir3){
+            int nr = i + dx, nc = j + dy;
+            ans = max(ans, solve3(nr, nc, fruits));
+        }
+        return dp3[i][j] = fruits[i][j] + ans;
+    }
+
+    int maxCollectedFruits(vector<vector<int>>& fruits) {
+        int n = fruits.size();
+        memset(dp2, -1, sizeof(dp2));
+        memset(dp3, -1, sizeof(dp3));
+        int c1 = solve1(0, 0, fruits);
+        int c2 = solve2(0, n-1, fruits);
+        int c3 = solve3(n-1, 0, fruits);
+        return c1 + c2 + c3;
+    }
+};
