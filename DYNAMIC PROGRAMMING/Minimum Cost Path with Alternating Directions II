@@ -2,27 +2,23 @@ class Solution {
 public:
     typedef long long ll;
     vector<pair<int, int>> dir = {{0, 1}, {1, 0}};
-    ll solve(int i, int j, int t, vector<vector<int>> &waitCost, vector<vector<vector<ll>>> &dp){
+    ll solve(int i, int j, vector<vector<int>> &waitCost, vector<vector<ll>> &dp){
         int m = waitCost.size(), n = waitCost[0].size();
         if(i >= m || j >= n) return LLONG_MAX / 4;
         if(i == m-1 && j == n-1) return (1LL) * m*n;
 
-        if(dp[i][j][t] != -1) return dp[i][j][t];
+        if(dp[i][j] != -1) return dp[i][j];
         ll ans = LLONG_MAX;
         for(auto [dx, dy] : dir){
             int nr = i + dx, nc = j + dy;
             int cost = (1LL) * (i+1) * (j+1);
-            if(t) {
-                ans = min(ans, cost + waitCost[i][j] + solve(nr, nc, 1, waitCost, dp));
-            } else {
-                ans = min(ans, cost + solve(nr, nc, 1, waitCost, dp));
-            }
+            ans = min(ans, cost + waitCost[i][j] + solve(nr, nc, waitCost, dp));
         }
-        return dp[i][j][t] = ans;
+        return dp[i][j] = ans;
     }
 
     ll minCost(int m, int n, vector<vector<int>>& waitCost) {
-        vector<vector<vector<ll>>> dp(m, vector<vector<ll>> (n, vector<ll> (2, -1)));
-        return solve(0, 0, 0, waitCost, dp);
+        vector<vector<ll>> dp(m, vector<ll> (n, -1));
+        return solve(0, 0, waitCost, dp) - waitCost[0][0];
     }
 };
