@@ -1,0 +1,15 @@
+class Solution {
+public:
+    int longestSubsequence(vector<int>& nums) {
+        int total = 0, hasNonZero = 0;
+        for(int x : nums) {
+            total ^= x;
+            if(x != 0) hasNonZero = 1;
+        }
+
+        int n = nums.size();
+        if(!hasNonZero) return 0;
+        if(total != 0) return n;
+        return n-1;
+    }
+};
