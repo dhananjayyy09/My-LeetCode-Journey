@@ -1,0 +1,32 @@
+class Solution {
+public:
+    typedef long long ll;
+    typedef tuple<ll, int, int> T;
+    long long minCost(int m, int n, vector<vector<int>>& waitCost) {
+        priority_queue<T, vector<T>, greater<T>> pq;
+        vector<vector<ll>> dist(m, vector<ll>(n, LLONG_MAX));
+        vector<pair<int, int>> dir = {{0, 1}, {1, 0}};
+
+        bool t = 0;
+        pq.push({1, 0, 0});
+        dist[0][0] = 1;
+
+        while(!pq.empty()){
+            auto [cost, i, j] = pq.top();
+            pq.pop();
+
+            if(i == m-1 && j == n-1) return cost - waitCost[0][0];
+            for(auto [dx, dy] : dir){
+                int nr = i + dx, nc = j + dy;
+                ll entry = (1LL) * (nr + 1) * (nc + 1);
+                if(nr < m && nc < n){
+                    if(cost + entry + waitCost[i][j] < dist[nr][nc]){
+                        dist[nr][nc] = cost + entry + waitCost[i][j];
+                        pq.push({dist[nr][nc], nr, nc});
+                    }
+                }
+            }
+        }    
+        return -1;   
+    }
+};
