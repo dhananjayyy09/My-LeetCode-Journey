@@ -1,0 +1,70 @@
+class Solution {
+public:
+    int minSwaps(vector<int>& nums) {
+        int n = nums.size();
+        int odd = 0, even = 0;
+        for(auto it : nums){
+            if(it % 2 == 0) even++;
+            else odd++;
+        }
+        if(odd > even + 1 || even > 1 + odd) return -1;
+
+        vector<int> evenIdx;
+        for(int i = 0; i < n; i++){
+            if(nums[i] % 2 == 0) evenIdx.push_back(i);
+        }
+
+        long long ans = LLONG_MAX;
+        if(n % 2 == 1){
+            if(even > odd){
+                vector<int> actIdx;
+                for(int i = 0; i < n; i+=2){
+                    actIdx.push_back(i);
+                }
+
+                long long swaps = 0;
+                for(int i = 0; i < actIdx.size(); i++){
+                    swaps += abs(actIdx[i] - evenIdx[i]);
+                }
+                ans = min(ans, swaps);
+            }
+            else {
+                vector<int> actIdx;
+                for(int i = 1; i < n; i+=2){
+                    actIdx.push_back(i);
+                }
+
+                long long swaps = 0;
+                for(int i = 0; i < actIdx.size(); i++){
+                    swaps += abs(actIdx[i] - evenIdx[i]);
+                }
+                ans = min(ans, swaps);
+            }
+        }
+        else {
+            vector<int> actIdx1;
+            for(int i = 0; i < n; i+=2){
+                actIdx1.push_back(i);
+            }
+
+            long long swaps = 0;
+            for(int i = 0; i < actIdx1.size(); i++){
+                swaps += abs(actIdx1[i] - evenIdx[i]);
+            }
+            ans = min(ans, swaps);
+
+
+            vector<int> actIdx2;
+            for(int i = 1; i < n; i+=2){
+                actIdx2.push_back(i);
+            }
+
+            swaps = 0;
+            for(int i = 0; i < actIdx2.size(); i++){
+                swaps += abs(actIdx2[i] - evenIdx[i]);
+            }
+            ans = min(ans, swaps);           
+        }
+        return ans;
+    }
+};
