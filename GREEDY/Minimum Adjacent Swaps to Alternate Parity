@@ -58,7 +58,7 @@ public:
             for(int i = 1; i < n; i+=2){
                 actIdx2.push_back(i);
             }
-
+ 
             swaps = 0;
             for(int i = 0; i < actIdx2.size(); i++){
                 swaps += abs(actIdx2[i] - evenIdx[i]);
