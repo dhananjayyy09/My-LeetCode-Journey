@@ -1,0 +1,27 @@
+class Solution {
+public:
+    long long getSum(int n){
+        long long sum = 0;
+        while(n){
+            sum += (n % 10);
+            n /= 10;
+        }
+        return sum;
+    }
+
+    long long getProduct(int n){
+        long long pro = 1;
+        while(n){
+            pro *= (n % 10);
+            n /= 10;
+        }
+        return pro;
+    }
+
+    bool checkDivisibility(int n) {
+        long long sum = getSum(n);
+        long long pro = getProduct(n);
+        long long total = sum + pro;
+        return n % total == 0;
+    }
+};
