@@ -1,0 +1,46 @@
+class Solution {
+public:
+    // memoization
+    int dp[100001];
+    int solve(int i, vector<int> &prefix){
+        int n = prefix.size();
+        if(i == n-1) return prefix[n-1];
+        if(dp[i] != -1) return dp[i];
+        int noTake = solve(i+1, prefix);
+        int take = prefix[i] - solve(i+1, prefix);
+        return dp[i] = max(take, noTake);
+    }
+
+    int stoneGameeVIII(vector<int>& stones) {
+        int n = stones.size();
+        memset(dp, -1, sizeof(dp));
+        
+        vector<int> prefix(n);
+        prefix[0] = stones[0];
+        for(int i = 1; i < n; i++){
+            prefix[i] = prefix[i-1] + stones[i];
+        }
+        return solve(1, prefix);
+    }
+
+    // tabulation
+    int stoneGameVIII(vector<int>& stones) {
+        int n = stones.size();
+        vector<int> dp(n+1, 0);
+        vector<int> prefix(n);
+
+        dp[n-1] = prefix[n-1];
+        prefix[0] = stones[0];
+        for(int i = 1; i < n; i++){
+            prefix[i] = prefix[i-1] + stones[i];
+        }
+
+        for(int i = n-2; i >= 1; i--){
+            int noTake = dp[i+1];
+            int take = prefix[i] - dp[i+1];
+            dp[i] = max(take, noTake);
+
+        }
+        return dp[1];
+    }
+};
