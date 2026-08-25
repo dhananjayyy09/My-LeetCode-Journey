@@ -1,0 +1,11 @@
+class Solution {
+public:
+    int missingMultiple(vector<int>& nums, int k) {
+        unordered_set<int> st(nums.begin(), nums.end());
+        for(int i = 1; i < 102; i++){
+            int mul = k*i;
+            if(!st.count(mul)) return mul;
+        }
+        return -1;
+    }
+};
