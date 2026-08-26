@@ -1,0 +1,27 @@
+class Solution {
+public:
+    string shortestBeautifulSubstring(string s, int k) {
+        int n = s.size();
+        vector<pair<int, string>> valid;
+        int sum = 0, i = 0;
+
+        for(int j = 0; j < n; j++){
+            if(s[j] == '1') sum++;
+            while(sum == k){
+                valid.push_back({j-i+1, s.substr(i, j-i+1)});
+                if(s[i] == '1') sum--;
+                i++;
+            }
+        }
+
+        sort(valid.begin(), valid.end(), [](const pair<int, string>& a, const pair<int, string>& b) {
+            if (a.first == b.first) return a.second < b.second;
+            return a.first < b.first;
+        });
+
+        for(auto [l, str] : valid){
+            return str;
+        }
+        return "";
+    }
+};
