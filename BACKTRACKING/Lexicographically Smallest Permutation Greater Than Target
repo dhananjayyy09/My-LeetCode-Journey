@@ -1,0 +1,35 @@
+class Solution {
+public:
+    string ans = "";
+    bool solve(int i, bool found, string curr, string &target, vector<int> &freq){
+        if(curr.size() == target.size()){
+            if(found) {
+                ans = curr;
+                return true;
+            }
+            return false;
+        }
+
+        for(char c = 'a'; c <= 'z'; c++){
+            if(freq[c-'a'] == 0) continue;
+            if(!found && c < target[i]) continue;
+
+            curr.push_back(c);
+            freq[c-'a']--;
+            bool grtr = found || c > target[i];
+            if(solve(i+1, grtr, curr, target, freq)) return true;
+            curr.pop_back();
+            freq[c-'a']++;
+        }
+        return false;
+    }
+
+    string lexGreaterPermutation(string s, string target) {
+        vector<int> freq(26, 0);
+        for(auto it : s){
+            freq[it-'a']++;
+        }
+        solve(0, 0, "", target, freq);
+        return ans;
+    }
+};
