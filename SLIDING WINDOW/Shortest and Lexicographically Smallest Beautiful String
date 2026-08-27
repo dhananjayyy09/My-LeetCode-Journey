@@ -11,7 +11,7 @@ public:
                 valid.push_back({j-i+1, s.substr(i, j-i+1)});
                 if(s[i] == '1') sum--;
                 i++;
-            }
+            }   
         }
 
         sort(valid.begin(), valid.end(), [](const pair<int, string>& a, const pair<int, string>& b) {
