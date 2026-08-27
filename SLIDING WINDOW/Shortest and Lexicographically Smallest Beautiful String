@@ -2,7 +2,7 @@ class Solution {
 public:
     string shortestBeautifulSubstring(string s, int k) {
         int n = s.size();
-        vector<pair<int, string>> valid;
+        vector<pair<int, string>> valid; 
         int sum = 0, i = 0;
 
         for(int j = 0; j < n; j++){
