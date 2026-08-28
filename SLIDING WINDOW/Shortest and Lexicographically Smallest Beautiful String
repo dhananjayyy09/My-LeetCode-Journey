@@ -10,7 +10,7 @@ public:
             while(sum == k){
                 valid.push_back({j-i+1, s.substr(i, j-i+1)});
                 if(s[i] == '1') sum--;
-                i++;
+                i++; 
             }   
         }
 
