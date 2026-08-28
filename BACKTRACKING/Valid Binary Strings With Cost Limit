@@ -1,0 +1,38 @@
+class Solution {
+public:
+    vector<string> all;
+    void solve(int i, string curr, int n){
+        if(i == n) {
+            all.push_back(curr);
+            return;
+        }
+
+        curr.push_back('0');
+        solve(i+1, curr, n);
+        curr.pop_back();
+        
+        curr.push_back('1');
+        solve(i+1, curr, n);
+        curr.pop_back();
+    }
+
+    vector<string> generateValidStrings(int n, int k) {
+        solve(0, "", n);    
+        vector<string> ans;
+
+        for(auto s : all){
+            int sum = 0;
+            bool valid = true;
+            for(int i = 1; i < n; i++){
+                if(s[i] == '1' && s[i-1] == '1') {
+                    valid = false;
+                    break;
+                }
+                if(s[i] == '1') sum += i; 
+            }
+            
+            if(valid && sum <= k) ans.push_back(s);
+        } 
+        return ans;
+    }
+};
