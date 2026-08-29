@@ -1,0 +1,28 @@
+class Solution {
+public:
+    vector<int> lexicographicallySmallestArray(vector<int>& nums, int limit) {
+        int n = nums.size();
+        vector<int> sorted = nums;
+        sort(sorted.begin(), sorted.end());
+        unordered_map<int, int> mp;
+        vector<vector<int>> grp;
+        int id = -1;
+
+        for(int i = 0; i < n; i++){
+            if(i == 0 || sorted[i] - sorted[i-1] > limit){
+                grp.push_back({});
+                id++;
+            }
+            grp[id].push_back(sorted[i]);
+            mp[sorted[i]] = id;
+        }
+
+        vector<int> idx(grp.size(), 0);
+        for(int i = 0; i < n ; i++){
+            int curId = mp[nums[i]];
+            nums[i] = grp[curId][idx[curId]];
+            idx[curId]++;
+        }
+        return nums;
+    }
+};
