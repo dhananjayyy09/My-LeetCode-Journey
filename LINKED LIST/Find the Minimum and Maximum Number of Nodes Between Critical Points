@@ -1,0 +1,27 @@
+class Solution {
+public:
+    vector<int> nodesBetweenCriticalPoints(ListNode* head) {
+        if(!head || !head->next) return {-1, -1};
+        ListNode *prev = head;     
+        ListNode *curr = head->next;
+        vector<int> critical;
+        int idx = 1;   
+
+        while(curr->next){
+            if((curr->val > prev->val && curr->val > curr->next->val) || (curr->val < prev->val && curr->val < curr->next->val)) {
+                critical.push_back(idx);
+            }
+            prev = curr;
+            curr = curr->next;
+            idx++;
+        }  
+
+        if(critical.size() < 2) return {-1, -1};
+        int maxD = critical.back() - critical.front();
+        int minD = 1e9;
+        for(int i = 1; i < critical.size(); i++){
+            minD = min(minD, critical[i] - critical[i-1]);
+        }
+        return {minD, maxD};
+    }
+};
