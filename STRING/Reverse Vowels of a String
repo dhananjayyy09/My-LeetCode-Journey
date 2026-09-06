@@ -1,0 +1,30 @@
+class Solution {
+public:
+    string reverseVowels(string s) {
+        int n = s.size();
+        unordered_set<char> st = {'a', 'e', 'i', 'o', 'u', 'A', 'E', 'I', 'O', 'U'};
+        vector<int> idx;
+        vector<char> vwl;
+        for(int i = 0; i < n; i++){
+            if(st.count(s[i])) {
+                vwl.push_back(s[i]);
+                idx.push_back(i);
+            }
+        }
+
+        reverse(vwl.begin(), vwl.end());
+        string ans = "";
+        int k = 0;
+
+        for(int i = 0; i < n; i++){
+            if(!st.count(s[i])) ans += s[i];
+            else {
+                if(k < vwl.size()){
+                    ans += vwl[k];
+                    k++;
+                }
+            }
+        }
+        return ans;
+    }
+};
