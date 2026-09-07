@@ -1,0 +1,49 @@
+class Solution {
+public:
+    const int MOD = 1e9 + 7;
+    typedef long long ll;
+
+    // memoization
+    long long dp[2001];
+    int solve(int i, vector<int> &prev){
+        if(i == 0) return 1;
+        if(dp[i] != -1) return dp[i];
+        ll total = (2LL * solve(i-1, prev) + MOD) % MOD;
+        ll dupl = (solve(prev[i] - 1, prev) + MOD) % MOD;
+        return dp[i] = (total - dupl + MOD) % MOD;
+    }
+
+    int distinctSubseqqII(string s) {
+        int n = s.size();
+        memset(dp, -1, sizeof(dp));
+        vector<int> prev(n+1, 0), last(26, 0);
+        
+        for(int i = 1; i <= n; i++){
+            int idx = s[i-1] - 'a';
+            prev[i] = last[idx];
+            last[idx] = i;
+        }
+        return (solve(n, prev) - 1 + MOD) % MOD;
+    }
+    
+    // tabulation
+    int distinctSubseqII(string s) {
+        int n = s.size();
+        vector<ll> dp(n+1, 0);
+        vector<int> prev(n+1, 0), last(26, 0);
+        
+        dp[0] = 1;
+        for(int i = 1; i <= n; i++){
+            int idx = s[i-1] - 'a';
+            prev[i] = last[idx];
+            last[idx] = i;
+        }
+
+        for(int i = 1; i <= n; i++){
+            ll total = (2LL * dp[i-1] + MOD) % MOD;
+            ll dupl = (prev[i] == 0) ? 0 : dp[prev[i] - 1];
+            dp[i] = (total - dupl + MOD) % MOD;
+        }    
+        return (dp[n] - 1 + MOD) % MOD;
+    }
+};
