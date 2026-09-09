@@ -1,0 +1,27 @@
+class Solution {
+public:
+    vector<int> assignElements(vector<int>& grp, vector<int>& elm) {
+        int n = grp.size(), m = elm.size();
+        vector<int> ans(n, -1);
+
+        unordered_map<int, int> mp;
+        for(int j = 0; j < m; j++){
+            if(!mp.count(elm[j])){
+                mp[elm[j]] = j;
+            }
+        }
+
+        for(int i = 0; i < n; i++){
+            int x = grp[i];
+            int mini = 1e9;
+
+            for(int f = 1; f*f <= x; f++){
+                if(x % f != 0) continue;
+                if(mp.count(f)) mini = min(mini, mp[f]);
+                if(mp.count(x/f)) mini = min(mini, mp[x/f]);
+            }
+            if(mini != 1e9) ans[i] = mini;
+        }
+        return ans;
+    }
+};
