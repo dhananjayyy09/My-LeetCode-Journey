@@ -1,0 +1,41 @@
+class Solution {
+public:
+    typedef long long ll;
+    typedef tuple<long long, int, int, int> T; 
+    long long minCost(int m, int n, vector<vector<int>>& penalty) {
+        priority_queue<T, vector<T>, greater<T>> pq;
+        vector<vector<vector<ll>>> dist(m, vector<vector<ll>> (n, vector<ll>(2, LLONG_MAX)));
+        vector<pair<int, int>> dir = {{0, 1}, {1, 0}, {-1, 0}, {0, -1}};
+
+        pq.push({1, 0, 0, 1});
+        dist[0][0][1] = 1;
+
+        while(!pq.empty()){
+            auto [cost, r, c, p] = pq.top(); 
+            pq.pop();
+
+            if(r == m-1 && c == n-1) return cost;
+            
+            int np = 1-p;
+            if(cost + penalty[r][c] < dist[r][c][np]){
+                dist[r][c][np] = cost + penalty[r][c];
+                pq.push({dist[r][c][np], r, c, np});
+            }
+
+            for(int d = 0; d < 4; d++){
+                auto [dx, dy] = dir[d];
+                int nr = r + dx, nc = c + dy, np = 1-p;
+
+                if(nr >= 0 && nr < m && nc >= 0 && nc < n){
+                    bool ok = p ? d < 2 : d >= 2;
+                    ll newCost = 1LL * (nr+1) * (nc+1) + (ok ? 0 : penalty[r][c]);
+                    if(cost + newCost < dist[nr][nc][np]){
+                        dist[nr][nc][np] = cost + newCost;
+                        pq.push({dist[nr][nc][np], nr, nc, np});
+                    }
+                }
+            }
+        }
+        return -1;
+    }
+};
