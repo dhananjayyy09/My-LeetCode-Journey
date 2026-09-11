@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int minimumArrayLength(vector<int>& nums) {
+        int n = nums.size();
+        int mini = *min_element(nums.begin(), nums.end());
+        int f = 0;
+        for(auto it : nums){
+            if(it == mini) f++;
+        } 
+
+        if(f == 1) return 1;
+        for(auto it : nums){
+            if(it % mini != 0) return 1;
+        }        
+        return (f+1) / 2; 
+    }
+};
