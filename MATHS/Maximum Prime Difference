@@ -1,0 +1,20 @@
+class Solution {
+public:
+    bool isPrime(int num){
+        if(num <= 1) return 0;
+        if(num == 2) return 1;
+        for(int i = 2; i*i <= num; i++){
+            if(num % i == 0) return 0;
+        }
+        return 1;
+    }
+
+    int maximumPrimeDifference(vector<int>& nums) {
+        int n = nums.size();
+        int i = 0, j = n-1;
+        while(i < n && !isPrime(nums[i])) i++;
+        if(i == n) return 0;
+        while(j >= 0 && !isPrime(nums[j])) j--;
+        return j-i;
+    }
+};
