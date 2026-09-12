@@ -1,0 +1,109 @@
+class Solution {
+public:
+    struct Node{
+        long long score = -1;
+        vector<int> idxs;
+    };
+
+    // memoization
+    Node solve(int i, int k, vector<int> &nextIdx, vector<vector<int>>& temp, vector<vector<Node>>& dp){
+        int n = temp.size();
+        if(i >= n || k == 0) return {0, {}};
+        if(dp[i][k].score != -1) return dp[i][k];
+
+        Node noTake = solve(i+1, k, nextIdx, temp, dp);
+        Node tk = solve(nextIdx[i], k-1, nextIdx, temp, dp);
+        int curWt = temp[i][2], curIdx = temp[i][3]; 
+        Node take;
+        take.score = curWt + tk.score;
+        take.idxs = tk.idxs;
+        take.idxs.push_back(curIdx);
+        sort(take.idxs.begin(), take.idxs.end());
+
+        Node ans;
+        if(take.score < noTake.score) ans = noTake;
+        else if(take.score > noTake.score) ans = take;
+        else ans = (take.idxs < noTake.idxs) ? take : noTake;
+        return dp[i][k] = ans;
+    }
+
+    int findNext(int target, vector<vector<int>>& temp){
+        int n = temp.size();
+        int ans = n;
+        int l = 0, h = n-1;
+        while(l <= h){
+            int mid = l + (h-l) / 2;
+            if(temp[mid][0] > target){
+                ans = mid;
+                h = mid-1;
+            }
+            else l = mid+1;
+        }
+        return ans;
+    }
+
+    vector<int> maximumWeightt(vector<vector<int>>& intervals) {
+        int n = intervals.size();
+        vector<vector<int>> temp(n, vector<int> (4));
+        for(int i = 0; i < n; i++){
+            temp[i][0] = intervals[i][0];
+            temp[i][1] = intervals[i][1];
+            temp[i][2] = intervals[i][2];
+            temp[i][3] = i;
+        }
+
+        sort(temp.begin(), temp.end());
+        vector<int> nextIdx(n);
+        for(int i = 0; i < n; i++){
+            int end = temp[i][1];
+            nextIdx[i] = findNext(end, temp);
+        }
+
+        vector<vector<Node>> dp(n+1, vector<Node> (5));
+        Node res = solve(0, 4, nextIdx, temp, dp);
+        return res.idxs;
+    }
+
+    // tabulation
+    vector<int> maximumWeight(vector<vector<int>>& intervals) {
+        int n = intervals.size();
+        vector<vector<int>> temp(n, vector<int> (4));
+        for(int i = 0; i < n; i++){
+            temp[i][0] = intervals[i][0];
+            temp[i][1] = intervals[i][1];
+            temp[i][2] = intervals[i][2];
+            temp[i][3] = i;
+        }
+
+        sort(temp.begin(), temp.end());
+        vector<int> nextIdx(n);
+        for(int i = 0; i < n; i++){
+            int end = temp[i][1];
+            nextIdx[i] = findNext(end, temp);
+        }
+
+        vector<vector<Node>> dp(n+1, vector<Node> (5));
+        
+        for(int i = n-1; i >= 0; i--){
+            for(int k = 1; k <= 4; k++){
+                Node noTake = dp[i+1][k];
+                Node tk = dp[nextIdx[i]][k-1];
+                int curWt = temp[i][2], curIdx = temp[i][3]; 
+                Node take;
+                take.score = curWt + tk.score;
+                take.idxs = tk.idxs;
+                take.idxs.push_back(curIdx);
+                sort(take.idxs.begin(), take.idxs.end());
+
+                Node ans;
+                if(take.score < noTake.score) ans = noTake;
+                else if(take.score > noTake.score) ans = take;
+                else ans = (take.idxs < noTake.idxs) ? take : noTake;
+                dp[i][k] = ans;
+            }
+        }
+
+        Node res = dp[0][4];
+        return res.idxs;
+    }
+};
