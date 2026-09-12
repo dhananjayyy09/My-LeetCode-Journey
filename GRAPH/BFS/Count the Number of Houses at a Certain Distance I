@@ -1,0 +1,43 @@
+class Solution {
+public:
+    void bfs(int node, vector<int> &dist, vector<vector<int>> &adj){
+        queue<pair<int, int>> q;
+        dist[node] = 0;
+        q.push({0, node});
+
+        while(!q.empty()){
+            auto [curDis, curNode] = q.front();
+            q.pop();
+
+            for(auto adjNode : adj[curNode])
+            if(curDis + 1 < dist[adjNode]){
+                dist[adjNode] = curDis + 1;
+                q.push({dist[adjNode], adjNode});
+            }
+        }
+    }
+
+    vector<int> countOfPairs(int n, int x, int y) {
+        vector<vector<int>> adj(n+1);
+        for(int i = 1; i < n; i++){
+            adj[i].push_back(i+1);
+            adj[i+1].push_back(i);
+        }
+        adj[x].push_back(y);
+        adj[y].push_back(x);
+
+        vector<int> ans(n, 0);
+
+        for(int i = 1; i <= n; i++){
+            vector<int> dist(n+1, 1e9);
+            bfs(i, dist, adj);
+
+            for(int j = 1; j <= n; j++){
+                if(i != j && dist[j] != 1e9){
+                    ans[dist[j] - 1]++;
+                }
+            }
+        }
+        return ans;
+    }
+};
