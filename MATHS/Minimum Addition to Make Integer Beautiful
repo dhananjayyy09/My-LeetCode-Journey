@@ -1,0 +1,20 @@
+class Solution {
+public:
+    int getSum(int n){
+        int sum = 0;
+        while(n){
+            sum += n % 10;
+            n /= 10;
+        }
+        return sum;
+    }
+
+    long long makeIntegerBeautiful(long long n, int target) {
+        long long temp = n, base = 1;
+        while(getSum(n) > target){
+            n = n/10 + 1;
+            base *= 10;
+        }
+        return (n * base) - temp;
+    }
+};
