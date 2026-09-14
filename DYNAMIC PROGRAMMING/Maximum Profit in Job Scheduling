@@ -1,0 +1,27 @@
+class Solution {
+public:
+    int solve(int i, vector<vector<int>> &job, vector<int> &dp){
+        int n = job.size();
+        if(i >= n) return 0;
+        if(dp[i] != -1) return dp[i];        
+        int noTake = solve(i+1, job, dp);
+        int take = 0;
+        int ni = lower_bound(job.begin() + i+1, job.end(), job[i][1], [](vector<int> &a, int prevE){
+            return a[0] < prevE;
+        }) - job.begin();
+        take = job[i][2] + solve(ni, job, dp);
+        return dp[i] = max(take, noTake);
+    }
+
+    int jobScheduling(vector<int>& start, vector<int>& end, vector<int>& profit) {
+        int n = start.size();
+        vector<vector<int>> job(n, vector<int> (3));
+        for(int i = 0; i < n; i++){
+            job[i] = {start[i], end[i], profit[i]};
+        }
+
+        sort(job.begin(), job.end());
+        vector<int> dp(n, -1);
+        return solve(0, job, dp);
+    }
+};
