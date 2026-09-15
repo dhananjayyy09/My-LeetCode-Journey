@@ -1,0 +1,51 @@
+class Solution {
+public:
+    void dfs(int node, vector<int> &vis, vector<int> &cmp, vector<vector<int>> &adj){
+        vis[node] = 1;
+        cmp.push_back(node);
+        for(auto it : adj[node]){
+            if(!vis[it]){
+                dfs(it, vis, cmp, adj);
+            }
+        }
+    }
+
+    long long maxAlternatingSum(vector<int>& nums, vector<vector<int>>& swaps) {
+        int n = nums.size();
+        vector<vector<int>> adj(n);
+        for(auto it : swaps){
+            int u = it[0], v = it[1]; 
+            adj[u].push_back(v);
+            adj[v].push_back(u);
+        }
+
+        vector<vector<int>> comp;
+        vector<int> vis(n, 0);
+        for(int i = 0; i < n; i++){
+            if(!vis[i]){
+                vector<int> cmp;
+                dfs(i, vis, cmp, adj);
+                comp.push_back(cmp);
+            }
+        }
+
+        long long ans = 0;
+
+        for(auto &cmp : comp){
+            vector<int> val;
+            int even = 0, odd = 0;
+
+            for(auto &idx : cmp){
+                if(idx % 2 == 0) even++;
+                else odd++;
+                val.push_back(nums[idx]);
+            }
+
+            sort(val.rbegin(), val.rend());
+            int m = val.size();
+            for(int i = 0; i < even; i++) ans += val[i];
+            for(int i = even; i < m; i++) ans -= val[i];
+        }
+        return ans;
+    }
+};
