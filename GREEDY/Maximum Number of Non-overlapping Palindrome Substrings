@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int maxPalindromes(string s, int k) {
+        int n = s.size();
+        int ans = 0, prev = -1;
+
+        for(int i = 0; i < n; i++){
+            for(auto l : {i-1, i}){
+                int h = i;
+
+                while(l >= 0 && h < n && s[l] == s[h]){
+                    if(h-l+1 >= k && l > prev){
+                        if(h-l+1 >= k+2) continue;
+                        ans++;
+                        prev = h;
+                        break;
+                    }
+                    l--;
+                    h++;
+                }
+            }
+        }
+        return ans;
+    }
+};
