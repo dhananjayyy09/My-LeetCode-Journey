@@ -1,0 +1,23 @@
+class Solution {
+public:
+    const int MOD = 1e9 + 7;
+    int numberOfSets(int n, int k) {
+        vector<vector<int>> dp(k+1, vector<int> (n+1, 0));
+        for(int i = 0; i <= n; i++){
+            dp[0][i] = 1;
+        }
+
+        for(int tk = 1; tk <= k; tk++){
+            vector<int> suffix(n+1, 0);
+            for(int x = n-1; x >= 0; x--){ 
+                suffix[x] = (suffix[x+1] + dp[tk-1][x]) % MOD;
+            }
+            for(int i = n-1; i >= 0; i--){
+                int noTake = dp[tk][i+1];
+                int take = suffix[i+1];
+                dp[tk][i] = (take + noTake) % MOD;
+            }
+        }
+        return (dp[k][0]) % MOD;
+    }
+};
