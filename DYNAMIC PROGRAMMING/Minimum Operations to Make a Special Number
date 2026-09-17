@@ -1,0 +1,39 @@
+class Solution {
+public:
+    // memoization
+    int dp[101][25];
+    int solve(int i, int rem, string &s){
+        int n = s.size();
+        if(i == n) return (rem == 0) ? 0 : 1e9;
+        if(dp[i][rem] != -1) return dp[i][rem];
+        int digit = s[i] - '0';
+        int newRem = (rem * 10 + digit) % 25;
+        int noTake = 1 + solve(i+1, rem, s);
+        int take = solve(i+1, newRem, s);
+        return dp[i][rem] = min(take, noTake);
+    }
+
+    int minimumOperationss(string s) {
+        int n = s.size();
+        memset(dp, -1, sizeof(dp));
+        return solve(0, 0, s);
+    }
+
+    // tabulation
+    int minimumOperations(string s) {
+        int n = s.size();
+        vector<vector<int>> dp(n+1, vector<int> (25, 1e9));
+        dp[n][0] = 0;
+
+        for(int i = n-1; i >= 0; i--){
+            for(int rem = 24; rem >= 0; rem--){
+                int digit = s[i] - '0';
+                int newRem = (rem * 10 + digit) % 25;
+                int noTake = 1 + dp[i+1][rem];
+                int take = dp[i+1][newRem];
+                dp[i][rem] = min(take, noTake);
+            }
+        }
+        return dp[0][0];
+    }
+};
