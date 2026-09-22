@@ -9,7 +9,7 @@ public:
         }
 
         ll l = 0, h = *max_element(diff.begin(), diff.end());
-        int k = k1 + k2;
+        int k = k1 + k2; 
 
         while(l < h){
             ll mid = l + (h-l) / 2;
