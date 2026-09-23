@@ -1,0 +1,40 @@
+class Solution {
+public:
+    bool almostEqual(string &s, string &t){
+        int m = s.size(), n = t.size();
+        int maxLen = max(m, n);
+        
+        while(m != maxLen){
+            s = "0" + s;
+            m++;
+        }
+        while(n != maxLen){
+            t = "0" + t;
+            n++;
+        }
+
+        unordered_map<char, int> mp1, mp2;
+        int swap = 0;
+        for(int i = 0; i < m; i++){
+            swap += (s[i] != t[i]);
+            mp1[s[i]]++;
+            mp2[t[i]]++;
+        }
+        return swap <= 2 && mp1 == mp2;
+    }
+
+    int countPairs(vector<int>& nums) {
+        int n = nums.size();
+        sort(nums.begin(), nums.end());
+        int ans = 0;
+
+        for(int i = 0; i < n; i++){
+            for(int j = i+1; j < n; j++){
+                string n1 = to_string(nums[i]);
+                string n2 = to_string(nums[j]);
+                ans += almostEqual(n1, n2);
+            }
+        }
+        return ans;
+    }
+};
