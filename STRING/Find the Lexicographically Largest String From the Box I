@@ -1,0 +1,23 @@
+class Solution {
+public:
+    string answerString(string s, int frnd) {
+        int n = s.size();
+        if(frnd == 1) return s;
+
+        char maxC = s[0];
+        for(int i = 1; i < n; i++){
+            maxC = max(maxC, s[i]);
+        }
+
+        int len = n+1 - frnd;
+        string ans = "";
+
+        for(int i = 0; i < n; i++){
+            if(s[i] == maxC){
+                string temp = s.substr(i, min(len , n-i));
+                ans = max(ans, temp);
+            }
+        }
+        return ans;
+    }
+};
