@@ -1,0 +1,29 @@
+class Solution {
+public:
+    int maximumSum(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> pre(n), suff(n);
+
+        int maxSum = nums[0], curSum = nums[0];
+        pre[0] = nums[0];
+        for(int i = 1; i < n; i++){
+            curSum = max(nums[i], nums[i] + curSum);
+            maxSum = max(maxSum, curSum);
+            pre[i] = curSum;
+        }
+
+        maxSum = nums[n-1], curSum = nums[n-1];
+        suff[n-1] = nums[n-1];
+        for(int i = n-2; i >= 0; i--){
+            curSum = max(nums[i], nums[i] + curSum);
+            maxSum = max(maxSum, curSum);
+            suff[i] = curSum;
+        }
+
+        int ans = maxSum;
+        for(int i = 1; i < n-1; i++){
+            ans = max(ans, pre[i-1] + suff[i+1]);
+        }
+        return ans;
+    }
+};s
