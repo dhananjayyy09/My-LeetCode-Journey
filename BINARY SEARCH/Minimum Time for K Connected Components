@@ -1,0 +1,49 @@
+class Solution {
+public:
+    typedef pair<int, int> P;
+    void dfs(int node, int mid, vector<int> &vis, vector<vector<P>> &adj){
+        vis[node] = 1;
+        for(auto &[v, w] : adj[node]){
+            if(!vis[v] && w > mid){
+                dfs(v, mid, vis, adj); 
+            }
+        }
+    }
+
+    bool isPossible(int mid, int k, vector<vector<P>> &adj){
+        int n = adj.size();
+        vector<int> vis(n, 0);
+        int comp = 0;
+
+        for(int i = 0; i < n; i++){
+            if(!vis[i]){
+                comp++;
+                if(comp >= k) return 1;
+                dfs(i, mid, vis, adj);
+            }
+        }
+        return 0;
+    }
+
+    int minTime(int n, vector<vector<int>>& edges, int k) {
+        vector<vector<P>> adj(n);
+        int l = 0, h = 0;
+        for(auto &it : edges){
+            int u = it[0], v = it[1], w = it[2];
+            adj[u].push_back({v, w});
+            adj[v].push_back({u, w});
+            h = max(h, w);
+        }
+
+        int ans = 0;
+        while(l <= h){
+            int mid = l + (h-l) / 2;
+            if(isPossible(mid, k, adj)){
+                ans = mid;
+                h = mid-1;
+            }
+            else l = mid+1;
+        }
+        return ans;
+    }
+};
