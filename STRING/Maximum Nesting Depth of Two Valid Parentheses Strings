@@ -8,7 +8,7 @@ public:
                 curr++;
                 ans.push_back(curr % 2);
             } else {
-                ans.push_back(curr % 2);
+                ans.push_back(curr % 2); 
                 curr--;
             }
         }
