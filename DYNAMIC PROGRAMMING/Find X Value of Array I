@@ -11,8 +11,6 @@ public:
             cur[n] = 1;
 
             for (int x = 0; x < k; x++)
-                cur[x * n % k] += freq[x];
-
             for (int x = 0; x < k; x++) {
                 freq[x] = cur[x];
                 res[x] += freq[x];
