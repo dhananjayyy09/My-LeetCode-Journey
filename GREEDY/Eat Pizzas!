@@ -1,0 +1,25 @@
+class Solution {
+public:
+    long long maxWeight(vector<int>& pizzas) {
+        int n = pizzas.size();
+        sort(pizzas.rbegin(), pizzas.rend());
+        long long totalWt = 0;
+        int i = 0, maxDay = n / 4;
+        int odd = (maxDay + 1) / 2;
+        int even = maxDay - odd;
+
+        while(odd && i < n){
+            totalWt += pizzas[i];
+            odd--;
+            i++;
+        }
+        
+        i++;
+        while(even && i < n){
+            totalWt += pizzas[i];
+            even--;
+            i += 2;
+        }
+        return totalWt;
+    }
+};
