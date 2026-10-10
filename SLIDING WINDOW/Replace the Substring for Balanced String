@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int balancedString(string s) {
+        int n = s.size();
+        unordered_map<char, int> mp;
+        for(int i = 0; i < n; i++){
+            mp[s[i]]++;
+        }
+
+        int ans = 1e9, k = n/4, i = 0;
+
+        for(int j = 0; j < n; j++){
+            mp[s[j]]--;
+            while(i < n && mp['Q'] <= k && mp['W'] <= k && mp['E'] <= k && mp['R'] <= k){
+                ans = min(ans, j-i+1);
+                mp[s[i]]++;
+                i++;
+            }
+        }
+        return ans;
+    }
+};
