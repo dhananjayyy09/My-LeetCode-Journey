@@ -2,7 +2,7 @@ class Solution {
 public:
     bool canShip(int limit, int days, vector<int> &weights){
         int count = 1, sum = 0;
-        for(auto &x : weights){
+        for(auto &x : weights){ 
             if(sum + x > limit){
                 count++;
                 sum = x;
