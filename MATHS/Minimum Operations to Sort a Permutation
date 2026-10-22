@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int minOperations(vector<int>& nums) {
+        int n = nums.size();
+        bool inc = true, dec = true;
+        for(int i = 1; i < n; i++){
+            if(nums[i] != (nums[i-1] + 1) % n) inc = false;
+            if(nums[i-1] != (nums[i] + 1) % n) dec = false;
+        }
+        
+        if(inc) {
+            int leftR = (n - nums[0]) % n;
+            int rightR = 2 + (nums.back() + 1);
+            return min(leftR, rightR);
+        }
+        if(dec) {
+            int leftR = 1 + (n - nums.back());
+            int rightR = 1 + (nums[0] + 1) % n;
+            return min(leftR, rightR);
+        }
+        return -1;
+    }
+};
