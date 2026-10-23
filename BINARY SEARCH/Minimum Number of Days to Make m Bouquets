@@ -1,0 +1,42 @@
+class Solution {
+public:
+    bool isPossible(int mid, int k, int m, vector<int> &nums){
+        int n = nums.size();
+        int flwr = 0, bqt = 0;
+        
+        for(auto &x : nums){
+            if(x <= mid){
+                flwr++;
+                
+                if(flwr == k){
+                    bqt++;
+                    flwr = 0;
+                }
+            }
+            else flwr = 0;
+        }
+        return bqt >= m;
+    }
+
+    int minDays(vector<int>& nums, int m, int k) {
+        int n = nums.size();
+        if (1LL * m*k > n) return -1;        
+
+        int l = 1e9, h = -1e9;
+        for(auto it : nums) {
+            l = min(l, it);
+            h = max(h, it);
+        }
+
+        int ans = -1;
+        while(l <= h) {
+            int mid = l + (h-l) / 2;
+            if(isPossible(mid, k, m, nums)) {
+                ans = mid;
+                h = mid-1;
+            }
+            else l = mid + 1;
+        }
+        return ans;
+    }
+};
