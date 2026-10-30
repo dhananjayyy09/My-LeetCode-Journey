@@ -1,0 +1,35 @@
+class Solution {
+public:
+    typedef tuple<int, int, int> T;
+    int shortestPath(int n, vector<vector<int>>& edges, string labels, int k) {
+        vector<vector<pair<int, int>>> adj(n);
+        for(auto &it : edges){
+            int u = it[0], v = it[1], w = it[2];
+            adj[u].push_back({v, w});
+        }
+
+        priority_queue<T, vector<T>, greater<T>> pq;
+        vector<vector<int>> dist(n, vector<int>(k+1, 1e9));
+        pq.push({0, 0, 1});
+        dist[0][1] = 0;
+
+        while(!pq.empty()){
+            auto [curDis, node, cons] = pq.top();
+            pq.pop();
+
+            if(node == n-1) return curDis;
+            for(auto &[adjNode, adjDis] : adj[node]){
+                int newDis = curDis + adjDis;
+                int newCons;
+                if(labels[node] == labels[adjNode]) newCons = cons + 1;
+                else newCons = 1;
+
+                if(newCons <= k && newDis < dist[adjNode][newCons]){
+                    pq.push({newDis, adjNode, newCons});
+                    dist[adjNode][newCons] = newDis;
+                }
+            }
+        }
+        return -1;
+    }
+};
