@@ -1,5 +1,5 @@
 class Solution {
-public:
+public:b
     int findTheDistanceValue(vector<int>& arr1, vector<int>& arr2, int d) {
         int m = arr1.size(), n = arr2.size();
         int ans = 0;
