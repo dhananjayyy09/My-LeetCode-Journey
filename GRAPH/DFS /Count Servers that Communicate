@@ -19,8 +19,8 @@ public:
         int n = grid[0].size();
         vector<vector<int>> pos;
 
-        for(int i=0; i<m; i++){
-            for(int j=0; j<n; j++){
+        for(int i = 0; i < m; i++){
+            for(int j = 0; j < n; j++){
                 if(grid[i][j] == 1){
                     pos.push_back({i,j});
                 }
@@ -30,7 +30,7 @@ public:
         int s = pos.size();
         vector<bool> visited(s, false);
         int server = 0;
-        for(int i=0; i<s; i++){
+        for(int i = 0; i < s; i++){
             int comp = 0;
             if(!visited[i]){
                 dfs(pos, i, visited, comp);
@@ -49,8 +49,8 @@ public:
         vector<int>row(m,0), col(n,0);
         int server = 0;
 
-        for(int i=0; i<m; i++){
-            for(int j=0; j<n; j++){
+        for(int i = 0; i < m; i++){
+            for(int j = 0; j < n; j++){
                 if(grid[i][j] == 1){
                     row[i]++;
                     col[j]++;
@@ -58,8 +58,8 @@ public:
             }
         }
         
-        for(int i=0; i<m; i++){
-            for(int j=0; j<n; j++){
+        for(int i = 0; i < m; i++){
+            for(int j = 0; j < n; j++){
                 if((grid[i][j] == 1) && (row[i] > 1 || col[j] > 1)){
                     server++;
                 }
