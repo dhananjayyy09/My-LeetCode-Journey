@@ -1,0 +1,40 @@
+class Solution {
+public:
+    typedef pair<int, int> P;
+    vector<int> busiestServers(int k, vector<int>& arrival, vector<int>& load) {
+        int n = arrival.size();
+        priority_queue<P, vector<P>, greater<P>> busy;
+        set<int> avbl;
+        for(int i = 0; i < k; i++){
+            avbl.insert(i);
+        }
+
+        vector<int> count(k, 0);
+        for(int i = 0; i < n; i++){
+            while(!busy.empty() && busy.top().first <= arrival[i]){
+                int server = busy.top().second;
+                busy.pop();
+                avbl.insert(server);
+            }
+
+            int target = i%k;
+            auto it = avbl.lower_bound(target);
+            if(it == avbl.end()) {
+                it = avbl.begin();
+            }
+            if(avbl.empty()) continue;
+
+            int accept = *it;
+            busy.push({arrival[i] + load[i], accept});
+            avbl.erase(accept);
+            count[accept]++;
+        }
+
+        vector<int> ans;
+        int busiest = *max_element(count.begin(), count.end());
+        for(int i = 0; i < k; i++){
+            if(count[i] == busiest) ans.push_back(i);
+        }
+        return ans;
+    }
+};
