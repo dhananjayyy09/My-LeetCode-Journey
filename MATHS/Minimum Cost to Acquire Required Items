@@ -1,0 +1,14 @@
+class Solution {
+public:
+    long long minimumCost(int cost1, int cost2, int costBoth, int need1, int need2) {
+        long long a = min(need1, need2);
+        long long b = min(costBoth, cost1 + cost2);
+        long long c = a * b;
+        long long d = need1 - a;
+        long long e = 0;
+        if(d != 0) e = min(cost1, costBoth) * d;
+        long long f = need2 - a;
+        if(f != 0) e = min(cost2, costBoth) * f;
+        return c + e; 
+    }
+};
