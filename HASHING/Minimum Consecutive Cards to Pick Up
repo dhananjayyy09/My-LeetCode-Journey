@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int minimumCardPickup(vector<int>& cards) {
+        int n = cards.size();
+        unordered_map<int, int> mp;
+        mp[cards[0]] = 0;
+        int ans = 1e9;
+
+        for(int i = 1; i < n; i++){
+            if(mp.count(cards[i])){
+                int curr = (i - mp[cards[i]] + 1);
+                ans = min(ans, curr);
+            }
+            mp[cards[i]] = i;
+        }
+        return (ans == 1e9) ? -1 : ans;
+    }
+};
