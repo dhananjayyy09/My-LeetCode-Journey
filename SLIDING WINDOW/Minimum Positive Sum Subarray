@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int minimumSumSubarray(vector<int>& nums, int l, int r) {
+        int n = nums.size();
+        int ans = 1e9;
+
+        for(int sz = l; sz <= r; sz++){
+            int sum = 0, i = 0;
+            for(int j = 0; j < n; j++){
+                sum += nums[j];
+                while(j-i+1 > sz){
+                    sum -= nums[i];
+                    i++;
+                }
+
+                if(j-i+1 == sz && sum > 0){
+                    ans = min(ans, sum);
+                }
+            }
+        }
+        return (ans == 1e9) ? -1 : ans;
+    }
+};
