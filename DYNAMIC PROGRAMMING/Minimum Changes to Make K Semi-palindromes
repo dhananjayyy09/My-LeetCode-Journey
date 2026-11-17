@@ -1,0 +1,68 @@
+class Solution {
+public:
+    // memoization
+    int solve(int i, int k, string s, vector<vector<int>> &dp, vector<vector<int>> &costDP){
+        int n = s.size();
+        if(k == 0) return i == n ? 0 : 1e9;
+        if(dp[i][k] != -1) return dp[i][k];
+        int minCost = 1e9;
+        for(int j = i+1; j < n; j++){
+            int cost = solve(j+1, k-1, s, dp, costDP);
+            if(cost == 1e9) continue;
+            minCost = min(minCost, cost + getCost(i, j, s, costDP));
+        }
+        return dp[i][k] = minCost;
+    }
+
+    int getCost(int i, int j, string s, vector<vector<int>> &costDP){
+        int len = j-i+1;
+        int minCost = 1e9;
+        if(costDP[i][j] != -1) return costDP[i][j];
+        
+        for(int d = 1; d <= len/2; d++){
+            if(len % d != 0) continue;
+            
+            int cost = 0;
+            for(int grp = 0; grp < d; grp++){
+                int l = i + grp;
+                int r = l + (len/d - 1)*d;
+
+                while(l < r){
+                    if(s[l] != s[r]) cost++;
+                    l += d;
+                    r -= d;
+                }
+            }
+            minCost = min(minCost, cost);
+        }
+        return costDP[i][j] = minCost;
+    }
+
+    int minimumChangess(string s, int k) {
+        int n = s.size();
+        vector<vector<int>> dp(n+1, vector<int>(k+1, -1));
+        vector<vector<int>> costDP(n+1, vector<int>(n+1, -1));
+        return solve(0, k, s, dp, costDP);
+    }
+
+    // tabulation
+    int minimumChanges(string s, int k) {
+        int n = s.size();
+        vector<vector<int>> dp(n+1, vector<int>(k+1, 1e9));
+        vector<vector<int>> costDP(n+1, vector<int>(n+1, -1));
+        dp[n][0] = 0; 
+
+        for(int i = n-1; i >= 0; i--){
+            for(int tk = 1; tk <= k; tk++){
+                int minCost = 1e9;
+                for(int j = i+1; j < n; j++){
+                    int cost = dp[j+1][tk-1];
+                    if(cost == 1e9) continue;
+                    minCost = min(minCost, cost + getCost(i, j, s, costDP));
+                }
+                dp[i][tk] = minCost;
+            }
+        }
+        return dp[0][k];
+    }
+};
