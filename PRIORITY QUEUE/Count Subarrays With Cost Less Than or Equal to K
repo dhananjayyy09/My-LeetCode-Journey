@@ -1,0 +1,32 @@
+class Solution {
+public:
+    typedef pair<int, int> P;
+    long long countSubarrays(vector<int>& nums, long long k) {
+        int n = nums.size();
+        priority_queue<P> maxH;
+        priority_queue<P, vector<P>, greater<P>> minH;
+        long long ans = 0;
+        int i = 0;
+
+        for(int j = 0; j < n; j++){
+            maxH.push({nums[j], j});
+            minH.push({nums[j], j});
+
+            while(!maxH.empty() && maxH.top().second < i) maxH.pop();
+            while(!minH.empty() && minH.top().second < i) minH.pop();
+
+            int maxi = maxH.top().first, mini = minH.top().first;
+            long long cost = 1LL * (maxi - mini) * (j-i+1);
+            while(cost > k){
+                i++;
+                while(!maxH.empty() && maxH.top().second < i) maxH.pop();
+                while(!minH.empty() && minH.top().second < i) minH.pop();
+
+                maxi = maxH.top().first, mini = minH.top().first;
+                cost = 1LL * (maxi - mini) * (j-i+1);
+            }
+            ans += (j-i+1);
+        }
+        return ans;
+    }
+};
