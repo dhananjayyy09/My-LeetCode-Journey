@@ -1,0 +1,31 @@
+class Solution {
+public:
+    typedef pair<int, int> P;
+    long long countSubarrays(vector<int>& nums, long long k) {
+        int n = nums.size();
+        deque<int> maxD, minD;
+        long long ans = 0;
+        int i = 0;
+
+        for(int j = 0; j < n; j++){
+            while(!maxD.empty() && nums[maxD.back()] < nums[j]) maxD.pop_back();
+            while(!minD.empty() && nums[minD.back()] > nums[j]) minD.pop_back();
+
+            maxD.push_back(j);
+            minD.push_back(j);
+
+            int maxi = nums[maxD.front()], mini = nums[minD.front()];
+            long long cost = 1LL * (maxi - mini) * (j-i+1);
+            while(cost > k){
+                if(maxD.front() == i) maxD.pop_front();
+                if(minD.front() == i) minD.pop_front();
+
+                i++;
+                maxi = nums[maxD.front()], mini = nums[minD.front()];
+                cost = 1LL * (maxi - mini) * (j-i+1);
+            }
+            ans += (j-i+1);
+        }
+        return ans;
+    }
+};
