@@ -17,8 +17,8 @@ public:
             int maxi = nums[maxD.front()], mini = nums[minD.front()];
             long long cost = 1LL * (maxi - mini) * (j-i+1);
             while(cost > k){
-                if(maxD.front() == i) maxD.pop_front();
-                if(minD.front() == i) minD.pop_front();
+                if(!maxD.empty() && maxD.front() == i) maxD.pop_front();
+                if(!minD.empty() && minD.front() == i) minD.pop_front();
 
                 i++;
                 maxi = nums[maxD.front()], mini = nums[minD.front()];
