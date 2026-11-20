@@ -1,0 +1,65 @@
+class Solution {
+public:
+    // memoization
+    int solve(int i, int inc, vector<int> &nums, vector<vector<int>> &dp){
+        if(dp[i][inc] != -1) return dp[i][inc];
+        int len = 1;
+        int curr = nums[i] + inc;
+        
+        int j = findIdx(i+1, curr+1, nums);
+        if(j != -1) {
+            len = max(len, 1 + solve(j, 0, nums, dp));
+        }
+        j = findIdx(i+1, curr, nums);
+        if(j != -1) {
+            len = max(len, 1 + solve(j, 1, nums, dp));
+        }
+        return dp[i][inc] = len;
+    }
+
+    int findIdx(int i, int val, vector<int> &nums){
+        int n = nums.size();
+        int j = lower_bound(nums.begin() + i, nums.end(), val) - nums.begin();
+        if(j < n && nums[j] == val) return j;
+        return -1; 
+    }
+
+    int maxSelectedElementss(vector<int>& nums) {
+        int n = nums.size();
+        sort(nums.begin(), nums.end());
+        vector<vector<int>> dp(n, vector<int>(2, -1));
+        
+        int ans = 1;
+        for(int i = 0; i < n; i++){
+            ans = max({ans, solve(i, 0, nums, dp), solve(i, 1, nums, dp)});      
+        }
+        return ans;
+    }
+
+    // tabulation
+    int maxSelectedElements(vector<int>& nums) {
+        int n = nums.size();
+        sort(nums.begin(), nums.end());
+        vector<vector<int>> dp(n, vector<int>(2, 0));
+        
+        int ans = 1;
+        for(int i = n-1; i >= 0; i--){
+            for(int inc = 0; inc <= 1; inc++){
+                int len = 1;
+                int curr = nums[i] + inc;
+                
+                int j = findIdx(i+1, curr+1, nums);
+                if(j != -1) {
+                    len = max(len, 1 + dp[j][0]);
+                }
+                j = findIdx(i+1, curr, nums);
+                if(j != -1) {
+                    len = max(len, 1 + dp[j][1]);
+                }
+                dp[i][inc] = len;
+            }
+            ans = max({ans, dp[i][0], dp[i][1]});      
+        }
+        return ans;
+    }
+};
