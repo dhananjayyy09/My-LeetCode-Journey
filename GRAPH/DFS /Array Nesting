@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int dfs(int node, vector<int> &vis, vector<int> &adj){
+        vis[node] = 1;
+        int len = 1;
+        int nxt = adj[node];
+        if(!vis[nxt]) len += dfs(nxt, vis, adj);
+        return len;
+    }
+    
+    int arrayNesting(vector<int>& nums) {
+        int n = nums.size();
+        int ans = 1;
+        vector<int> vis(n, 0);
+        for(int i = 0; i < n; i++){
+            if(!vis[i]){
+                int len = dfs(i, vis, nums);
+                ans = max(ans, len);
+            }
+        }
+        return ans;
+    }
+};
