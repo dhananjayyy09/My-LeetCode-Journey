@@ -1,0 +1,41 @@
+class Solution {
+public:
+    void dfs(int node, vector<int> &curPar, vector<int> &parent, vector<vector<int>>& adj, string &s) {
+        int idx = s[node] - 'a';
+        int prev = curPar[idx];
+        if(prev != -1) parent[node] = prev;
+
+        curPar[idx] = node;
+        for(auto &it : adj[node]){
+            dfs(it, curPar, parent, adj, s);
+        }
+        curPar[idx] = prev;
+    }
+
+    int calSize(int node, vector<int> &ans, vector<vector<int>> &newAdj){
+        int size = 1;
+        for(auto &it : newAdj[node]){
+            size += calSize(it, ans, newAdj);
+        }
+        ans[node] = size;
+        return size;
+    }
+
+    vector<int> findSubtreeSizes(vector<int>& parent, string s) {
+        int n = parent.size();
+        vector<vector<int>> adj(n), newAdj(n);
+        for(int i = 1; i < n; i++){
+            adj[parent[i]].push_back(i);
+        }
+
+        vector<int> curPar(26, -1);
+        dfs(0, curPar, parent, adj, s);
+        for(int i = 1; i < n; i++){
+            newAdj[parent[i]].push_back(i);
+        }
+
+        vector<int> ans(n);
+        calSize(0, ans, newAdj);
+        return ans;
+    }
+};
