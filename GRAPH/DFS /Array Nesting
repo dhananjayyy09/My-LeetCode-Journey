@@ -1,7 +1,7 @@
 class Solution {
 public:
     int dfs(int node, vector<int> &vis, vector<int> &adj){
-        vis[node] = 1;
+        vis[node] = 1; 
         int len = 1;
         int nxt = adj[node];
         if(!vis[nxt]) len += dfs(nxt, vis, adj);
