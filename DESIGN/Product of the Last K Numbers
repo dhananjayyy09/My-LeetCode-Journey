@@ -1,0 +1,19 @@
+class ProductOfNumbers {
+public:
+    vector<int> nbr;
+    ProductOfNumbers() {
+    }
+    
+    void add(int num) {
+        nbr.push_back(num);
+    }
+    
+    int getProduct(int k) {
+        int n = nbr.size();
+        int pro = 1;
+        for(int i = n-1; i >= n-k; i--){
+            pro *= nbr[i];
+        }
+        return pro;
+    }
+};
