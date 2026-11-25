@@ -1,8 +1,7 @@
 class ProductOfNumbers {
 public:
     vector<int> nbr;
-    ProductOfNumbers() {
-    }
+    ProductOfNumbers() {}
     
     void add(int num) {
         nbr.push_back(num);
