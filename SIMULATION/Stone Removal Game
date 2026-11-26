@@ -1,0 +1,13 @@
+class Solution {
+public:
+    bool canAliceWin(int n) {
+        int stone = 10;
+        bool alice = true;
+        while(n >= stone){
+            n -= stone;
+            stone--;
+            alice = !alice;
+        }
+        return !alice;
+    }
+};
