@@ -1,0 +1,58 @@
+class Solution {
+public:
+    // memoization
+    int solve(int i, int bdgt, vector<vector<int>> &items, vector<int> &free, vector<vector<int>> &dp){
+        int n = items.size();
+        if (i == n || bdgt <= 0) return 0;
+        if(dp[i][bdgt] != -1) return dp[i][bdgt];
+        int noTake = solve(i+1, bdgt, items, free, dp);
+        int take1 = 0, take2 = 0;
+        if(items[i][1] <= bdgt){
+            take1 = 1 + free[i] + solve(i+1, bdgt - items[i][1], items, free, dp);
+            take2 = 1 + solve(i, bdgt - items[i][1], items, free, dp);
+        }        
+        return dp[i][bdgt] = max({noTake, take1, take2});
+    }
+
+    int maximumSaleItemss(vector<vector<int>>& items, int budget) {
+        int n = items.size();
+        vector<int> free(n, 0);
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < n; j++){
+                if(i == j) continue;
+                int f1 = items[i][0], f2 = items[j][0];
+                if(f2 % f1 == 0) free[i]++;
+            }
+        }
+
+        vector<vector<int>> dp(n, vector<int>(budget+1, -1));
+        return solve(0, budget, items, free, dp);
+    }
+
+    // tabulation
+    int maximumSaleItems(vector<vector<int>>& items, int budget) {
+        int n = items.size();
+        vector<int> free(n, 0);
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < n; j++){
+                if(i == j) continue;
+                int f1 = items[i][0], f2 = items[j][0];
+                if(f2 % f1 == 0) free[i]++;
+            }
+        }
+        vector<vector<int>> dp(n+1, vector<int>(budget+1, 0));
+
+        for(int i = n-1; i >= 0; i--){
+            for(int bdgt = 1; bdgt <= budget; bdgt++){
+                int noTake = dp[i+1][bdgt];
+                int take1 = 0, take2 = 0;
+                if(items[i][1] <= bdgt){
+                    take1 = 1 + free[i] + dp[i+1][bdgt - items[i][1]];
+                    take2 = 1 + dp[i][bdgt - items[i][1]];
+                }        
+                dp[i][bdgt] = max({noTake, take1, take2});
+            }
+        }
+        return dp[0][budget];
+    }
+};
